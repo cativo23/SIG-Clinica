@@ -14,3 +14,4 @@ admin.site.register(Procedimiento)
 admin.site.register(Consulta)
 admin.site.register(Pago)
 
+
