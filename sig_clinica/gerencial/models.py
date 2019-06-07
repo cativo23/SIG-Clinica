@@ -32,13 +32,15 @@ class LoteMedicamento(models.Model):
     medicamento = models.ForeignKey(Medicamento, blank = False, null = False,on_delete = models.CASCADE)
     fecha_vencimiento = models.DateField('Fecha de Vencimiento', help_text = 'Formato: DD/MM/AAAA',blank = False, null = False)
     cantidad=models.IntegerField('Cantidad vencida',blank=False,null=False,validators = [MinValueValidator(0)])
+
+
 class Odontograma(models.Model):
     medico = models.ForeignKey(Doctor, on_delete = models.SET_NULL, null = True)
     fechaCreacion = models.DateTimeField('date_created', auto_now_add=True)
     notas = models.TextField()
 
     def __str__(self):
-        return '#%s - Ondontograma del %s' % (self.id, GestionExpedientes.models.Expediente.objects.filter(odontograma=self.id).first())
+        return '#%s - Ondontograma del %s' % (self.id, Expediente.objects.filter(odontograma=self.id).first())
 
 class Paciente(models.Model):
     MASCULINO = 'M'
@@ -83,8 +85,6 @@ class Expediente(models.Model):
         ordering = ['paciente']
         verbose_name = 'Expediente'
         verbose_name_plural = 'Expedientes'
-
-
 
 class Cita(models.Model):
     APLICADA = 'Aplicada'
@@ -179,4 +179,4 @@ class Pago(models.Model):
     cantidad = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False, default=0)
 
     def __str__(self):
-        return '#%s - Pago por: %s del %s' % (self.id, self.cantidad ,self.expediente)
+        return '#%s - Pago por: %s del %s' % (self.id, self.cantidad ,self.Expediente)
