@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block title %} Expedientes creados {% endblock %}
+    {% block pantalla %} Resumen de Expedientes Creados  {% endblock %}
+    {% block descripcion %}  {% endblock %}
+
+    {% block content %}
+    <div>
+        <!-- INICIO SECCIÓN DE FECHAS -->
+        <div class="form">{% csrf_token %}
+
+                <div class="col s12 m12 push-m2">
+                    <h6 class="left-align">Seleccione el período de su reporte resumen</h6>
+                </div></div>
+
+            <div id="fechas" class="row">
+
+                <div class="col s12 m3 push-m2">
+                    <div class="input-field">
+                        <div class="modal datepicker-modal" id="" tabindex="0">
+                            <div class="modal-content datepicker-container">
+                                <div class="datepicker-date-display">
+                                    <span class="year-text"></span>
+                                    <span class="date-text"></span>
+                                </div>
+                                <div class="datepicker-calendar-container">
+                                    <div class="datepicker-calendar"></div>
+                                    <div class="datepicker-footer">
+                                        <button class="btn-flat datepicker-clear waves-effect" style="visibility: hidden;" type="button">
+                                        </button>
+                                        <div class="confirmation-btns">
+                                            <button class="btn-flat datepicker-cancel waves-effect" type="button">Cancelar</button>
+                                            <button class="btn-flat datepicker-done waves-effect" type="button">Aceptar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="material-icons prefix">event</i>
+                        <input id="fecha_inicial" type="text" class="datepicker">
+                        <label for="fecha_inicial" class="">Fecha inicial</label>
+                    </div>
+                </div>
+
+                <div class="col s12 m3 push-m2">
+
+                    <div class="input-field">
+                        <div class="modal datepicker-modal" id="" tabindex="0">
+                            <div class="modal-content datepicker-container">
+                                <div class="datepicker-date-display">
+                                    <span class="year-text"></span>
+                                    <span class="date-text"></span>
+                                </div>
+                                <div class="datepicker-calendar-container">
+                                    <div class="datepicker-calendar"></div>
+                                    <div class="datepicker-footer">
+                                        <button class="btn-flat datepicker-clear waves-effect" style="visibility: hidden;" type="button">
+                                        </button>
+                                        <div class="confirmation-btns">
+                                            <button class="btn-flat datepicker-cancel waves-effect" type="button">Cancelar</button>
+                                            <button class="btn-flat datepicker-done waves-effect" type="button">Aceptar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="material-icons prefix">event</i>
+                        <input id="fecha_final" type="text" class="datepicker">
+                        <label for="fecha_final" class="">Fecha final</label>
+                    </div>
+
+                </div>
+
+                <div class="col s12 m3 push-s3 push-m2"><br>
+                    <button class="btn waves-light" type="submit" name="action">Generar
+                        <i class="material-icons right">search</i>
+                    </button>
+                </div>
+
+            </div>
+
+
+
+
+
+
+        </div>
+        <!-- FIN SECCION DE FECHAS -->
+
+
+        <!-- INICIO TABLAS -->
+        <div id="tabla1" class="row">
+            <div class="col s10 push-s1">
+                <table class="highlight responsive-table">
+                    <thead>
+                      <tr>
+                          <th>Sexo</th>
+                          <th>Expedientes Creados</th>
+                          <th>Consultas Realizadas</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>Masculino</td>
+                        <td>10</td>
+                        <td>17</td>
+                      </tr>
+                      <tr>
+                        <td>Femenino</td>
+                        <td>18</td>
+                        <td>28</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+
+        <div id="tabla2" class="row">
+            <div class="col s10 push-s1">
+                <table class="highlight responsive-table">
+                    <thead>
+                      <tr>
+                          <th>Edad</th>
+                          <th>Expedientes Creados</th>
+                          <th>Consultas Realizadas</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>Menor de 18</td>
+                        <td>18</td>
+                        <td>28</td>
+                      </tr>
+                      <tr>
+                        <td>Mayor o igual a 18</td>
+                        <td>18</td>
+                        <td>28</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <div id="tabla3" class="row">
+            <div class="col s10 push-s1">
+                <table class="highlight responsive-table centered">
+                    <thead>
+                      <tr>
+                          <th>Expedientes Nuevo</th>
+                          <th>Consultas Realizadas</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>30</td>
+                        <td>49</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+
+        <div id="botones" class="row">
+            <div class="col s12 m6 push-m1">
+                <a class="waves-effect waves-light btn">Exportar</a>
+            </div>
+
+            <div class="col s12 m6 push-m1">
+                <a class=" waves-light btn">Generar PDF</a>
+                <a class=" waves-light btn">Imprimir</a>
+                <a class=" waves-light btn">Ayuda</a>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="{% static 'gerencial/js/pickers.js' %}"></script>
+    <script src="{% static 'gerencial/js/.js' %}" ></script>
+
+    {% endblock %}
