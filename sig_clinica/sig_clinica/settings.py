@@ -90,14 +90,6 @@ CACHES = {
 
 WSGI_APPLICATION = 'sig_clinica.wsgi.application'
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    },
-    'axes_cache': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -130,6 +122,10 @@ AUTH_PASSWORD_VALIDATORS = [
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.Argon2PasswordHasher',
 )
+
+#AXES_COOLOFF_TIME = ()
+
+AXES_ONLY_USER_FAILURES = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
