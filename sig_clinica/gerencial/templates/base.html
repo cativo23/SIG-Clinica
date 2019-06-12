@@ -1,5 +1,5 @@
 {% load material_form %}
-{% load staticfiles %}
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,14 +8,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %} Index {% endblock %}</title>
+
     <!-- Django material form -->
     {% include 'material/includes/material_css.html' %}
-
-    <!-- Bootstrap DatePicker -->
-
-
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="{% static 'gerencial/css/materialize.min.css' %}" media="screen,projection"/>
 
 
 
@@ -24,11 +19,10 @@
 
     <!-- INICIO NAVBAR -->
     <header>
-        <nav class=" blue lighten-3">
-            <a href="" class="brand-logo">LOGO</a>
-            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <div class="nav-wrapper ">
-                <ul id="nav-mobile" class="right">
+        <nav>
+            <div class="nav-wrapper blue-grey darken-3">
+            <a href="#" class="brand-logo">Logo</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li class="hide-on-small-only"><a href="#!"><i class="material-icons right">home</i></a></li>
                     <li><a href="#!"><i class="material-icons right">settings</i></a></li>
                     <li><a href="#!"><i class="material-icons right">exit_to_app</i></a></li>
@@ -43,8 +37,7 @@
 
 
             <!-- INICIO SIDENAV -->
-            <br>
-            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
 
             <ul id="slide-out" class="sidenav">
                 <li>
@@ -104,21 +97,35 @@
             <!-- FIN SIDENAV -->
         </div>
 
+        <div class="row">
+            <div class="col s3 m6"><br>
+                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            </div>
+            <div class="col s9 m6 push-m3"><br>
+                <!-- USUARIO -->
+                <div class="chip">
+                    <img src="https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png" alt="Contact Person">
+                    Dr. Susana Argueta
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Inicio divider -->
+        <section id="texto">
+            <div class="">
+                <div class="divider"></div>
+                    <h5 class="center-align"><b>{% block pantalla %} Nombre de pantalla  {% endblock %}</b></h5>
+                    <h6><p class="flow-text center-align">{% block descripcion %}  {% endblock %}</p></h6>
+                <div class="divider"></div><br>
+            </div>
+        </section>
+        <!-- Fin divider -->
+
         <!-- INICIO MENU PRINCIPAL-->
         <div class="main">
             <div class="row">
             {% block content %}
-
-            <!-- Inicio divider -->
-            <section id="texto">
-                <div class="">
-                    <div class="divider"></div>
-                        <h5 class="center-align"l><b>{% block pantalla %} Nombre de pantalla  {% endblock %}</b></h5>
-                        <h6><p class="flow-text center-align">{% block descripcion %}  {% endblock %}</p></h6>
-                    <div class="divider"></div><br>
-                </div>
-            </section>
-            <!-- Fin divider -->
 
             <!--INICIO MENU ADMINISTRADOR-->
             <div class="row">
@@ -352,7 +359,7 @@
                     <div class="card hoverable">
                         <div class="card-image waves-block waves-light activator">
                             <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Informe de uso del odontograma en consultass</b></span>
+                            <span class="card-title white-text"><b>Uso de odontograma en consultass</b></span>
                     <!-- style="left: 225px;"-->
                             <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                                 <i class="material-icons">info_outline</i>
@@ -374,7 +381,7 @@
                     <div class="card hoverable">
                         <div class="card-image waves-block waves-light activator">
                             <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Vencimiento de medicamentos en inventario</b></span>
+                            <span class="card-title white-text"><b>Vencimiento de medicamentos</b></span>
                     <!-- style="left: 225px;"-->
                             <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                                 <i class="material-icons">info_outline</i>
@@ -468,17 +475,17 @@
         </div>
         <!-- FIN MENU PRINCIPAL-->
     </div>
+
+    <script  src="https://code.jquery.com/jquery-3.4.1.min.js"
+             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+
+    </script>
+
+    <script src="{% static 'gerencial/js/sidenav.js' %}"></script>
+    {% include 'material/includes/material_js.html' %}
+
+
+
+
 </body>
-
-
-{% include 'material/includes/material_js.html' %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-});
-</script>
-<script src="{% static 'gerencial/js/sidenav.js' %}"></script>
-
-
 </html>

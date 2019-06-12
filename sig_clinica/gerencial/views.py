@@ -5,3 +5,6 @@ from django.shortcuts import render
 
 def prueba(request):
     return render(request, template_name='base.html')
+
+def resumen_expcreados(request):
+    return render(request, template_name='resumen_expcreados.html' )
