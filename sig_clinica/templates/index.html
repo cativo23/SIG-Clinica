@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+
+{%  block title %} Inicio{% endblock %}
+
+{% block navbar %}
+    <ul class="right hide-on-med-and-down">
+        <li class="active">
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="posts.html">Posts</a>
+        </li>
+        <li>
+            <a href="categories.html">Categories</a>
+        </li>
+        <li>
+            <a href="comments.html">Comments</a>
+        </li>
+        <li>
+            <a href="users.html">Users</a>
+        </li>
+    </ul>
+{% endblock %}

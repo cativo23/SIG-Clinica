@@ -67,15 +67,15 @@ def login(request):
                             user.save()
                             message = "Usuario bloqueado, póngase en contacto con el administrador"
                         else:
-                            message = "Password errónea le quedan " + str(
+                            message = "Contraseña errónea le quedan " + str(
                                 settings.AXES_FAILURE_LIMIT - axes.failures_since_start) + " intentos"
                     else:
                         message = "Usuario bloqueado, póngase en contacto con el administrador"
             except:
                 pass
-            return render(request, 'auth/login.html', {'message': message, })
+            return render(request, 'registration/login.html', {'message': message, })
     else:
-        return render(request, 'auth/login.html', {'message': message, })
+        return render(request, 'registration/login.html', {'message': message, })
 
 
 def logout(request):
@@ -168,29 +168,6 @@ def usuarios(request):
         return render(request, 'auth/login.html', {'mensaje': mensaje, })
 
 
-# class ActualizarUsuario(SuccessMessageMixin, UserPassesTestMixin, UpdateView):
-#     model = User
-#     fields = ['username', 'email', 'first_name', 'last_name']
-#     template_name = 'auth/agregar_usuario.html'
-#     success_message = "Usuario modificado con éxito"
-#     success_url = reverse_lazy('usuarios')
-#     layout = Layout(Fieldset('Modificar Usuario: '), Row('username', 'email'), Row('first_name', 'last_name'))
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ActualizarUsuario, self).get_context_data(**kwargs)
-#         context['actualizar'] = True
-#         return context
-#
-#     def get_form(self):
-#         form = super(ActualizarUsuario, self).get_form()
-#         form.fields['email'].required = True
-#         form.fields['first_name'].required = True
-#         form.fields['last_name'].required = True
-#         return form
-#
-#     def test_func(self):
-#         return self.request.user.groups.filter(name="administrador").exists()
-
 @login_required
 @user_passes_test(administrador)
 def actualizar_usuario(request, pk):
@@ -266,3 +243,6 @@ def bloquear_usuario(request, pk):
         messages.add_message(request, messages.INFO, 'No puede bloquear su propio usuario')
     return HttpResponseRedirect(reverse("usuarios"))
 # Finalizan vistas para Usuarios
+
+def lockout(request):
+    return render(request, template_name='registration/locked.html')

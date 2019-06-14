@@ -4,7 +4,7 @@ from .views import *
 
 
 urlpatterns = [
-    path('login/', LoginView.as_view(template_name='auth/login.html'), name='login'),
+    path('login/', login, name='login'),
     path('logout/', logout, name='logout'),
     path('cuenta/', cuenta, name='cuenta'),
 
@@ -16,8 +16,9 @@ urlpatterns = [
     path('bloquear_usuario/<int:pk>/', bloquear_usuario, name='bloquear_usuario'),
     # Finalizan urls para Usuario
 
-    path('password_reset/', PasswordResetView.as_view(template_name='auth/password_reset1.html'), name='password_reset'),
-    path('password_reset/done/', PasswordResetDoneView.as_view(template_name='auth/password_reset_done.html'), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='auth/password_reset_confirm.html'), name='password_reset_confirm'),
-    path('reset/done/', PasswordResetCompleteView.as_view(template_name='auth/password_reset_complete.html'), name='password_reset_complete'),
+    path('password_reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('lockout/', lockout, name='lockout'),
 ]

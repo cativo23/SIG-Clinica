@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -24,7 +25,7 @@ SECRET_KEY = '5kx6wkk%pzih&d85q#o^mvu@vaa3^329%wmtxgw@r^x21en_*g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesBackend',
@@ -35,6 +36,7 @@ AUTHENTICATION_BACKENDS = [
 
 INSTALLED_APPS = [
     'django_admin_material',
+    'auth1',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,8 +46,7 @@ INSTALLED_APPS = [
     'gerencial',
     'material',
     'material.frontend',
-    'auth1',
-    'axes'
+    'axes',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +63,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'sig_clinica.urls'
 LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/auth/login/'
+LOGOUT_REDIRECT_URL = 'auth'
 
 TEMPLATES = [
     {
@@ -128,6 +129,8 @@ PASSWORD_HASHERS = (
 
 AXES_ONLY_USER_FAILURES = True
 
+AXES_LOCKOUT_URL = '/auth/lockout'
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -151,9 +154,11 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
+DEFAULT_FROM_EMAIL = 'manguitoclinica@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'maguitoclinica@gmail.com'
-EMAIL_HOST_PASSWORD = 'cacpac23'
+EMAIL_HOST_PASSWORD = 'xlsstvvptxmzdgbc'
 EMAIL_PORT = 587
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SERVER_MAIL = 'maguitoclinica@gmail.com'

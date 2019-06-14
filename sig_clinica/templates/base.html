@@ -1,105 +1,48 @@
-{% load i18n static %}
+{% load i18n static staticfiles %}
+
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
-    <head>
-        {% block head %}
+<head>
+    {% block head %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-        {% block turbolinks-cache-control %}<meta name="turbolinks-cache-control" content="no-cache">{% endblock %}
-        <title>{% block title %}{% endblock %}</title>
-        {% block favicon %}<link href="{% static 'material/imgs/favicon.png' %}" rel="shortcut icon">{% endblock %}
-            
+        {% block turbolinks-cache-control %}
+            <meta name="turbolinks-cache-control" content="no-cache">{% endblock %}
+        <title>SIG Clinica Manguito - {% block title %}{% endblock %}</title>
+        {% block favicon %}
+            <link href="{% static 'material/imgs/favicon.png' %}" rel="shortcut icon">{% endblock %}
+
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    
         <!-- Compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        
+
         {% block css %}{% include 'material/frontend/includes/material_css.html' %}{% endblock css %}
         {% block js %}{% include 'material/frontend/includes/material_js.html' %}{% endblock js %}
         {% block extrahead %}{% endblock %}
-        {% endblock head %}
-    </head>
+    {% endblock head %}
+</head>
 
-    <body class="grey lighten-4">
-        <nav class="blue darken-2">
-            <div class="container">
-              <div class="nav-wrapper">
-                <a href="index.html" class="brand-logo">Madmin</a>
-                    <a href="#" data-target="side-trigger" class="button-collapse sidenav-trigger show-on-large right">
-                        <i class="material-icons">menu</i>
-                    </a>
-                    <ul class="right hide-on-med-and-down">
-                        <li class="active">
-                            <a href="index.html">Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="posts.html">Posts</a>
-                        </li>
-                        <li>
-                            <a href="categories.html">Categories</a>
-                        </li>
-                        <li>
-                            <a href="comments.html">Comments</a>
-                        </li>
-                        <li>
-                            <a href="users.html">Users</a>
-                        </li>
-                    </ul>
+<body class="grey lighten-4">
+<nav class="blue darken-2">
+    <div class="container">
+        <div class="nav-wrapper">
+            <a href="index.html" class="brand-logo">SIG-Manguito</a>
+            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large right"><i class="material-icons">menu</i></a>
+            {% block navbar %}
 
-                    <!-- Side nav -->
-                    <ul id="slide-out" class="sidenav">
-                        <li>
-                        <div class="user-view">
-                            <div class="background">
-                                <img src="{% static 'gerencial/img/ocean.jpg' %}" alt="">
-                            </div>
-                            <a href="#">
-                                <img src="{% static 'gerencial/img//person1.jpg' %}" alt="" class="circle">
-                            </a>
-                            <a href="#">
-                                <span class="name white-text">John Doe</span>
-                            </a>
-                            <a href="#">
-                                <span class="email white-text">jdoe@gmail.com</span>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="index.html">
-                            <i class="material-icons">dashboard</i> Dashboard
-                        </a>
-                    </li>
-                        <li>
-                            <a href="posts.html">Posts</a>
-                        </li>
-                        <li>
-                            <a href="categories.html">Categories</a>
-                        </li>
-                        <li>
-                            <a href="comments.html">Comments</a>
-                        </li>
-                        <li>
-                            <a href="users.html">Users</a>
-                        </li>
-                        <li>
-                            <div class="divider"></div>
-                        </li>
-                        <li>
-                            <a class="subheader">Account Controls</a>
-                        </li>
-                        <li>
-                            <a href="login.html" class="waves-effect">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-        <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
-        <script src="{% static 'gerencial/js/chart.js' %}"></script>
-    </body>
+            {% endblock %}
+        </div>
+    </div>
+</nav>
+{%  include 'elements/sidebar.html' %}
+
+{% block content %}
+{%  endblock content %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+<script src="{% static 'gerencial/js/sidenav.js' %}"></script>
+</body>
 </html>

@@ -1,0 +1,29 @@
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+
+<ul id="slide-out" class="sidenav">
+    <li>
+        <div class="user-view">
+            <div class="background">
+                <img src="{% static 'gerencial/img/ocean.jpg' %}">
+            </div>
+            {% if user.is_authenticated %}
+            <a href="#user"><img class="circle" src="{% static 'gerencial/img/person1.jpg' %}"></a>
+            <a href="#name"><span class="white-text name">{{ user }}</span></a>
+            <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
+                {% else %}
+                <a href="#user"><img class="circle" src="{% static 'gerencial/img/person2.jpg' %}"></a>
+            <a href="#name"><span class="white-text name">{% trans 'Anonymous' %}</span></a>
+            <a href="#email"><span class="white-text email">{% trans '----' %}</span></a>
+            {% endif %}
+        </div>
+    </li>
+    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+    <li><a href="#!">Second Link</a></li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li><a class="subheader">Subheader</a></li>
+    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+</ul>
