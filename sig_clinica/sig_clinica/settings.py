@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'material',
     'material.frontend',
     'auth1',
-    'axes'
+    'axes',
+
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ TEMPLATES = [
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     },
     'axes_cache': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
