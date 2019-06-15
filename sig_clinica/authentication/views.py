@@ -1,26 +1,18 @@
-from django.conf import settings
-from django.shortcuts import render, redirect, reverse
-from material import *
-from django.db.models import Q
-from django import forms
-
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.auth.models import User, Group
-from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth import tokens
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.http import HttpResponseRedirect
-from django.core.mail import EmailMessage
-from django.template.loader import get_template
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-
 from axes.models import AccessAttempt
 from axes.utils import reset
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import tokens
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User, Group
+from django.core.mail import EmailMessage
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
+from django.template.loader import get_template
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from .forms import UsuarioForm, UsuarioUpdateForm
 
@@ -73,6 +65,7 @@ def login(request):
                         message = "Usuario bloqueado, póngase en contacto con el administrador"
             except:
                 pass
+            messages.add_message(request, messages.WARNING, message)
             return render(request, 'registration/login.html', {'message': message, })
     else:
         return render(request, 'registration/login.html', {'message': message, })
