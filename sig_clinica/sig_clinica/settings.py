@@ -73,7 +73,7 @@ ROOT_URLCONF = 'sig_clinica.urls'
 
 LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = 'auth'
+LOGOUT_REDIRECT_URL = 'login'
 
 TEMPLATES = [
     {

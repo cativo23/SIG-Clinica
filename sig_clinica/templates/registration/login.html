@@ -41,17 +41,18 @@
             <button type="submit" name="action" class="btn btn-primary waves-effect waves-light">{% trans 'Log in' %}</button>
         </div>
     </form>
-    {{ message }}
 {% endblock %}
 
 {% block icon %}account_circle{% endblock %}
 
 
 {% block messages %}
+    {% for message in messages %}
     {% if message %}
     <script type="text/javascript">
-        (function () { M.toast({html: '{{ message }}', classes: 'rounded', displayLength: 6000}); })();
+        (function () { M.toast({html: '{{ message }}', classes: 'rounded {% if message.tags == 'warning' %} yellow {% elif message.tags == 'error' %} red {% else %} {% endif %}', displayLength: 6000}); })();
     </script>
-{% endif %}
+    {% endif %}
+    {% endfor %}
 {% endblock messages %}
 

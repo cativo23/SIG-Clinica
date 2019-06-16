@@ -31,7 +31,7 @@ def tactico(user):
 
 # Create your views here.
 def login(request):
-    message = ""
+    message = []
     next = request.GET.get('next')
     if request.POST:
         username = request.POST.get('username')
@@ -45,7 +45,7 @@ def login(request):
             else:
                 return redirect('/')
         else:
-            message = "Usuario o password Incorrecto"
+            message = ["Usuario o password Incorrecto", messages.WARNING]
             try:
                 axes = AccessAttempt.objects.get(username=username)
                 user = User.objects.get(username=username)
@@ -57,15 +57,15 @@ def login(request):
                         if axes.failures_since_start >= settings.AXES_FAILURE_LIMIT:
                             user.is_active = False
                             user.save()
-                            message = "Usuario bloqueado, póngase en contacto con el administrador"
+                            message = ["Usuario bloqueado, póngase en contacto con el administrador", messages.ERROR]
                         else:
-                            message = "Contraseña errónea le quedan " + str(
-                                settings.AXES_FAILURE_LIMIT - axes.failures_since_start) + " intentos"
+                            message = ["Contraseña errónea le quedan " + str(
+                                settings.AXES_FAILURE_LIMIT - axes.failures_since_start) + " intentos", messages.WARNING]
                     else:
-                        message = "Usuario bloqueado, póngase en contacto con el administrador"
+                        message = ["Usuario bloqueado, póngase en contacto con el administrador", messages.ERROR]
             except:
                 pass
-            messages.add_message(request, messages.WARNING, message)
+            messages.add_message(request, message[1], message[0])
             return render(request, 'registration/login.html', {'message': message, })
     else:
         return render(request, 'registration/login.html', {'message': message, })
