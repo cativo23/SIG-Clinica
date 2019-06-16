@@ -1,119 +1,53 @@
 {% extends 'base.html' %}
 {% load static %}
 
-    {% block title %} Expedientes creados {% endblock %}
-    {% block pantalla %} Resumen de Expedientes Creados  {% endblock %}
-    {% block descripcion %}  {% endblock %}
+{% block title %} Expedientes creados {% endblock %}
+{% block pantalla %} Resumen de Expedientes Creados  {% endblock %}
+{% block descripcion %}  {% endblock %}
 
-    {% block content %}
-    <div>
-        <!-- INICIO SECCIÓN DE FECHAS -->
-        <div class="form">{% csrf_token %}
+{% block content %}
 
-                <div class="col s12 m12 push-m2">
-                    <h6 class="left-align">Seleccione el período de su reporte resumen</h6>
-                </div></div>
-
-            <div id="fechas" class="row">
-
-                <div class="col s12 m3 push-m2">
-                    <div class="input-field">
-                        <div class="modal datepicker-modal" id="" tabindex="0">
-                            <div class="modal-content datepicker-container">
-                                <div class="datepicker-date-display">
-                                    <span class="year-text"></span>
-                                    <span class="date-text"></span>
-                                </div>
-                                <div class="datepicker-calendar-container">
-                                    <div class="datepicker-calendar"></div>
-                                    <div class="datepicker-footer">
-                                        <button class="btn-flat datepicker-clear waves-effect" style="visibility: hidden;" type="button">
-                                        </button>
-                                        <div class="confirmation-btns">
-                                            <button class="btn-flat datepicker-cancel waves-effect" type="button">Cancelar</button>
-                                            <button class="btn-flat datepicker-done waves-effect" type="button">Aceptar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <i class="material-icons prefix">event</i>
-                        <input id="fecha_inicial" type="text" class="datepicker">
-                        <label for="fecha_inicial" class="">Fecha inicial</label>
-                    </div>
-                </div>
-
-                <div class="col s12 m3 push-m2">
-
-                    <div class="input-field">
-                        <div class="modal datepicker-modal" id="" tabindex="0">
-                            <div class="modal-content datepicker-container">
-                                <div class="datepicker-date-display">
-                                    <span class="year-text"></span>
-                                    <span class="date-text"></span>
-                                </div>
-                                <div class="datepicker-calendar-container">
-                                    <div class="datepicker-calendar"></div>
-                                    <div class="datepicker-footer">
-                                        <button class="btn-flat datepicker-clear waves-effect" style="visibility: hidden;" type="button">
-                                        </button>
-                                        <div class="confirmation-btns">
-                                            <button class="btn-flat datepicker-cancel waves-effect" type="button">Cancelar</button>
-                                            <button class="btn-flat datepicker-done waves-effect" type="button">Aceptar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <i class="material-icons prefix">event</i>
-                        <input id="fecha_final" type="text" class="datepicker">
-                        <label for="fecha_final" class="">Fecha final</label>
-                    </div>
-
-                </div>
-
-                <div class="col s12 m3 push-s3 push-m2"><br>
-                    <button class="btn waves-light" type="submit" name="action">Generar
-                        <i class="material-icons right">search</i>
-                    </button>
-                </div>
-
-            </div>
-
-
-
-
-
-
-        </div>
-        <!-- FIN SECCION DE FECHAS -->
+    {% include "parametros.html" %}<br>
+    <!-- IF DE CONTROL CUANDO NO EXITEN DATOS -->
+    {% if fecha_inicial and fecha_final %}
+     <!-- PANTALLA CUANDO SI HAY DATOS -->
+        <!-- TITULO DEL RESUMEN -->
+        {% if fecha_inicial and fecha_final %}
+        Fecha de emisión: {{ hoy }}
+        <div class="divider"></div>
+        <h5 class="center-align"><b>Resumen de Expedientes Creados del {{ fecha_inicial }} al {{ fecha_final }}</b></h5>
+        <div class="divider"></div>
+        {% else %}
+        {% endif %}
 
 
         <!-- INICIO TABLAS -->
         <div id="tabla1" class="row">
-            <div class="col s10 push-s1">
+            <div class="col s10 push-s1"><br>
                 <table class="highlight responsive-table">
                     <thead>
-                      <tr>
-                          <th>Sexo</th>
-                          <th>Expedientes Creados</th>
-                          <th>Consultas Realizadas</th>
-                      </tr>
+                        <tr>
+                            <th>Sexo</th>
+                            <th>Expedientes Creados</th>
+                            <th>Consultas Realizadas</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                      <tr>
-                        <td>Masculino</td>
-                        <td>10</td>
-                        <td>17</td>
-                      </tr>
-                      <tr>
-                        <td>Femenino</td>
-                        <td>18</td>
-                        <td>28</td>
-                      </tr>
+                        <tr>
+                            <td><b>Masculino</b></td>
+                            <td>{{ sexo_exp_mas }}</td>
+                            <td>{{ sexo_con_mas }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Femenino</b></td>
+                            <td>{{ sexo_exp_fem }}</td>
+                            <td>{{ sexo_con_fem }}</td>
+                        </tr>
                     </tbody>
-                  </table>
+
+
+                </table>
             </div>
         </div>
 
@@ -121,46 +55,132 @@
             <div class="col s10 push-s1">
                 <table class="highlight responsive-table">
                     <thead>
-                      <tr>
-                          <th>Edad</th>
-                          <th>Expedientes Creados</th>
-                          <th>Consultas Realizadas</th>
-                      </tr>
+                    <tr>
+                        <th>Edad</th>
+                        <th>Expedientes Creados</th>
+                        <th>Consultas Realizadas</th>
+                    </tr>
                     </thead>
 
                     <tbody>
-                      <tr>
-                        <td>Menor de 18</td>
-                        <td>18</td>
-                        <td>28</td>
-                      </tr>
-                      <tr>
-                        <td>Mayor o igual a 18</td>
-                        <td>18</td>
-                        <td>28</td>
-                      </tr>
+                    <tr>
+                        <td><b>Menor de 18 años</b></td>
+                        <td>{{ edad_exp_me }}</td>
+                        <td>{{ edad_con_me }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Mayor o igual a 18 años</b></td>
+                        <td>{{ edad_exp_ma }}</td>
+                        <td>{{ edad_con_ma }}</td>
+
+                    </tr>
                     </tbody>
-                  </table>
+                </table>
             </div>
         </div>
+
         <div id="tabla3" class="row">
             <div class="col s10 push-s1">
                 <table class="highlight responsive-table centered">
                     <thead>
-                      <tr>
-                          <th>Expedientes Nuevo</th>
-                          <th>Consultas Realizadas</th>
-                      </tr>
+                    <tr>
+                        <th>Expedientes Nuevos</th>
+                        <th>Consultas Realizadas por Pacientes Nuevos</th>
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>30</td>
-                        <td>49</td>
-                      </tr>
+                    <tr>
+                        <td>{{ exp_total }}</td>
+                        <td>{{ con_total }}</td>
+                    </tr>
                     </tbody>
-                  </table>
+                </table>
             </div>
         </div>
+
+    {% else %} <!-- ELSE DEL CONTROL -->
+        <!--NO HAY TITULO DEL RESUMEN AQUI-->
+
+        <!-- No hay datos en esta categoria -->
+        <!-- PANTALLA CUANDO NO HAY DATOS -->
+
+        <!-- INICIO TABLAS -->
+        <div class="row">
+            <div class="col s10 push-s1"><br>
+                <table class="highlight responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Sexo</th>
+                            <th>Expedientes Creados</th>
+                            <th>Consultas Realizadas</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><b>Masculino</b></td>
+                            <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
+                        </tr>
+
+                        <tr>
+                            <td><b>Femenino</b></td>
+                            <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
+                        </tr>
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s10 push-s1">
+                <table class="highlight responsive-table">
+                    <thead>
+                    <tr>
+                        <th>Edad</th>
+                        <th>Expedientes Creados</th>
+                        <th>Consultas Realizadas</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td><b>Menor de 18</b></td>
+                        <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
+                    </tr>
+                    <tr>
+                        <td><b>Mayor o igual a 18</b></td>
+                        <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s10 push-s1">
+                <table class="highlight responsive-table centered">
+                    <thead>
+                    <tr>
+                        <th>Expedientes Nuevos</th>
+                        <th>Consultas Realizadas por Pacientes Nuevos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    {% endif %}
 
         <div id="botones" class="row">
             <div class="col s12 m6 push-m1">
@@ -174,10 +194,10 @@
             </div>
         </div>
 
-    </div>
+<script>
+       var boton_enviar = document.getElementById('boton_enviar').onclick="location.href='{% url 'gerencial:resumen_expcreados' %}'"
+       console.log(boton_enviar)
+</script>
 
 
-    <script src="{% static 'gerencial/js/pickers.js' %}"></script>
-    <script src="{% static 'gerencial/js/.js' %}" ></script>
-
-    {% endblock %}
+{% endblock %}
