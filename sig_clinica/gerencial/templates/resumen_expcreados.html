@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Expedientes creados {% endblock %}
+{% block title %} Expedientes Creados {% endblock %}
 {% block pantalla %} Resumen de Expedientes Creados  {% endblock %}
-{% block descripcion %}  {% endblock %}
+{% block descripcion %} {% endblock %}
 
 {% block content %}
-
     {% include "parametros.html" %}<br>
     <!-- IF DE CONTROL CUANDO NO EXITEN DATOS -->
     {% if fecha_inicial and fecha_final %}
      <!-- PANTALLA CUANDO SI HAY DATOS -->
         <!-- TITULO DEL RESUMEN -->
         {% if fecha_inicial and fecha_final %}
+    <form method="post" action="#" id="printJS-form">
         Fecha de emisión: {{ hoy }}
         <div class="divider"></div>
         <h5 class="center-align"><b>Resumen de Expedientes Creados del {{ fecha_inicial }} al {{ fecha_final }}</b></h5>
@@ -45,11 +45,9 @@
                             <td>{{ sexo_con_fem }}</td>
                         </tr>
                     </tbody>
-
-
                 </table>
             </div>
-        </div>
+        </div><br>
 
         <div id="tabla2" class="row">
             <div class="col s10 push-s1">
@@ -77,7 +75,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div><br>
 
         <div id="tabla3" class="row">
             <div class="col s10 push-s1">
@@ -96,6 +94,19 @@
                     </tbody>
                 </table>
             </div>
+        </div><br>
+        <!-- FIN TABLAS -->
+    </form>
+        <div id="botones" class="row">
+            <div class="col s12 m6">
+                <a class="waves-effect waves-light btn">Exportar</a>
+            </div>
+
+            <div class="col s12 m6 push-m1">
+                <a class=" waves-light btn">Generar PDF</a>
+                <a class=" waves-light btn" class=" waves-light btn" onclick="printJS('printJS-form', 'html')">Imprimir</a>
+                <a class=" waves-light btn">Ayuda</a>
+            </div>
         </div>
 
     {% else %} <!-- ELSE DEL CONTROL -->
@@ -106,93 +117,12 @@
 
         <!-- INICIO TABLAS -->
         <div class="row">
-            <div class="col s10 push-s1"><br>
-                <table class="highlight responsive-table">
-                    <thead>
-                        <tr>
-                            <th>Sexo</th>
-                            <th>Expedientes Creados</th>
-                            <th>Consultas Realizadas</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td><b>Masculino</b></td>
-                            <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
-                        </tr>
-
-                        <tr>
-                            <td><b>Femenino</b></td>
-                            <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
-                        </tr>
-                    </tbody>
-
-
-                </table>
+            <div class="col s12"><br>
+                <h3>No se ha seleccionado un período para su resumen</h3>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col s10 push-s1">
-                <table class="highlight responsive-table">
-                    <thead>
-                    <tr>
-                        <th>Edad</th>
-                        <th>Expedientes Creados</th>
-                        <th>Consultas Realizadas</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr>
-                        <td><b>Menor de 18</b></td>
-                        <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
-                    </tr>
-                    <tr>
-                        <td><b>Mayor o igual a 18</b></td>
-                        <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
-
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col s10 push-s1">
-                <table class="highlight responsive-table centered">
-                    <thead>
-                    <tr>
-                        <th>Expedientes Nuevos</th>
-                        <th>Consultas Realizadas por Pacientes Nuevos</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-
-                        <td style="text-align:center" colspan="2">No hay datos en esta categoria</td>
-
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
 
     {% endif %}
-
-        <div id="botones" class="row">
-            <div class="col s12 m6 push-m1">
-                <a class="waves-effect waves-light btn">Exportar</a>
-            </div>
-
-            <div class="col s12 m6 push-m1">
-                <a class=" waves-light btn">Generar PDF</a>
-                <a class=" waves-light btn">Imprimir</a>
-                <a class=" waves-light btn">Ayuda</a>
-            </div>
-        </div>
 
 <script>
        var boton_enviar = document.getElementById('boton_enviar').onclick="location.href='{% url 'gerencial:resumen_expcreados' %}'"

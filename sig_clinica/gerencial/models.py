@@ -175,14 +175,14 @@ class Consulta(models.Model):
 
 class Pago(models.Model):
     Expediente = models.ForeignKey(Expediente, on_delete = models.CASCADE, null = True, blank= False)
-    fechaPago= models.DateTimeField('Fecha de Pago', auto_now_add=True)
+    fechaPago = models.DateTimeField('Fecha de Pago', auto_now_add=True)
     cantidad = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False, default=0)
 
     def __str__(self):
         return '#%s - Pago por: %s del %s' % (self.id, self.cantidad ,self.Expediente)
 
 class Receta(models.Model):
-    consulta = models.ForeignKey('Consulta', on_delete=models.PROTECT)
+    consulta = models.ForeignKey(Consulta, on_delete=models.PROTECT)
     medicamento = models.ManyToManyField(Medicamento, through='Especificacion')
 
 

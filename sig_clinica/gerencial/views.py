@@ -1,30 +1,32 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from auth1.views import administrador
-from .models import Expediente
-from .models import Paciente
-from .models import Consulta
+from .models import Expediente, Paciente, Consulta, Medicamento
 
 from django.http import HttpResponse
-import json
 from django.core import serializers
-
 from django.contrib.auth.models import User
-import datetime
-import time
+
 from datetime import timedelta
 from datetime import date
 from datetime import datetime
 
+import datetime
+import time
 import math
+import collections
+import operator
 
 # Create your views here.
+
+def menu(request):
+    return render(request, template_name='base.html')
 
 # Funcion que obtiene el RESUMEN DE EXPEDIENTES CREADOS para un periodo
 def obtener_resumen_expcreados(request):
     fecha_inicial = ""
     fecha_final = ""
-    hoy = ""
+    hoy = date.today()
 
     sexo_exp_mas = ""
     sexo_exp_fem = ""
@@ -54,7 +56,7 @@ def obtener_resumen_expcreados(request):
             sexo_con_fem = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__sexo='F').count()
 
             # TABLA 2 POR EDAD
-            hoy = date.today()
+
 
             pacientes_exp = Paciente.objects.filter(expediente__fechaCreacion__range=[fecha_inicial, fecha_final])
 
@@ -107,7 +109,7 @@ def obtener_resumen_expcreados(request):
 def obtener_resumen_expdeudas(request):
     fecha_inicial = ""
     fecha_final = ""
-    hoy = ""
+    hoy = date.today()
 
     exp_deuda = ""
     exp_deuda_total = ""
@@ -122,7 +124,6 @@ def obtener_resumen_expdeudas(request):
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
-
 
         if fecha_inicial and fecha_final:
 
@@ -143,19 +144,76 @@ def obtener_resumen_expdeudas(request):
             for expediente_mayo20 in expedientes_deuda_mayor20:
                 total_deuda20 = total_deuda20 + expediente_mayo20.saldo
 
-            porce_deuda20 = "{:.2f}".format(dueda_mayor20 / exp_deuda * 100)
-
-            exps_mayor_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).order_by("-saldo")
-
-            exp_mayor_deuda = exps_mayor_deuda[0].paciente
-            total_mayor_deuda = exps_mayor_deuda[0].saldo
-
+            # Vereficando que exp_deuda sea diferente de cero
+            if exp_deuda != 0:
+                porce_deuda20 = "{:.2f}".format(dueda_mayor20 / exp_deuda * 100)
+            else:
+                porce_deuda20 = 0
 
             # TABLA 3: EXPEDIENTE CON MAYOR DEUDA Y MONTO DE LA DEUDA
+            exps_mayor_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).order_by("-saldo")
+
+            # Verificando si existe expedientes con deudas
+            lista_exps_mayor = []
+            for exps_mayor in exps_mayor_deuda:
+                lista_exps_mayor.append(exps_mayor)
+
+            n_lista = len(lista_exps_mayor)
+
+            if n_lista != 0:
+                exp_mayor_deuda = exps_mayor_deuda[0].paciente
+                total_mayor_deuda = exps_mayor_deuda[0].saldo
+            else:
+                exp_mayor_deuda = "No hay expedientes con deudas"
+                total_mayor_deuda = 0
 
     return render(request, template_name='resumen_expdeudas.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
                            'exp_deuda': exp_deuda, 'exp_deuda_total': exp_deuda_total,
                            'dueda_mayor20': dueda_mayor20, 'total_deuda20': total_deuda20, 'porce_deuda20': porce_deuda20,
                            'exp_mayor_deuda': exp_mayor_deuda, 'total_mayor_deuda': total_mayor_deuda,
+                           })
+
+
+def obtener_resumen_costomed(request):
+    fecha_inicial = ""
+    fecha_final = ""
+    hoy = date.today()
+
+    med_demandados = ""
+    medicamentos = ""
+    total_gasto_med = ""
+    mas_demandados = ""
+    lista_medicamentos = ""
+    a = ""
+
+    if request.method == 'POST':
+        fecha_inicial = request.POST.get('fecha_inicial')
+        fecha_final = request.POST.get('fecha_final')
+
+        # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
+
+        med_demandados = Medicamento.objects.filter(receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final]).all()
+
+        lista_medicamentos = []
+        for med in med_demandados:
+            lista_medicamentos.append(med.nombre_producto)
+
+        mas_demandados = collections.Counter(lista_medicamentos)
+        b = mas_demandados.items()
+
+        a = Medicamento.objects.filter(nombre_producto=b[0][0])
+
+        med_demandados = Medicamento.objects.filter(receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final]).order_by("-precio_producto")
+
+        # TABLA 2
+
+        # TABLA 3 TOTAL GASTADO EN MEDICAMENTO
+
+
+
+    return render(request, template_name="resumen_costomed.html",
+                  context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
+                           'med_demandados': med_demandados, 'lista_medicamentos': lista_medicamentos, 'mas_demandados': mas_demandados,
+                            'a': a
                            })
