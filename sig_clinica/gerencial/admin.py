@@ -13,4 +13,6 @@ admin.site.register(Tratamiento)
 admin.site.register(Procedimiento)
 admin.site.register(Consulta)
 admin.site.register(Pago)
+admin.site.register(Receta)
+admin.site.register(Especificacion)
 

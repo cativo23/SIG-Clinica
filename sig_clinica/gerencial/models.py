@@ -180,3 +180,14 @@ class Pago(models.Model):
 
     def __str__(self):
         return '#%s - Pago por: %s del %s' % (self.id, self.cantidad ,self.Expediente)
+
+class Receta(models.Model):
+    consulta = models.ForeignKey('Consulta', on_delete=models.PROTECT)
+    medicamento = models.ManyToManyField(Medicamento, through='Especificacion')
+
+
+class Especificacion(models.Model):
+    medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
+    receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
+    dosis = models.CharField('Dosis', max_length = 45, blank = False, null = False)
+    duracion = models.CharField('Duracion', max_length = 45, blank = False, null = False)
