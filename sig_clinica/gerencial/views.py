@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render
+from .models import Consulta, Procedimiento
 
 
 # Create your views here.
@@ -7,5 +9,3 @@ from django.shortcuts import render
 @login_required()
 def index(request):
     return render(request, template_name='index.html')
-
-
