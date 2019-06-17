@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render
-from auth1.views import administrador
+from authentication.views import administrador
 from .models import Expediente, Paciente, Consulta, Medicamento
 
 from django.http import HttpResponse
@@ -16,7 +16,6 @@ import datetime
 import time
 import math
 import collections
-import operator
 
 # Create your views here.
 # @user_passes_test(administrador)

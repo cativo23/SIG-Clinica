@@ -6,6 +6,7 @@
 {% block descripcion %} {% endblock %}
 
 {% block content %}
+    <div class="container">
     {% include "parametros.html" %}<br>
     <!-- IF DE CONTROL CUANDO NO EXITEN DATOS -->
     {% if fecha_inicial and fecha_final %}
@@ -129,5 +130,5 @@
        console.log(boton_enviar)
 </script>
 
-
+</div>
 {% endblock %}
