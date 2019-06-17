@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Expedientes con Deudas {% endblock %}
+{% block pantalla %} Resumen de Expedientes con Deudas {% endblock %}
+{% block descripcion %}  {% endblock %}
+
+{% block content %}
+
+    {% include "parametros.html" %}
+
+    {{ exps_mayor_deuda }}
+    <!-- IF DE CONTROL CUANDO NO EXITEN DATOS AUN -->
+    {% if fecha_inicial and fecha_final %}
+     <!-- TABLA CUANDO SI HAY DATOS -->
+        <!-- TITULO DEL RESUMEN -->
+        {% if fecha_inicial and fecha_final %}<br>
+        Fecha de emisión: {{ hoy }}
+        <div class="divider"></div>
+        <h5 class="center-align"><b>Resumen de Expedientes con Deudas del {{ fecha_inicial }} al {{ fecha_final }}</b></h5>
+        <div class="divider"></div>
+        {% else %}
+        {% endif %}
+        <!-- FIN TITULO DEL RESUMEN -->
+
+        <!-- INICIO TABLAS -->
+        <div id="tabla1" class="row">
+            <div class="col s10 push-s1"><br>
+                 <table class="highlight responsive-table centered">
+                    <thead>
+                    <tr>
+                        <th>Cantidad de Expedientes con deuda</th>
+                        <th>Monto Total en deuda</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td>{{ exp_deuda }}</td>
+                        <td>{{ exp_deuda_total }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tabla2" class="row">
+            <div class="col s10 push-s1">
+                <table class="highlight responsive-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Pacientes con deuda mayor o igual a $20.00</b></td>
+                            <td >{{ dueda_mayor20 }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Monto total por personas con deuda mayor o igual a $20.00</b></td>
+                            <td>{{ total_deuda20 }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Porcentaje que ocupan de las deudas totales</b></td>
+                            <td>% {{ porce_deuda20 }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tabla3" class="row">
+            <div class="col s10 push-s1">
+                <table class="highlight responsive-table centered">
+                    <thead>
+                    <tr>
+                        <th>Expediente con Mayor Deuda </th>
+                        <th>Monto en Deuda</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ exp_mayor_deuda }}</td>
+                        <td>{{ total_mayor_deuda }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="botones" class="row">
+            <div class="col s12 m6 push-m1">
+                <a class="waves-effect waves-light btn">Exportar</a>
+            </div>
+
+            <div class="col s12 m6 push-m1">
+                <a class=" waves-light btn">Generar PDF</a>
+                <a class=" waves-light btn">Imprimir</a>
+                <a class=" waves-light btn">Ayuda</a>
+            </div>
+        </div>
+
+    {% else %} <!-- ELSE DEL CONTROL -->
+        <!--NO HAY TITULO DEL RESUMEN AQUI-->
+
+        <!-- No hay datos en esta categoria -->
+        <!-- PANTALLA CUANDO NO HAY DATOS -->
+
+        <!-- INICIO TABLAS -->
+        <div class="row">
+            <div class="col s12"><br>
+                <h3>No se ha seleccionado un período para su resumen</h3>
+            </div>
+        </div>
+
+
+    {% endif %}
+
+<script>
+       var boton_enviar = document.getElementById('boton_enviar').onclick="location.href='{% url 'gerencial:resumen_expcreados' %}'"
+       console.log(boton_enviar)
+</script>
+
+
+{% endblock %}
