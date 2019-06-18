@@ -135,6 +135,22 @@ class Tratamiento(models.Model):
         verbose_name = 'Tratamiento'
         verbose_name_plural = 'Tratamientos'
 
+class Consulta(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
+    paciente = models.ForeignKey(Expediente, on_delete=models.PROTECT)
+    fechaConsulta = models.DateField('Fecha de Consulta', default=tz.now)
+    horaInicio = models.TimeField('Hora de inicio', auto_now_add=True)
+    horaFinal = models.TimeField('Hora de Final', auto_now_add=False, null=True)
+    observacionCons = models.TextField('Observaciones', max_length=250, blank=True, null=True)
+    precio = models.DecimalField('Precio Base', max_digits=5, decimal_places=2, default=10.00)
+
+    def __str__(self):
+        return 'Consulta de {} del dia {}'.format(self.paciente.paciente.nombresPaciente, self.fechaConsulta)
+
+    class Meta:
+        ordering = ['fechaConsulta', 'horaInicio']
+        verbose_name = 'Consulta'
+        verbose_name_plural = 'Consultas'
 
 class Procedimiento(models.Model):
     CARAS_CHOICES = (
@@ -157,6 +173,7 @@ class Procedimiento(models.Model):
     tratamiento = models.ForeignKey(Tratamiento, on_delete=models.CASCADE)
     odontograma = models.ForeignKey(Odontograma, on_delete=models.CASCADE)
     diagnostico = models.TextField()
+    consulta_realizada = models.ForeignKey(Consulta, on_delete=models.CASCADE, null=True)
     notas = models.TextField(blank=True)
     status = models.CharField(
         max_length=12, choices=STATUS_CHOICES, default='recomendado')
@@ -164,22 +181,6 @@ class Procedimiento(models.Model):
     def __str__(self):
         return self.tratamiento.nombreTratamiento
 
-
-class Consulta(models.Model):
-    doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
-    paciente = models.ForeignKey(Expediente, on_delete=models.PROTECT)
-    fechaConsulta = models.DateField('Fecha de Consulta', default=tz.now)
-    horaInicio = models.TimeField('Hora de inicio', auto_now_add=True)
-    horaFinal = models.TimeField('Hora de Final', auto_now_add=False, null=True)
-    observacionCons = models.TextField('Observaciones', max_length=250, blank=True, null=True)
-
-    def __str__(self):
-        return 'Consulta de {} del dia {}'.format(self.paciente.paciente.nombresPaciente, self.fechaConsulta)
-
-    class Meta:
-        ordering = ['fechaConsulta', 'horaInicio']
-        verbose_name = 'Consulta'
-        verbose_name_plural = 'Consultas'
 
 
 class Pago(models.Model):

@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render
 from authentication.views import administrador
-from .models import Expediente, Paciente, Consulta, Medicamento
+from .models import Expediente, Paciente, Consulta, Medicamento, Procedimiento
 
 from django.http import HttpResponse
 from django.core import serializers
@@ -17,14 +17,17 @@ import time
 import math
 import collections
 
+
 # Create your views here.
 # @user_passes_test(administrador)
 @login_required()
 def index(request):
     return render(request, template_name='index.html')
 
+
 def menu(request):
     return render(request, template_name='base.html')
+
 
 # Funcion que obtiene el RESUMEN DE EXPEDIENTES CREADOS para un periodo
 def obtener_resumen_expcreados(request):
@@ -53,14 +56,17 @@ def obtener_resumen_expcreados(request):
         if fecha_inicial and fecha_final:
 
             # TABLA 1 POR SEXO
-            sexo_exp_mas = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(paciente__sexo='M').count()
-            sexo_exp_fem = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(paciente__sexo='F').count()
+            sexo_exp_mas = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                paciente__sexo='M').count()
+            sexo_exp_fem = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                paciente__sexo='F').count()
 
-            sexo_con_mas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__sexo='M').count()
-            sexo_con_fem = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__sexo='F').count()
+            sexo_con_mas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(
+                paciente__paciente__sexo='M').count()
+            sexo_con_fem = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(
+                paciente__paciente__sexo='F').count()
 
             # TABLA 2 POR EDAD
-
 
             pacientes_exp = Paciente.objects.filter(expediente__fechaCreacion__range=[fecha_inicial, fecha_final])
 
@@ -69,7 +75,8 @@ def obtener_resumen_expcreados(request):
 
             # Recorriendo pacientes para saber su edad de expetientes nuevos
             for paciente_exp in pacientes_exp:
-                edad = hoy.year - paciente_exp.fechaNacimiento.year - ((hoy.month, hoy.day) < (paciente_exp.fechaNacimiento.month, paciente_exp.fechaNacimiento.day))
+                edad = hoy.year - paciente_exp.fechaNacimiento.year - ((hoy.month, hoy.day) < (
+                    paciente_exp.fechaNacimiento.month, paciente_exp.fechaNacimiento.day))
 
                 if edad < 18:
                     menores_exp.append(paciente_exp)
@@ -79,14 +86,16 @@ def obtener_resumen_expcreados(request):
             edad_exp_me = len(menores_exp)
             edad_exp_ma = len(mayores_exp)
 
-            pacientes_con = Paciente.objects.filter(expediente__consulta__fechaConsulta__range=[fecha_inicial, fecha_final])
+            pacientes_con = Paciente.objects.filter(
+                expediente__consulta__fechaConsulta__range=[fecha_inicial, fecha_final])
 
             menores_con = []
             mayores_con = []
 
             # Recorriendo pacientes para saber su edad de consultas nuevas
             for paciente_con in pacientes_con:
-                edad = hoy.year - paciente_con.fechaNacimiento.year - ((hoy.month, hoy.day) < (paciente_con.fechaNacimiento.month, paciente_con.fechaNacimiento.day))
+                edad = hoy.year - paciente_con.fechaNacimiento.year - ((hoy.month, hoy.day) < (
+                    paciente_con.fechaNacimiento.month, paciente_con.fechaNacimiento.day))
                 if edad < 18:
                     menores_con.append(paciente_con)
                 else:
@@ -98,7 +107,6 @@ def obtener_resumen_expcreados(request):
             # TABLA 3 TOTALES
             exp_total = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).count()
             con_total = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).count()
-
 
     return render(request, template_name='resumen_expcreados.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
@@ -132,17 +140,21 @@ def obtener_resumen_expdeudas(request):
         if fecha_inicial and fecha_final:
 
             # TABLA 1: EXPEDIENTES CON DEUDAS Y MONTO TOTAL DE ESOS EXPEDIENTES
-            exp_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gt=0).count()
+            exp_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                saldo__gt=0).count()
 
-            expedientes_con_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gt=0)
+            expedientes_con_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                saldo__gt=0)
             exp_deuda_total = 0
             for expediente_deu in expedientes_con_deuda:
                 exp_deuda_total = exp_deuda_total + expediente_deu.saldo
 
             # TABLA 2: PACIENTES CON CON DEUDAS MAYORES A 20, TOTAL Y PORCENTAJE
-            dueda_mayor20 = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gte=20).count()
+            dueda_mayor20 = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                saldo__gte=20).count()
 
-            expedientes_deuda_mayor20 = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gte=20)
+            expedientes_deuda_mayor20 = Expediente.objects.filter(
+                fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gte=20)
 
             total_deuda20 = 0
             for expediente_mayo20 in expedientes_deuda_mayor20:
@@ -155,7 +167,8 @@ def obtener_resumen_expdeudas(request):
                 porce_deuda20 = 0
 
             # TABLA 3: EXPEDIENTE CON MAYOR DEUDA Y MONTO DE LA DEUDA
-            exps_mayor_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).order_by("-saldo")
+            exps_mayor_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).order_by(
+                "-saldo")
 
             # Verificando si existe expedientes con deudas
             lista_exps_mayor = []
@@ -174,7 +187,8 @@ def obtener_resumen_expdeudas(request):
     return render(request, template_name='resumen_expdeudas.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
                            'exp_deuda': exp_deuda, 'exp_deuda_total': exp_deuda_total,
-                           'dueda_mayor20': dueda_mayor20, 'total_deuda20': total_deuda20, 'porce_deuda20': porce_deuda20,
+                           'dueda_mayor20': dueda_mayor20, 'total_deuda20': total_deuda20,
+                           'porce_deuda20': porce_deuda20,
                            'exp_mayor_deuda': exp_mayor_deuda, 'total_mayor_deuda': total_mayor_deuda,
                            })
 
@@ -197,7 +211,8 @@ def obtener_resumen_costomed(request):
 
         # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
 
-        med_demandados = Medicamento.objects.filter(receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final]).all()
+        med_demandados = Medicamento.objects.filter(
+            receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final]).all()
 
         lista_medicamentos = []
         for med in med_demandados:
@@ -208,16 +223,113 @@ def obtener_resumen_costomed(request):
 
         a = Medicamento.objects.filter(nombre_producto=b[0][0])
 
-        med_demandados = Medicamento.objects.filter(receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final]).order_by("-precio_producto")
+        med_demandados = Medicamento.objects.filter(
+            receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final]).order_by("-precio_producto")
 
         # TABLA 2
 
         # TABLA 3 TOTAL GASTADO EN MEDICAMENTO
 
-
-
     return render(request, template_name="resumen_costomed.html",
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
-                           'med_demandados': med_demandados, 'lista_medicamentos': lista_medicamentos, 'mas_demandados': mas_demandados,
-                            'a': a
+                           'med_demandados': med_demandados, 'lista_medicamentos': lista_medicamentos,
+                           'mas_demandados': mas_demandados,
+                           'a': a
                            })
+
+
+def obtener_resumen_ingresoConsultas(request):
+    fecha_inicial = ""
+    fecha_final = ""
+    hoy = date.today()
+
+    sexo_con_mas_num = ""
+    sexo_con_fem_num = ""
+
+    total_consulta_mas = 0
+    total_consulta_fem = 0
+
+    edad_con_me = ""
+    edad_con_ma = ""
+
+    total_consulta_men = 0
+    total_consulta_may = 0
+
+    con_total = 0
+    ingresos = 0
+
+    if request.method == 'POST':
+
+        fecha_inicial = request.POST.get('fecha_inicial')
+        fecha_final = request.POST.get('fecha_final')
+
+        if fecha_inicial and fecha_final:
+
+            # TABLA POR SEXO
+            sexo_con_mas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(
+                paciente__paciente__sexo='M').all()
+            sexo_con_fem = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(
+                paciente__paciente__sexo='F').all()
+
+            sexo_con_mas_num = sexo_con_mas.count()
+            sexo_con_fem_num = sexo_con_fem.count()
+
+            for consulta in sexo_con_mas:
+                total_consulta_mas += consulta.precio
+                procedimientos = Procedimiento.objects.filter(consulta_realizada=consulta).all()
+                for procedimiento in procedimientos:
+                    total_consulta_mas += procedimiento.tratamiento.precioBase
+
+            for consulta in sexo_con_fem:
+                total_consulta_fem += consulta.precio
+                procedimientos = Procedimiento.objects.filter(consulta_realizada=consulta).all()
+                for procedimiento in procedimientos:
+                    total_consulta_fem += procedimiento.tratamiento.precioBase
+
+            # TABLA POR EDAD
+
+            consultas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final])
+
+            menores_con = []
+            mayores_con = []
+
+            # Recorriendo pacientes para saber su edad de consultas nuevas
+            for consulta in consultas:
+                edad = hoy.year - consulta.paciente.paciente.fechaNacimiento.year - ((hoy.month, hoy.day) < (
+                    consulta.paciente.paciente.fechaNacimiento.month, consulta.paciente.paciente.fechaNacimiento.day))
+                if edad < 18:
+                    menores_con.append(consulta)
+                else:
+                    mayores_con.append(consulta)
+
+            edad_con_me = len(menores_con)
+            edad_con_ma = len(mayores_con)
+
+            for consulta in menores_con:
+                total_consulta_men += consulta.precio
+                procedimientos = Procedimiento.objects.filter(consulta_realizada=consulta).all()
+                for procedimiento in procedimientos:
+                    total_consulta_men += procedimiento.tratamiento.precioBase
+
+            for consulta in mayores_con:
+                total_consulta_may += consulta.precio
+                procedimientos = Procedimiento.objects.filter(consulta_realizada=consulta).all()
+                for procedimiento in procedimientos:
+                    total_consulta_may += procedimiento.tratamiento.precioBase
+
+            # TABLA 3 TOTALES
+            con_total = consultas.count()
+            for consulta in consultas:
+                ingresos += consulta.precio
+                procedimientos = Procedimiento.objects.filter(consulta_realizada=consulta)
+                for procedimiento in procedimientos:
+                    ingresos += procedimiento.tratamiento.precioBase
+
+        return render(request, template_name='resumenes/resumen_ingobtenidos.html',
+                      context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
+                               'sexo_con_mas': sexo_con_mas_num, 'sexo_con_fem': sexo_con_fem_num,
+                               'total_consulta_mas': total_consulta_mas, 'total_consulta_fem': total_consulta_fem,
+                               'edad_con_me': edad_con_me, 'edad_con_ma': edad_con_ma, 'con_total': con_total, 'ingresos':ingresos,
+                               'total_consulta_men': total_consulta_men, "total_consulta_may": total_consulta_may})
+    else:
+        return render(request, template_name='resumenes/resumen_ingobtenidos.html')
