@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.db.models import Sum
 from django.shortcuts import render
 from authentication.views import administrador
-from .models import Expediente, Paciente, Consulta, Medicamento, Procedimiento
+from .models import Expediente, Paciente, Consulta, Medicamento, Procedimiento, LoteMedicamento
 
 from django.http import HttpResponse
 from django.core import serializers
@@ -23,6 +23,26 @@ import collections
 # @user_passes_test(administrador)
 @login_required()
 def index(request):
+    fecha1=datetime.datetime.now()
+    fecha2=datetime.datetime.now()
+    total=[]
+
+    meds = Medicamento.objects.all()
+    meds1 = []
+    lotes = LoteMedicamento.objects.filter(fecha_vencimiento__range=[fecha1, fecha2])
+    for lote in lotes:
+        meds1.append(meds.filter(lotemedicamento=lote))
+
+    hola = collections.Counter(meds1)
+    print(hola)
+    print(meds1)
+
+
+    for lote in lotes:
+        total.append(lote.cantidad * lote.medicamento.precio_producto)
+    print(total)
+
+
     return render(request, template_name='index.html')
 
 
