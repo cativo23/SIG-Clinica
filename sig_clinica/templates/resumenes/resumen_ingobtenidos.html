@@ -15,58 +15,58 @@
             <div class="col s12">
                 <div class="card">
                     <div class="card-content">
-                        {% if fecha_inicial and fecha_final %}
+                     {% if fecha_inicial and fecha_final %}
                             <span class="card-title"><b>Resumen de Expedientes Creados del {{ fecha_inicial }}
                             al {{ fecha_final }}</b></span>
-                            <div id="tabla1" class="row">
-                                <div class="col s12"><br>
-                                    <table class="highlight responsive-table">
-                                        <thead>
-                                        <tr>
-                                            <th>Sexo</th>
-                                            <th>Expedientes Creados</th>
-                                            <th>Consultas Realizadas</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <tr>
-                                            <td><b>Masculino</b></td>
-                                            <td>{{ sexo_exp_mas }}</td>
-                                            <td>{{ sexo_con_mas }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Femenino</b></td>
-                                            <td>{{ sexo_exp_fem }}</td>
-                                            <td>{{ sexo_con_fem }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div><br>
 
                             <div id="tabla2" class="row">
                                 <div class="col s12">
                                     <table class="highlight responsive-table">
                                         <thead>
                                         <tr>
-                                            <th>Edad</th>
-                                            <th>Expedientes Creados</th>
+                                            <th><b>Población</b></th>
                                             <th>Consultas Realizadas</th>
+                                            <th>Monto ($)</th>
                                         </tr>
                                         </thead>
 
                                         <tbody>
                                         <tr>
                                             <td><b>Menor de 18 años</b></td>
-                                            <td>{{ edad_exp_me }}</td>
                                             <td>{{ edad_con_me }}</td>
+                                            <td>{{ total_consulta_men }}</td>
                                         </tr>
                                         <tr>
                                             <td><b>Mayor o igual a 18 años</b></td>
-                                            <td>{{ edad_exp_ma }}</td>
                                             <td>{{ edad_con_ma }}</td>
+                                            <td>{{ total_consulta_may }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div><br>
 
+                        <div id="tabla1" class="row">
+                                <div class="col s12"><br>
+                                    <table class="highlight responsive-table">
+                                        <thead>
+                                        <tr>
+                                            <th>Sexo</th>
+                                            <th>Consultas realizadas</th>
+                                            <th>Monto ($)</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <tr>
+                                            <td><b>Masculino</b></td>
+                                            <td>{{ sexo_con_mas }}</td>
+                                            <td>$ {{ total_consulta_mas}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Femenino</b></td>
+                                            <td>{{ sexo_con_fem }}</td>
+                                            <td>$ {{ total_consulta_fem }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -78,14 +78,14 @@
                                     <table class="highlight responsive-table centered">
                                         <thead>
                                         <tr>
-                                            <th>Expedientes Nuevos</th>
-                                            <th>Consultas Realizadas por Pacientes Nuevos</th>
+                                            <th>Consultas Realizadas</th>
+                                            <th>Ingresos por consultas realizadas</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>{{ exp_total }}</td>
                                             <td>{{ con_total }}</td>
+                                            <td> $ {{ ingresos }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -104,7 +104,7 @@
                                     <a class=" waves-light btn">Ayuda</a>
                                 </div>
                             </div>
-                        {% else %}
+                       {% else %}
                             <div class="row">
                                 <div class="col s12"><br>
                                     <h3>No se ha seleccionado un período para su resumen</h3>

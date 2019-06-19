@@ -2,9 +2,10 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils import timezone as tz
 
+
 # Create your models here.
 class Doctor(models.Model):
-    nombre = models.CharField('Nombre del doctor',  max_length=40,null=False)
+    nombre = models.CharField('Nombre del doctor', max_length=40, null=False)
 
     def __str__(self):
         return self.nombre
@@ -12,6 +13,7 @@ class Doctor(models.Model):
     class Meta:
         verbose_name = 'Doctor'
         verbose_name_plural = 'Doctores'
+
 
 class Medicamento(models.Model):
     nombre_producto = models.CharField('Nombre del producto', max_length = 30, blank = False, null = False)
@@ -27,7 +29,8 @@ class Medicamento(models.Model):
         verbose_name = 'producto'
         verbose_name_plural = 'productos'
         unique_together = (("nombre_producto", "marca_producto", "precio_producto"))
- 
+
+
 class LoteMedicamento(models.Model):
     medicamento = models.ForeignKey(Medicamento, blank = False, null = False,on_delete = models.CASCADE)
     fecha_vencimiento = models.DateField('Fecha de Vencimiento', help_text = 'Formato: DD/MM/AAAA',blank = False, null = False)
@@ -36,12 +39,13 @@ class LoteMedicamento(models.Model):
 
 
 class Odontograma(models.Model):
-    medico = models.ForeignKey(Doctor, on_delete = models.SET_NULL, null = True)
+    medico = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True)
     fechaCreacion = models.DateTimeField('date_created', auto_now_add=True)
     notas = models.TextField()
 
     def __str__(self):
         return '#%s - Ondontograma del %s' % (self.id, Expediente.objects.filter(odontograma=self.id).first())
+
 
 class Paciente(models.Model):
     MASCULINO = 'M'
@@ -57,9 +61,12 @@ class Paciente(models.Model):
     fechaNacimiento = models.DateField('Fecha de nacimiento', help_text='Formato: DD-MM-AAAA', blank=False, null=False)
     direccionCasa = models.CharField('Direccion Casa', max_length=150, blank=True, null=True)
     direccionTrabajo = models.CharField('Direccion Trabajo', max_length=150, blank=True, null=True)
-    telefonoCasa = models.CharField('Telefono Casa', max_length=9, help_text='Formato: XXXX-XXXX', blank=True, null=True)
-    telefonoTrabajo = models.CharField('Telefono Trabajo', max_length=9, help_text='Formato: XXXX-XXXX', blank=True, null=True)
-    referencia = models.CharField('Responsable', max_length=60, help_text='(En caso de ser niño)', blank=True, null=True)
+    telefonoCasa = models.CharField('Telefono Casa', max_length=9, help_text='Formato: XXXX-XXXX', blank=True,
+                                    null=True)
+    telefonoTrabajo = models.CharField('Telefono Trabajo', max_length=9, help_text='Formato: XXXX-XXXX', blank=True,
+                                       null=True)
+    referencia = models.CharField('Responsable', max_length=60, help_text='(En caso de ser niño)', blank=True,
+                                  null=True)
 
     def __str__(self):
         return self.apellidosPaciente + ", " + self.nombresPaciente
@@ -73,7 +80,7 @@ class Paciente(models.Model):
 
 class Expediente(models.Model):
     paciente = models.OneToOneField(Paciente, on_delete=models.CASCADE)
-    odontograma = models.OneToOneField(Odontograma, on_delete=models.CASCADE, null= True, blank = True)
+    odontograma = models.OneToOneField(Odontograma, on_delete=models.CASCADE, null=True, blank=True)
     fechaCreacion = models.DateTimeField('date_created', default=tz.now)
     pagado = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=False, default=0)
     saldo = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=False, default=0)
@@ -87,6 +94,7 @@ class Expediente(models.Model):
         verbose_name = 'Expediente'
         verbose_name_plural = 'Expedientes'
 
+
 class Cita(models.Model):
     APLICADA = 'Aplicada'
     PENDIENTE = "Pendiente"
@@ -94,16 +102,15 @@ class Cita(models.Model):
     ESTADO_CHOICES = (
         (APLICADA, 'Aplicada'),
         (PENDIENTE, 'Pendiente'),
-        (NO_ASISTIO,'No Asistio'),
-        )
-    asuntoCita=models.CharField('Asunto de la cita', max_length=50,blank=False,null=False)
+        (NO_ASISTIO, 'No Asistio'),
+    )
+    asuntoCita = models.CharField('Asunto de la cita', max_length=50, blank=False, null=False)
     paciente = models.ForeignKey(Expediente, on_delete=models.PROTECT)
     doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
     fechaCita = models.DateField('Fecha de Cita', help_text='Formato: AAAA-MM-DD', blank=False, null=False)
     horaCita = models.TimeField('Hora de Cita', blank=False, null=False)
     observacionCita = models.TextField('Observaciones', max_length=250, blank=True, null=True)
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default=None, blank=False, null=False)
-
 
     def __str__(self):
         return 'Cita de {} el dia {}'.format(self.paciente.paciente.nombresPaciente, self.fechaCita)
@@ -112,7 +119,6 @@ class Cita(models.Model):
         ordering = ['fechaCita', 'horaCita']
         verbose_name = 'Cita'
         verbose_name_plural = 'Citas'
-
 
 
 class Tratamiento(models.Model):
@@ -128,7 +134,23 @@ class Tratamiento(models.Model):
         verbose_name = 'Tratamiento'
         verbose_name_plural = 'Tratamientos'
 
- 
+class Consulta(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
+    paciente = models.ForeignKey(Expediente, on_delete=models.PROTECT)
+    fechaConsulta = models.DateField('Fecha de Consulta', default=tz.now)
+    horaInicio = models.TimeField('Hora de inicio', auto_now_add=True)
+    horaFinal = models.TimeField('Hora de Final', auto_now_add=False, null=True)
+    observacionCons = models.TextField('Observaciones', max_length=250, blank=True, null=True)
+    precio = models.DecimalField('Precio Base', max_digits=5, decimal_places=2, default=10.00)
+
+    def __str__(self):
+        return 'Consulta de {} del dia {}'.format(self.paciente.paciente.nombresPaciente, self.fechaConsulta)
+
+    class Meta:
+        ordering = ['fechaConsulta', 'horaInicio']
+        verbose_name = 'Consulta'
+        verbose_name_plural = 'Consultas'
+
 class Procedimiento(models.Model):
     CARAS_CHOICES = (
         ('S', 'Vestibular'),
@@ -147,9 +169,10 @@ class Procedimiento(models.Model):
 
     pieza = models.IntegerField()
     cara = models.CharField(max_length=4, choices=CARAS_CHOICES)
-    tratamiento = models.ForeignKey(Tratamiento, on_delete = models.CASCADE)
-    odontograma = models.ForeignKey(Odontograma, on_delete = models.CASCADE)
+    tratamiento = models.ForeignKey(Tratamiento, on_delete=models.CASCADE)
+    odontograma = models.ForeignKey(Odontograma, on_delete=models.CASCADE)
     diagnostico = models.TextField()
+    consulta_realizada = models.ForeignKey(Consulta, on_delete=models.CASCADE, null=True)
     notas = models.TextField(blank=True)
     status = models.CharField(
         max_length=12, choices=STATUS_CHOICES, default='recomendado')
@@ -158,21 +181,6 @@ class Procedimiento(models.Model):
         return self.tratamiento.nombreTratamiento
 
 
-class Consulta(models.Model):
-    doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
-    paciente = models.ForeignKey(Expediente, on_delete=models.PROTECT)
-    fechaConsulta = models.DateField('Fecha de Consulta', default=tz.now)
-    horaInicio = models.TimeField('Hora de inicio', auto_now_add=True)
-    horaFinal = models.TimeField('Hora de Final', auto_now_add=False, null=True)
-    observacionCons = models.TextField('Observaciones', max_length=250, blank=True, null=True)
-
-    def __str__(self):
-        return 'Consulta de {} del dia {}'.format(self.paciente.paciente.nombresPaciente, self.fechaConsulta)
-
-    class Meta:
-        ordering = ['fechaConsulta', 'horaInicio']
-        verbose_name = 'Consulta'
-        verbose_name_plural = 'Consultas'
 
 class Pago(models.Model):
     Expediente = models.ForeignKey(Expediente, on_delete = models.CASCADE, null = True, blank= False)

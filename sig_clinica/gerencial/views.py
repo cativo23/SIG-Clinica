@@ -1,7 +1,11 @@
-from django.contrib.auth.decorators import user_passes_test
+from datetime import datetime, timedelta
+from django.contrib.auth.decorators import user_passes_test, login_required
+from django.db.models import Sum
 from django.shortcuts import render
-from auth1.views import administrador
+from authentication.views import administrador
+from .models import Expediente, Paciente, Consulta, Medicamento, Procedimiento
 from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento
+from auth1.views import administrador
 
 from django.http import HttpResponse
 from django.core import serializers
@@ -15,14 +19,19 @@ import datetime
 import time
 import math
 import collections
-import operator
 
 from django.db.models import Avg, Max, Min, Sum
 
 # Create your views here.
+# @user_passes_test(administrador)
+@login_required()
+def index(request):
+    return render(request, template_name='index.html')
+
 
 def menu(request):
     return render(request, template_name='base.html')
+
 
 # Funcion que obtiene el RESUMEN DE EXPEDIENTES CREADOS para un periodo
 def obtener_resumen_expcreados(request):
@@ -51,14 +60,17 @@ def obtener_resumen_expcreados(request):
         if fecha_inicial and fecha_final:
 
             # TABLA 1 POR SEXO
-            sexo_exp_mas = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(paciente__sexo='M').count()
-            sexo_exp_fem = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(paciente__sexo='F').count()
+            sexo_exp_mas = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                paciente__sexo='M').count()
+            sexo_exp_fem = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                paciente__sexo='F').count()
 
-            sexo_con_mas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__sexo='M').count()
-            sexo_con_fem = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__sexo='F').count()
+            sexo_con_mas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(
+                paciente__paciente__sexo='M').count()
+            sexo_con_fem = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).filter(
+                paciente__paciente__sexo='F').count()
 
             # TABLA 2 POR EDAD
-
 
             pacientes_exp = Paciente.objects.filter(expediente__fechaCreacion__range=[fecha_inicial, fecha_final])
 
@@ -67,7 +79,8 @@ def obtener_resumen_expcreados(request):
 
             # Recorriendo pacientes para saber su edad de expetientes nuevos
             for paciente_exp in pacientes_exp:
-                edad = hoy.year - paciente_exp.fechaNacimiento.year - ((hoy.month, hoy.day) < (paciente_exp.fechaNacimiento.month, paciente_exp.fechaNacimiento.day))
+                edad = hoy.year - paciente_exp.fechaNacimiento.year - ((hoy.month, hoy.day) < (
+                    paciente_exp.fechaNacimiento.month, paciente_exp.fechaNacimiento.day))
 
                 if edad < 18:
                     menores_exp.append(paciente_exp)
@@ -77,14 +90,16 @@ def obtener_resumen_expcreados(request):
             edad_exp_me = len(menores_exp)
             edad_exp_ma = len(mayores_exp)
 
-            pacientes_con = Paciente.objects.filter(expediente__consulta__fechaConsulta__range=[fecha_inicial, fecha_final])
+            pacientes_con = Paciente.objects.filter(
+                expediente__consulta__fechaConsulta__range=[fecha_inicial, fecha_final])
 
             menores_con = []
             mayores_con = []
 
             # Recorriendo pacientes para saber su edad de consultas nuevas
             for paciente_con in pacientes_con:
-                edad = hoy.year - paciente_con.fechaNacimiento.year - ((hoy.month, hoy.day) < (paciente_con.fechaNacimiento.month, paciente_con.fechaNacimiento.day))
+                edad = hoy.year - paciente_con.fechaNacimiento.year - ((hoy.month, hoy.day) < (
+                    paciente_con.fechaNacimiento.month, paciente_con.fechaNacimiento.day))
                 if edad < 18:
                     menores_con.append(paciente_con)
                 else:
@@ -96,7 +111,6 @@ def obtener_resumen_expcreados(request):
             # TABLA 3 TOTALES
             exp_total = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).count()
             con_total = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).count()
-
 
     return render(request, template_name='resumen_expcreados.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
@@ -130,17 +144,21 @@ def obtener_resumen_expdeudas(request):
         if fecha_inicial and fecha_final:
 
             # TABLA 1: EXPEDIENTES CON DEUDAS Y MONTO TOTAL DE ESOS EXPEDIENTES
-            exp_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gt=0).count()
+            exp_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                saldo__gt=0).count()
 
-            expedientes_con_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gt=0)
+            expedientes_con_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                saldo__gt=0)
             exp_deuda_total = 0
             for expediente_deu in expedientes_con_deuda:
                 exp_deuda_total = exp_deuda_total + expediente_deu.saldo
 
             # TABLA 2: PACIENTES CON CON DEUDAS MAYORES A 20, TOTAL Y PORCENTAJE
-            dueda_mayor20 = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gte=20).count()
+            dueda_mayor20 = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(
+                saldo__gte=20).count()
 
-            expedientes_deuda_mayor20 = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gte=20)
+            expedientes_deuda_mayor20 = Expediente.objects.filter(
+                fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gte=20)
 
             total_deuda20 = 0
             for expediente_mayo20 in expedientes_deuda_mayor20:
@@ -153,7 +171,8 @@ def obtener_resumen_expdeudas(request):
                 porce_deuda20 = 0
 
             # TABLA 3: EXPEDIENTE CON MAYOR DEUDA Y MONTO DE LA DEUDA
-            exps_mayor_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).order_by("-saldo")
+            exps_mayor_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).order_by(
+                "-saldo")
 
             # Verificando si existe expedientes con deudas
             lista_exps_mayor = []
@@ -172,7 +191,8 @@ def obtener_resumen_expdeudas(request):
     return render(request, template_name='resumen_expdeudas.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
                            'exp_deuda': exp_deuda, 'exp_deuda_total': exp_deuda_total,
-                           'dueda_mayor20': dueda_mayor20, 'total_deuda20': total_deuda20, 'porce_deuda20': porce_deuda20,
+                           'dueda_mayor20': dueda_mayor20, 'total_deuda20': total_deuda20,
+                           'porce_deuda20': porce_deuda20,
                            'exp_mayor_deuda': exp_mayor_deuda, 'total_mayor_deuda': total_mayor_deuda,
                            })
 

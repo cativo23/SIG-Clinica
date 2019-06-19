@@ -1,26 +1,18 @@
-from django.conf import settings
-from django.shortcuts import render, redirect, reverse
-from material import *
-from django.db.models import Q
-from django import forms
-
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.auth.models import User, Group
-from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth import tokens
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.http import HttpResponseRedirect
-from django.core.mail import EmailMessage
-from django.template.loader import get_template
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-
 from axes.models import AccessAttempt
 from axes.utils import reset
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import tokens
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User, Group
+from django.core.mail import EmailMessage
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
+from django.template.loader import get_template
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from .forms import UsuarioForm, UsuarioUpdateForm
 
@@ -39,7 +31,7 @@ def tactico(user):
 
 # Create your views here.
 def login(request):
-    message = ""
+    message = []
     next = request.GET.get('next')
     if request.POST:
         username = request.POST.get('username')
@@ -53,7 +45,7 @@ def login(request):
             else:
                 return redirect('/')
         else:
-            message = "Usuario o password Incorrecto"
+            message = ["Usuario o password Incorrecto", messages.WARNING]
             try:
                 axes = AccessAttempt.objects.get(username=username)
                 user = User.objects.get(username=username)
@@ -65,22 +57,23 @@ def login(request):
                         if axes.failures_since_start >= settings.AXES_FAILURE_LIMIT:
                             user.is_active = False
                             user.save()
-                            message = "Usuario bloqueado, póngase en contacto con el administrador"
+                            message = ["Usuario bloqueado, póngase en contacto con el administrador", messages.ERROR]
                         else:
-                            message = "Password errónea le quedan " + str(
-                                settings.AXES_FAILURE_LIMIT - axes.failures_since_start) + " intentos"
+                            message = ["Contraseña errónea le quedan " + str(
+                                settings.AXES_FAILURE_LIMIT - axes.failures_since_start) + " intentos", messages.WARNING]
                     else:
-                        message = "Usuario bloqueado, póngase en contacto con el administrador"
+                        message = ["Usuario bloqueado, póngase en contacto con el administrador", messages.ERROR]
             except:
                 pass
-            return render(request, 'auth/login.html', {'message': message, })
+            messages.add_message(request, message[1], message[0])
+            return render(request, 'registration/login.html', {'message': message, })
     else:
-        return render(request, 'auth/login.html', {'message': message, })
+        return render(request, 'registration/login.html', {'message': message, })
 
 
 def logout(request):
     auth_logout(request)
-    return redirect('/login')
+    return redirect('/auth/login/')
 
 
 @login_required
@@ -168,29 +161,6 @@ def usuarios(request):
         return render(request, 'auth/login.html', {'mensaje': mensaje, })
 
 
-# class ActualizarUsuario(SuccessMessageMixin, UserPassesTestMixin, UpdateView):
-#     model = User
-#     fields = ['username', 'email', 'first_name', 'last_name']
-#     template_name = 'auth/agregar_usuario.html'
-#     success_message = "Usuario modificado con éxito"
-#     success_url = reverse_lazy('usuarios')
-#     layout = Layout(Fieldset('Modificar Usuario: '), Row('username', 'email'), Row('first_name', 'last_name'))
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ActualizarUsuario, self).get_context_data(**kwargs)
-#         context['actualizar'] = True
-#         return context
-#
-#     def get_form(self):
-#         form = super(ActualizarUsuario, self).get_form()
-#         form.fields['email'].required = True
-#         form.fields['first_name'].required = True
-#         form.fields['last_name'].required = True
-#         return form
-#
-#     def test_func(self):
-#         return self.request.user.groups.filter(name="administrador").exists()
-
 @login_required
 @user_passes_test(administrador)
 def actualizar_usuario(request, pk):
@@ -266,3 +236,6 @@ def bloquear_usuario(request, pk):
         messages.add_message(request, messages.INFO, 'No puede bloquear su propio usuario')
     return HttpResponseRedirect(reverse("usuarios"))
 # Finalizan vistas para Usuarios
+
+def lockout(request):
+    return render(request, template_name='registration/locked.html')
