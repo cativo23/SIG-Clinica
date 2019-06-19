@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from auth1.views import administrador
-from .models import Expediente, Paciente, Consulta, Medicamento
+from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento
 
 from django.http import HttpResponse
 from django.core import serializers
@@ -16,6 +16,8 @@ import time
 import math
 import collections
 import operator
+
+from django.db.models import Avg, Max, Min, Sum
 
 # Create your views here.
 
@@ -175,45 +177,145 @@ def obtener_resumen_expdeudas(request):
                            })
 
 
+
+class CincoMasUsados:
+    def __init__(self, n, nombre, marca, monto, cantidadLotes, cantidadStock):
+        self.n = n
+        self.nombre = nombre
+        self.marca = marca
+        self.monto = monto
+        self.cantidadLotes = cantidadLotes
+        self.cantidadStock = cantidadStock
+
+
 def obtener_resumen_costomed(request):
     fecha_inicial = ""
     fecha_final = ""
     hoy = date.today()
 
-    med_demandados = ""
-    medicamentos = ""
+    resumen = ""
     total_gasto_med = ""
-    mas_demandados = ""
-    lista_medicamentos = ""
-    a = ""
+
+    prueba = ""
 
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
 
-        # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
+        if fecha_inicial and fecha_final:
 
-        med_demandados = Medicamento.objects.filter(receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final]).all()
+            # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
 
-        lista_medicamentos = []
-        for med in med_demandados:
-            lista_medicamentos.append(med.nombre_producto)
+            med_deman_periodo = Medicamento.objects.filter(receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final])
+            # print(med_deman_periodo)
 
-        mas_demandados = collections.Counter(lista_medicamentos)
-        b = mas_demandados.items()
+            lista_medicamentos = []
+            for med in med_deman_periodo:
+                lista_medicamentos.append(med.nombre_producto)
+            # print(lista_medicamentos)
 
-        a = Medicamento.objects.filter(nombre_producto=b[0][0])
+            # Diccionario con frecuencia de aparicion de "lista_medicamentos", 'medicamento': frecuencia_de _uso
+            dicc_mas_usados = collections.Counter(lista_medicamentos)  # Objeto counter
+            prueba = collections.Counter(lista_medicamentos)
 
-        med_demandados = Medicamento.objects.filter(receta__consulta__fechaConsulta__range=[fecha_inicial, fecha_final]).order_by("-precio_producto")
+            print("dicc_mas_usados:", dicc_mas_usados)
+            print("prueba: ", prueba)
 
-        # TABLA 2
+            # Lista de los producto sin repetir
+            lista = list(dicc_mas_usados)
+            print("lista:", lista)
 
-        # TABLA 3 TOTAL GASTADO EN MEDICAMENTO
+            # Obtiene una lista de 5 elemento ordenada de mayor a menos frecuencia de uso en recetas
+            lista_mas_usados = []
+            for ejecutar in range(4):
+                i = 0
+                for l in lista:
+                    frecuencia_max = max(dicc_mas_usados.values())
+                    frecuencia = dicc_mas_usados.get(l)
+                    # print(dicc_mas_usados)
+                    # print(l,"Indice:", i, "Frecuencia:",frecuencia)
+                    # print ("Maxima frecuencia:",frecuencia_max)
 
+                    if frecuencia_max == frecuencia:
+                        dicc_mas_usados.pop(l)
+                        lista_mas_usados.append(l)
+                        lista.pop(i)
+                        # print(lista_mas_usados)
+                        # print(" ")
+                    i = i + 1
 
+            # print("lista_mas_usados: ", lista_mas_usados)
+            # Comprobando que existen al menos 5 mediamentos mas tuilizados en recetas
+            mas_usados_med = []
+            if len(lista_mas_usados) >= 5:
+                i = 0
+                for med in range(5):
+                    mas_usados_med.append(Medicamento.objects.get(nombre_producto=lista_mas_usados[i]))
+                    i = i + 1
+                # print(mas_usados_med)
+            else:
+                i = 0
+                for med in range(len(lista_mas_usados)):
+                    mas_usados_med.append(Medicamento.objects.get(nombre_producto=lista_mas_usados[i]))
+                    i = i + 1
+                # print(mas_usados_med)
 
+            # Totales de lotes
+            mas_usados_tot = []
+            # Comprobando que existen al menos 5 mediamentos mas tuilizados en recetas
+            if len(lista_mas_usados) >= 5:
+                i = 0
+                for totales in range(5):
+                    total = LoteMedicamento.objects.filter(medicamento__nombre_producto=lista_mas_usados[i]).aggregate(
+                        Sum('cantidad'))
+                    mas_usados_tot.append(total.get('cantidad__sum'))
+                    i = i + 1
+                # print(mas_usados_tot)
+            else:
+                i = 0
+                for totales in range(len(lista_mas_usados)):
+                    total = LoteMedicamento.objects.filter(medicamento__nombre_producto=lista_mas_usados[i]).aggregate(
+                        Sum('cantidad'))
+                    mas_usados_tot.append(total.get('cantidad__sum'))
+                    i = i + 1
+                # print(mas_usados_tot)
+
+            # Aqui se llena los objetos que se enviaran al html, se envia "resumen"
+            resumen = []
+            # Comprobando que existen al menos 5 mediamentos mas tuilizados en recetas
+
+            if len(lista_mas_usados) >= 5:
+                i = 0
+                for repetir in range(5):
+                    objeto = CincoMasUsados(prueba.get(mas_usados_med[i].nombre_producto),
+                                            mas_usados_med[i].nombre_producto, mas_usados_med[i].marca_producto,
+                                            mas_usados_med[i].precio_producto, mas_usados_tot[i],
+                                            mas_usados_med[i].existencia_producto )
+                    resumen.append(objeto)
+                    i = i + 1
+            else:
+                i = 0
+                for repetir in range(len(lista_mas_usados)):
+                    objeto = CincoMasUsados(prueba.get(mas_usados_med[i].nombre_producto) ,mas_usados_med[i].nombre_producto, mas_usados_med[i].marca_producto,
+                                            mas_usados_med[i].precio_producto, mas_usados_tot[i], mas_usados_med[i].existencia_producto )
+                    resumen.append(objeto)
+                    i = i + 1
+
+            # TABLA 2 TOTAL GASTADO EN MEDICAMENTO
+
+            total_gasto_med = 0
+            # lista contiene los medicamentos usados en el periodo sin repetir medicamentos
+            lista2 = lista_mas_usados
+            i =0
+            for l in lista2:
+                medicamento = Medicamento.objects.filter(nombre_producto=l)
+                for m in medicamento:
+                    total_gasto_med = total_gasto_med + m.precio_producto * mas_usados_tot[i]
+                    print("Precio uni:", m.precio_producto, "Cantidad: ", mas_usados_tot[i])
+                    i = i + 1
+
+            print(mas_usados_tot)
+            # print(total_gasto_med)
     return render(request, template_name="resumen_costomed.html",
-                  context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
-                           'med_demandados': med_demandados, 'lista_medicamentos': lista_medicamentos, 'mas_demandados': mas_demandados,
-                            'a': a
-                           })
+                  context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
+                           'total_gasto_med': total_gasto_med, 'prueba': prueba})
