@@ -1,26 +1,14 @@
-from datetime import datetime, timedelta
-from django.contrib.auth.decorators import user_passes_test, login_required
+import collections
+from datetime import datetime, date
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.shortcuts import render
-from authentication.views import administrador
-from .models import Expediente, Paciente, Consulta, Medicamento, Procedimiento
+
 from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento
-#from auth1.views import administrador
+from .models import Procedimiento, Pago
 
-from django.http import HttpResponse
-from django.core import serializers
-from django.contrib.auth.models import User
 
-from datetime import timedelta
-from datetime import date
-from datetime import datetime
-
-import datetime
-import time
-import math
-import collections
-
-from django.db.models import Avg, Max, Min, Sum
+# from auth1.views import administrador
 
 # Create your views here.
 # @user_passes_test(administrador)
@@ -52,7 +40,8 @@ def obtener_resumen_expcreados(request):
 
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
-
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
         if fecha_inicial and fecha_final:
 
             # TABLA 1 POR SEXO
@@ -136,7 +125,8 @@ def obtener_resumen_expdeudas(request):
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
-
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
         if fecha_inicial and fecha_final:
 
             # TABLA 1: EXPEDIENTES CON DEUDAS Y MONTO TOTAL DE ESOS EXPEDIENTES
@@ -193,7 +183,6 @@ def obtener_resumen_expdeudas(request):
                            })
 
 
-
 class CincoMasUsados:
     def __init__(self, n, nombre, marca, monto, cantidadLotes, cantidadStock):
         self.n = n
@@ -217,7 +206,8 @@ def obtener_resumen_costomed(request):
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
-
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
         if fecha_inicial and fecha_final:
 
             # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
@@ -361,7 +351,8 @@ def obtener_resumen_ingresoConsultas(request):
 
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
-
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
         if fecha_inicial and fecha_final:
 
             # TABLA POR SEXO
@@ -377,7 +368,7 @@ def obtener_resumen_ingresoConsultas(request):
                 total_consulta_mas += consulta.precio
                 procedimientos = Procedimiento.objects.filter(consulta_realizada=consulta).all()
                 for procedimiento in procedimientos:
-                    total_consulta_mas += procedimiento.tratamiento.precioBase
+                    total_consulta_fem += procedimiento.tratamiento.precioBase
 
             for consulta in sexo_con_fem:
                 total_consulta_fem += consulta.precio
@@ -457,7 +448,8 @@ def obtener_resumen_tratmientosreq(request):
 
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
-
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
         if fecha_inicial and fecha_final:
 
             # TABLA POR SEXO
@@ -472,8 +464,8 @@ def obtener_resumen_tratmientosreq(request):
             for consulta in sexo_con_mas:
                 total_consulta_mas += consulta.precio
                 procedimientos = Procedimiento.objects.filter(consulta_realizada=consulta).all()
-                for procedimiento in procedimientos:
-                    total_consulta_mas += procedimiento.tratamiento.precioBase
+                total_consulta_mas += procedimientos.aggregate(Sum("tratamiento__precioBase"))[
+                    "tratamiento__precioBase__sum"]
 
             for consulta in sexo_con_fem:
                 total_consulta_fem += consulta.precio

@@ -16,11 +16,12 @@ class Doctor(models.Model):
 
 
 class Medicamento(models.Model):
-    nombre_producto = models.CharField('Nombre del producto', max_length = 30, blank = False, null = False)
-    marca_producto = models.CharField('Marca del producto', max_length = 30, blank = False, null = False)
-    existencia_producto = models.IntegerField('Exitencias', blank = False, null = False)
+    nombre_producto = models.CharField('Nombre del producto', max_length=30, blank=False, null=False)
+    marca_producto = models.CharField('Marca del producto', max_length=30, blank=False, null=False)
+    existencia_producto = models.IntegerField('Exitencias', blank=False, null=False)
     precio_producto = models.DecimalField('Precio unitario', max_digits=5, decimal_places=2, blank=True, null=True)
-    formafarmaceutica = models.CharField('Forma Farmaceutica',max_length = 30, blank = False, null = False)
+    formafarmaceutica = models.CharField('Forma Farmaceutica', max_length=30, blank=False, null=False)
+
     def __str__(self):
         return self.nombre_producto + ", " + self.marca_producto
 
@@ -32,10 +33,10 @@ class Medicamento(models.Model):
 
 
 class LoteMedicamento(models.Model):
-    medicamento = models.ForeignKey(Medicamento, blank = False, null = False,on_delete = models.CASCADE)
-    fecha_vencimiento = models.DateField('Fecha de Vencimiento', help_text = 'Formato: DD/MM/AAAA',blank = False, null = False)
-    cantidad = models.IntegerField('Cantidad',blank=False,null=False,validators = [MinValueValidator(0)])
-
+    medicamento = models.ForeignKey(Medicamento, blank=False, null=False, on_delete=models.CASCADE)
+    fecha_vencimiento = models.DateField('Fecha de Vencimiento', help_text='Formato: DD/MM/AAAA', blank=False,
+                                         null=False)
+    cantidad = models.IntegerField('Cantidad', blank=False, null=False, validators=[MinValueValidator(0)])
 
 
 class Odontograma(models.Model):
@@ -134,6 +135,7 @@ class Tratamiento(models.Model):
         verbose_name = 'Tratamiento'
         verbose_name_plural = 'Tratamientos'
 
+
 class Consulta(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
     paciente = models.ForeignKey(Expediente, on_delete=models.PROTECT)
@@ -150,6 +152,7 @@ class Consulta(models.Model):
         ordering = ['fechaConsulta', 'horaInicio']
         verbose_name = 'Consulta'
         verbose_name_plural = 'Consultas'
+
 
 class Procedimiento(models.Model):
     CARAS_CHOICES = (
@@ -181,14 +184,14 @@ class Procedimiento(models.Model):
         return self.tratamiento.nombreTratamiento
 
 
-
 class Pago(models.Model):
-    Expediente = models.ForeignKey(Expediente, on_delete = models.CASCADE, null = True, blank= False)
+    Expediente = models.ForeignKey(Expediente, on_delete=models.CASCADE, null=True, blank=False)
     fechaPago = models.DateTimeField('Fecha de Pago', auto_now_add=True)
     cantidad = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False, default=0)
 
     def __str__(self):
-        return '#%s - Pago por: %s del %s' % (self.id, self.cantidad ,self.Expediente)
+        return '#%s - Pago por: %s del %s' % (self.id, self.cantidad, self.Expediente)
+
 
 class Receta(models.Model):
     consulta = models.ForeignKey(Consulta, on_delete=models.PROTECT)
@@ -198,5 +201,5 @@ class Receta(models.Model):
 class Especificacion(models.Model):
     medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE)
     receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
-    dosis = models.CharField('Dosis', max_length = 45, blank = False, null = False)
-    duracion = models.CharField('Duracion', max_length = 45, blank = False, null = False)
+    dosis = models.CharField('Dosis', max_length=45, blank=False, null=False)
+    duracion = models.CharField('Duracion', max_length=45, blank=False, null=False)

@@ -144,9 +144,12 @@ LANGUAGES = (
 TIME_ZONE = 'America/El_Salvador'
 
 USE_I18N = True
-
 USE_L10N = True
 
+DATE_INPUT_FORMATS = ['%d/%m/%Y']
+DATETIME_INPUT_FORMATS = ['%Y-%m-%d %H:%M:%S']
+DATE_FORMAT = 'd/m/Y'
+DATETIME_FORMAT = 'd/m/Y H i s'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
