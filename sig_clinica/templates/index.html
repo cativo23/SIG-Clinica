@@ -22,9 +22,10 @@
 {% endblock %}
 
 {% block content %}
+
     <!--INICIO MENU ADMINISTRADOR-->
    <div class="container">
-    <div class="row">
+    <div class="row"><br>
         <!-- Inicio divider -->
         <section id="texto1">
             <div class="">
@@ -43,17 +44,17 @@
                     <span class="card-title white-text"><b>Bitácoras</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                        <i class="material-icons">info_outline</i>
+                        <i class="material-icons" >info_outline</i>
                     </a>
                     <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Podrá llevar un registro de las actividades de sus usuarios.</p>
+                    <p>Lleve un registro de las actividades que realizan los usuarios del Sistema de Información Gerencial.</p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title">Bitácoras<i class="material-icons right">close</i></span>
-                    <p>Podrá llevar control registrando la fecha y hora de las acciones que realizan los
-                        diferentes usuarios, como la generación de un informe, realización de procesos ETL
+                    <p>Podrá llevar control, registrando la fecha y hora de las acciones que realizan los
+                        diferentes usuarios, como la generación de un resumenes o informes, realización de procesos ETL,
                         entre otras acciones.</p>
                 </div>
             </div>
@@ -71,30 +72,30 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Gestione a los usuarios de su sistema gerencial</p>
+                    <p>Realice acciones de gestión de usuarios que pertenecen al Sistema de Información Gerencial.</p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title">Usuarios<i class="material-icons right">close</i></span>
-                    <p>Podrá realizar actividades como crear usuarios administrador, estratégico o táctico,
-                        modificarlos, eliminarlos, habilitar o deshabilitarlos, etc.</p>
+                    <p>Podrá realizar actividades como crear usuarios con diferentes permisos como: usuario
+                        administrador, estratégico o táctico. Además de modificarlos, eliminarlos, habilitar o
+                        deshabilitarlos, entre otras acciones.</p>
                 </div>
             </div>
         </div>
 
     </div>
    </div>
-
     <!-- FIN MENU ADMINISTRADOR-->
 
     <!-- INICIO MENU ESTRATEGICO-->
 <div class="container">
-        <div class="row">
+        <div class="row"><br>
 
         <!-- Inicio divider -->
         <section id="texto2">
             <div class="">
                 <div class="divider"></div>
-                <h5 class="center-align" l><b>Resumenes estratégicos</b></h5>
+                <h5 class="center-align" l><b>Resúmenes Estratégicos</b></h5>
                 <h6><p class="flow-text center-align "></p></h6>
                 <div class="divider"></div>
                 <br>
@@ -106,7 +107,7 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Expedientes creados</b></span>
+                    <span class="card-title white-text"><b>Expedientes Creados</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
@@ -114,11 +115,15 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:resumen_expcreados' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Resumen de nuevos expedientes de pacientes para un período determinado.</p>
+                    <p>Resumen de los nuevos expedientes de pacientes para un período selecionado.</p>
                 </div>
                 <div class="card-reveal">
-                    <span class="card-title">Expedientes creados<i class="material-icons right">close</i></span>
-                    <p>Resumen de nuevos expedientes de pacientes para un período determinado.</p>
+                    <span class="card-title">Expedientes Creados<i class="material-icons right">close</i></span>
+                    <p>
+                        Podrá obtener un resumen de los nuevos pacientes que llegan a la clinica, obteniendo la cantidad
+                        de nuevos expedientes abiertos y consultas realizadas, ordenandolos por categorias como sexo y
+                        edad para el periodo que selecione.
+                    </p>
                 </div>
             </div>
         </div>
@@ -127,19 +132,23 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Expedientes con deudas</b></span>
+                    <span class="card-title white-text"><b>Expedientes con Deudas</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:resumen_expdeudas' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Resumen de expedientes de pacientes que presentan una deuda para un periodo determinado</p>
+                    <p>Resumen de los expedientes de pacientes que presentan deudas para un período seleccionado</p>
                 </div>
                 <div class="card-reveal">
-                    <span class="card-title">Expedientes con deudas<i class="material-icons right">close</i></span>
-                    <p>Resumen de expedientes de pacientes que presentan una deuda para un periodo determinado.</p>
+                    <span class="card-title">Expedientes con Deudas<i class="material-icons right">close</i></span>
+                    <p>
+                        Podrá obtener un resumen de los expedientes de pacientes con deudas vigentes,
+                        obtenga datos como el número de expedientes con deuda, número de pacientes con
+                        deuda mayor a $20 o la mayor deuda para el periodo que selecione.
+                    </p>
                 </div>
             </div>
         </div>
@@ -148,21 +157,24 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Dinero utilizado en obtención de medicamentos</b></span>
+                    <span class="card-title white-text"><b>Costo y Demanda de Medicamentos</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:resumen_costomed' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Resumen de los medicamentos más frecuentes en uso por los pacientes.</p>
+                    <p>Resumen de los medicamentos que se recetan con frecuencia y su costo para un periodo seleccionado.</p>
                 </div>
                 <div class="card-reveal">
-                    <span class="card-title">Dinero utilizado en obtención de medicamentos<i
+                    <span class="card-title">Costo y Demanda de Medicamentos<i
                             class="material-icons right">close</i></span>
-                    <p>Resumen de los medicamentos más frecuentes en uso por los pacientes ordenados por marcas para un
-                        periodo determinado.</p>
+                    <p>
+                        Podrá obtener un resumen de los medicamentos que son más recetados a los pacientes mostrando su
+                        marca, precio unitario, cantidad que se compro en lotes y cantidad en
+                        stock para el período que selecione.
+                    </p>
                 </div>
             </div>
         </div>
@@ -174,21 +186,22 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Ingresos por consultas</b></span>
+                    <span class="card-title white-text"><b>Ingresos por Consultas</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:resumen_ingrObtenido' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Resumen de los ingresos netos por consulta médica por doctor/a que la realizó la consulta
-                        y el total que generó ese doctor/a en un periodo determinado.</p>
+                    <p>Resumen de los ingresos que se obtienen por consultas para un periodo seleccionado.</p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title">Ingresos por consultas<i class="material-icons right">close</i></span>
-                    <p>Resumen de los ingresos netos por consulta médica por doctor/a que la realizó la consulta
-                        y el total que generó ese doctor/a en un periodo determinado.</p>
+                    <p>Podrá obtener un resumen de la cantidad de consultas realizadas y el ingreso debido a esas
+                        consultas, ordenandolos por categorias de edad y sexo, además de presentar sus totales para el
+                        período que selecione.
+                    </p>
                 </div>
             </div>
         </div>
@@ -205,13 +218,15 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Resumen de los tratamientos que más se solicitan por parte de los pacientes en un periodo
-                        determinado..</p>
+                    <p>Resumen de los tratamientos que más solicitan los pacientes para un periodo seleccionado.</p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title">Tratamientos recurrentes<i class="material-icons right">close</i></span>
-                    <p>Resumen de los tratamientos que más se solicitan por parte de los pacientes en un periodo
-                        determinado..</p>
+                    <p>
+                        Podrá obtener un resumen de los tratamientos que más se aplican a pacientes, mostrando su
+                        respectivo costo, total pagado, las veces que se realizó el tratamiento, ganancia obtenida,
+                        además de sus totales para el período que selecione.
+                    </p>
                 </div>
             </div>
         </div>
@@ -219,15 +234,16 @@
     </div>
 </div>
     <!-- FIN MENU ESTRATEGICO-->
+
     <!-- INICIO MENU TACTICO-->
 <div class="container">
-    <div class="row">
+    <div class="row"><br>
 
         <!-- Inicio divider -->
         <section id="texto3">
             <div class="">
                 <div class="divider"></div>
-                <h5 class="center-align" l><b>Informes tácticos</b></h5>
+                <h5 class="center-align" l><b>Informes Tácticos</b></h5>
                 <h6><p class="flow-text center-align "></p></h6>
                 <div class="divider"></div>
                 <br>
@@ -239,7 +255,7 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Medicamentos usados en recetas</b></span>
+                    <span class="card-title white-text"><b>Medicamentos Usados en Recetas</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
@@ -247,14 +263,16 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Informe de los medicamentos más demandados en recetas médicas realizadas con el costo
-                        generado para un periodo determinado.</p>
+                    <p>Informe de los medicamentos que más se usaron en recetas médicas para un período seleccionado.
+                    </p>
                 </div>
                 <div class="card-reveal">
-                    <span class="card-title">Medicamentos usados en recetas<i
+                    <span class="card-title">Medicamentos Usados en Recetas<i
                             class="material-icons right">close</i></span>
-                    <p>Informe de los medicamentos más demandados en recetas médicas realizadas con el costo
-                        generado para un periodo determinado..</p>
+                    <p>
+                        Podrá obtener un informe de los medicamentos que más se recetan a los pacientes obteniendo datos
+                        relacionados con el producto médico que se recomendó, marca, y otros, para el período que seleccione.
+                    </p>
                 </div>
             </div>
         </div>
@@ -263,7 +281,7 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Uso de odontograma en consultass</b></span>
+                    <span class="card-title white-text"><b>Uso de Odontograma en Consultas</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
@@ -285,7 +303,7 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Vencimiento de medicamentos</b></span>
+                    <span class="card-title white-text"><b>Vencimiento de Medicamentos</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
@@ -294,7 +312,7 @@
                 </div>
                 <div class="card-content">
                     <p>Informe de los medicamentos que se han vencido y además los que están próximos a su fecha
-                        de vencimiento determinado el periodo de anticipación de vencimiento.</p>
+                        de vencimiento.</p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title">Vencimiento de medicamentos en inventario<i class="material-icons right">close</i></span>
@@ -312,7 +330,7 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Consultas de pacientes recurrentes y nuevos</b></span>
+                    <span class="card-title white-text"><b>Consultas de Pacientes Frecuentes y Nuevos</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
@@ -320,8 +338,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Informe del ingreso generado por consultas comparando con los mismos parámetros los
-                        ingresos obtenidos por pacientes nuevos y por pacientes recurrentes.</p>
+                    <p>Informe del ingreso por consultas comparando con ingresos obtenidos por pacientes nuevos y recurrentes.</p>
                 </div>
                 <div class="card-reveal">
                     <span class="card-title">Consultas de pacientes recurrentes y nuevo<i class="material-icons right">close</i></span>
@@ -335,7 +352,7 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Deudas y pagos</b></span>
+                    <span class="card-title white-text"><b>Deudas y Pagos</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
@@ -356,7 +373,7 @@
             <div class="card hoverable">
                 <div class="card-image waves-block waves-light activator">
                     <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                    <span class="card-title white-text"><b>Pacientes con tratamientos especiales</b></span>
+                    <span class="card-title white-text"><b>Pacientes con Tratamientos Especiales</b></span>
                     <!-- style="left: 225px;"-->
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
@@ -364,7 +381,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
-                    <p>Informe de los tratamientos especiales que se aplican con su respectivo paciente para un periodo
+                    <p>Informe de los tratamientos especiales que se aplican a pacientes para un periodo
                         determinado.</p>
                 </div>
                 <div class="card-reveal">
@@ -378,7 +395,8 @@
 
     </div>
 </div>
-    <!-- FIN MENU TACTICO-->
+    <!-- FIN MENU TACTICO-->br
+<br><br><br>
 
     <!-- Footer -->
     <footer class="page-footer" style="margin-left: 0px">

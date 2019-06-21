@@ -16,12 +16,11 @@ class Doctor(models.Model):
 
 
 class Medicamento(models.Model):
-    nombre_producto = models.CharField('Nombre del producto', max_length=30, blank=False, null=False)
-    marca_producto = models.CharField('Marca del producto', max_length=30, blank=False, null=False)
-    existencia_producto = models.IntegerField('Exitencias', blank=False, null=False)
-    precio_producto = models.DecimalField('Precio', max_digits=5, decimal_places=2, blank=True, null=True)
-    formafarmaceutica = models.CharField('Forma Farmaceutica', max_length=30, blank=False, null=False)
-
+    nombre_producto = models.CharField('Nombre del producto', max_length = 30, blank = False, null = False)
+    marca_producto = models.CharField('Marca del producto', max_length = 30, blank = False, null = False)
+    existencia_producto = models.IntegerField('Exitencias', blank = False, null = False)
+    precio_producto = models.DecimalField('Precio unitario', max_digits=5, decimal_places=2, blank=True, null=True)
+    formafarmaceutica = models.CharField('Forma Farmaceutica',max_length = 30, blank = False, null = False)
     def __str__(self):
         return self.nombre_producto + ", " + self.marca_producto
 
@@ -33,10 +32,10 @@ class Medicamento(models.Model):
 
 
 class LoteMedicamento(models.Model):
-    medicamento = models.ForeignKey(Medicamento, blank=False, null=False, on_delete=models.CASCADE)
-    fecha_vencimiento = models.DateField('Fecha de Vencimiento', help_text='Formato: DD/MM/AAAA', blank=False,
-                                         null=False)
-    cantidad = models.IntegerField('Cantidad vencida', blank=False, null=False, validators=[MinValueValidator(0)])
+    medicamento = models.ForeignKey(Medicamento, blank = False, null = False,on_delete = models.CASCADE)
+    fecha_vencimiento = models.DateField('Fecha de Vencimiento', help_text = 'Formato: DD/MM/AAAA',blank = False, null = False)
+    cantidad = models.IntegerField('Cantidad',blank=False,null=False,validators = [MinValueValidator(0)])
+
 
 
 class Odontograma(models.Model):
