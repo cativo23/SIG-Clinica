@@ -14,36 +14,39 @@
         {% block favicon %}
             <link href="{% static 'material/imgs/favicon.png' %}" rel="shortcut icon">{% endblock %}
 
-    <!-- Print.js -->
-    <link rel="stylesheet" type="text/css" href="{% static 'gerencial/css/print.min.css' %}">
+        <!-- Print.js -->
+        <link rel="stylesheet" type="text/css" href="{% static 'gerencial/css/print.min.css' %}">
 
-    <!-- Django material -->
-    {% block css %}{% include 'material/frontend/includes/material_css.html' %}{% endblock css %}
-    {% block js %}{% include 'material/frontend/includes/material_js.html' %}{% endblock js %}
-    {% block extrahead %}{% endblock %}
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {% block extrahead %}{% endblock %}
     {% endblock head %}
 </head>
 
 <body class="grey lighten-4">
 <div class="navbar-fixed">
-<nav class="blue darken-2">
-    <div class="container">
-        <div class="nav-wrapper">
-            <a href="index.html" class="brand-logo right">SIG-Manguito</a>
-            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large left"><i class="material-icons">menu</i></a>
-            {% block navbar %}
+    <nav class="blue darken-2">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="brand-logo right">SIG-Manguito</a>
+                <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large left"><i
+                        class="material-icons">menu</i></a>
+                {% block navbar %}
 
-            {% endblock %}
+                {% endblock %}
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 </div>
-{%  include 'elements/sidebar.html' %}
+{% include 'elements/sidebar.html' %}
 
 {% block content %}
-{%  endblock content %}
+{% endblock content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 <script src="{% static 'gerencial/js/sidenav.js' %}"></script>
+<script src="{% static 'gerencial/js/pickers.js'%}"></script>
 </body>
 </html>

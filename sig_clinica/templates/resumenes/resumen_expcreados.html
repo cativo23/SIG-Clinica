@@ -9,7 +9,7 @@
     <div class="container">
         <h3 class="center-align">Expedientes Creados</h3>
 
-        {% include "parametros.html" %}
+        {% include "elements/parametros.html" %}
 
         <div class="row">
             <div class="col s12">
@@ -112,10 +112,6 @@
                                 </div>
                             </div>
                         {% endif %}
-                        <script>
-                            var boton_enviar = document.getElementById('boton_enviar').onclick="
-                            location.href='{% url 'gerencial:resumen_expcreados' %}'"
-                        </script>
                     </div>
                 </div>
             </div>

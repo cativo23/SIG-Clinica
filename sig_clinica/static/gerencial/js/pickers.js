@@ -1,7 +1,7 @@
  document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.datepicker');
     var instances = M.Datepicker.init(elems, {
-        format: 'yyyy-mm-dd',
+        format: 'dd/mm/yyyy',
         firstDay: 1,
         i18n: {
             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',  'Julio', 'Agosto', 'Septiembre',
