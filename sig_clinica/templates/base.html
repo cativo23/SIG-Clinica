@@ -14,17 +14,13 @@
         {% block favicon %}
             <link href="{% static 'material/imgs/favicon.png' %}" rel="shortcut icon">{% endblock %}
 
-
-
     <!-- Print.js -->
     <link rel="stylesheet" type="text/css" href="{% static 'gerencial/css/print.min.css' %}">
 
-
-
-
-        {% block css %}{% include 'material/frontend/includes/material_css.html' %}{% endblock css %}
-        {% block js %}{% include 'material/frontend/includes/material_js.html' %}{% endblock js %}
-        {% block extrahead %}{% endblock %}
+    <!-- Django material -->
+    {% block css %}{% include 'material/frontend/includes/material_css.html' %}{% endblock css %}
+    {% block js %}{% include 'material/frontend/includes/material_js.html' %}{% endblock js %}
+    {% block extrahead %}{% endblock %}
     {% endblock head %}
 </head>
 
