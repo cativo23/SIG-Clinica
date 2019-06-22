@@ -1,493 +1,55 @@
-{% load material_form %}
-{% load static %}
-<!doctype html>
-<html lang="en">
+{% load i18n static staticfiles %}
+
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %} Index {% endblock %}</title>
+    {% block head %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        {% block turbolinks-cache-control %}
+            <meta name="turbolinks-cache-control" content="no-cache">{% endblock %}
+        <title>SIG Clinica Manguito - {% block title %}{% endblock %}</title>
+        {% block favicon %}
+            <link href="{% static 'material/imgs/favicon.png' %}" rel="shortcut icon">{% endblock %}
 
-    <!-- Django material form -->
-    {% include 'material/includes/material_css.html' %}
+        <!-- Print.js -->
+        <link rel="stylesheet" type="text/css" href="{% static 'gerencial/css/print.min.css' %}">
 
 
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {% block extrahead %}{% endblock %}
+    {% endblock head %}
 </head>
-<body>
 
-    <!-- INICIO NAVBAR -->
-    <header>
-        <div class="navbar-fixed">
-            <nav>
-                <div class="nav-wrapper blue-grey darken-3">
-                <a href="#" class="brand-logo">Logo</a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li class="hide-on-small-only"><a href="#!"><i class="material-icons right">home</i></a></li>
-                        <li><a href="#!"><i class="material-icons right">settings</i></a></li>
-                        <li><a href="#!"><i class="material-icons right">exit_to_app</i></a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
-    <!-- FIN NAVBAR -->
+<body class="grey lighten-4">
+<div class="navbar-fixed">
+    <nav class="blue darken-2">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="brand-logo right">SIG-Manguito</a>
+                <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large left"><i
+                        class="material-icons">menu</i></a>
+                {% block navbar %}
 
-    <div class="container">
-        <div class="col s12">
-
-
-            <!-- INICIO SIDENAV -->
-
-
-            <ul id="slide-out" class="sidenav">
-                <li>
-                    <div class="user-view">
-                        <div class="background">
-                            <img src="https://www.logaster.com.es/blog/wp-content/uploads/2019/01/4-min.jpg" alt="">
-                        </div>
-                        <a href="#user"><img class="circle" src="https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png"></a>
-                        <!-- Nombre usuario -->
-                        <a href="#name"><span class="white-text name">Dra. Susana Argueta</span></a>
-
-                        <!-- Email usuario-->
-                        <a href="#email"><span class="white-text email">draargueta@gmail.com</span></a>
-                    </div>
-                </li>
-
-                <!-- INICIO ADMINISTRADOR SIDENAV -->
-                    <li><a href="#!"><i class="material-icons">event_note</i>Bitácora</a></li>
-
-                    <li><a href="#!"><i class="material-icons">group</i>Usuarios</a></li>
-                    <!--<li><a href="#!">Enlaces usuarios</a></li>-->
-
-                    <li><div class="divider"></div></li>
-                <!-- FIN ADMINISTRADOR SIDENAV -->
-
-
-                <!-- INICIO ESTRATEGICO SIDENAV -->
-                    <li><a href="#!"><i class="material-icons">class</i>Resumenes</a></li>
-
-                    <li><a href="#!"><i class="material-icons"></i>Expedientes creados</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Expedientes con deudas</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Costo en medicamento</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Ingresos por consultas</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Tratamientos recurrentes</a></li>
-
-                    <li><div class="divider"></div></li>
-                <!-- FIN ESTRATEGICO SIDENAV -->
-
-
-                <!-- INICIO TACTICO SIDENAV -->
-                    <li><a href="#!"><i class="material-icons">library_books</i>Informes</a></li>
-
-                    <li><a href="#!"><i class="material-icons"></i>Medicamentos utilizados</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Uso de odontograma</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Vencimiento de medic</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Pacientes recurre/nuevos</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Deudas y pagos</a></li>
-                    <li><a href="#!"><i class="material-icons"></i>Tratamientos especiales</a></li>
-
-                    <li><div class="divider"></div></li>
-
-                <!-- FIN TACTICO SIDENAV -->
-
-
-            </ul>
-
-            <!-- FIN SIDENAV -->
-        </div>
-
-        <div class="row">
-            <div class="col s3 m6"><br>
-                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            </div>
-            <div class="col s9 m6 push-m3"><br>
-                <!-- USUARIO -->
-                <div class="chip">
-                    <img src="https://img.icons8.com/color/1600/circled-user-male-skin-type-1-2.png" alt="Contact Person">
-                    Dr. Susana Argueta
-                </div>
+                {% endblock %}
             </div>
         </div>
+    </nav>
+</div>
+{% include 'elements/sidebar.html' %}
 
-
-        <!-- Inicio divider -->
-        <section id="texto">
-            <div class="">
-                <div class="divider"></div>
-                    <h5 class="center-align"><b>{% block pantalla %} Nombre de pantalla  {% endblock %}</b></h5>
-                    <h6><p class="flow-text center-align">{% block descripcion %}  {% endblock %}</p></h6>
-                <div class="divider"></div><br>
-            </div>
-        </section>
-        <!-- Fin divider -->
-
-        <!-- INICIO MENU PRINCIPAL-->
-        <div class="main">
-            <div class="row">
-            {% block content %}
-
-            <!--INICIO MENU ADMINISTRADOR-->
-            <div class="row">
-
-                <!-- Inicio divider -->
-                <section id="texto1">
-                    <div class="">
-                        <div class="divider"></div>
-                            <h5 class="center-align"l><b>Perfil administrador</b></h5>
-                            <h6><p class="flow-text center-align "></p></h6>
-                        <div class="divider"></div><br>
-                    </div>
-                </section>
-                <!-- Fin divider -->
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Bitácoras</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Podrá llevar un registro de las actividades de sus usuarios.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Bitácoras<i class="material-icons right">close</i></span>
-                            <p>Podrá llevar control registrando la fecha y hora de las acciones que realizan los
-                                diferentes usuarios, como la generación de un informe, realización de procesos ETL
-                                entre otras acciones.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Usuarios</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Gestione a los usuarios de su sistema geremcial</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Usuarios<i class="material-icons right">close</i></span>
-                            <p>Podrá realizar actividades como crear usuarios administrador, estratégico o táctico,
-                                modificarlos, eliminarlos, habilitar o deshabilitarlos, etc.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- FIN MENU ADMINISTRADOR-->
-
-            <!-- INICIO MENU ESTRATEGICO-->
-            <div class="row">
-
-                <!-- Inicio divider -->
-                <section id="texto2">
-                    <div class="">
-                        <div class="divider"></div>
-                            <h5 class="center-align"l><b>Resumenes estratégicos</b></h5>
-                            <h6><p class="flow-text center-align "></p></h6>
-                        <div class="divider"></div><br>
-                    </div>
-                </section>
-                <!-- Fin divider -->
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Expedientes creados</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Resumen de nuevos expedientes de pacientes para un período determinado.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Expedientes creados<i class="material-icons right">close</i></span>
-                            <p>Resumen de nuevos expedientes de pacientes para un período determinado.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Expedientes con deudas</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Resumen de expedientes de pacientes que presentan una deuda para un periodo determinado</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Expedientes con deudas<i class="material-icons right">close</i></span>
-                            <p>Resumen de expedientes de pacientes que presentan una deuda para un periodo determinado.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Dinero utilizado en obtención de medicamentos</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Resumen de los medicamentos más frecuentes en uso por los pacientes.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Dinero utilizado en obtención de medicamentos<i class="material-icons right">close</i></span>
-                            <p>Resumen de los medicamentos más frecuentes en uso por los pacientes ordenados por marcas para un periodo determinado.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Ingresos por consultas</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Resumen de los ingresos netos por consulta médica por doctor/a que la realizó la consulta
-                                y el total que generó ese doctor/a en un periodo determinado.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Ingresos por consultas<i class="material-icons right">close</i></span>
-                            <p>Resumen de los ingresos netos por consulta médica por doctor/a que la realizó la consulta
-                                y el total que generó ese doctor/a en un periodo determinado.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Tratamientos recurrentes</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Resumen de los tratamientos que más se solicitan por parte de los pacientes en un periodo determinado..</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Tratamientos recurrentes<i class="material-icons right">close</i></span>
-                            <p>Resumen de los tratamientos que más se solicitan por parte de los pacientes en un periodo determinado..</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- FIN MENU ESTRATEGICO-->
-
-
-            <!-- INICIO MENU TACTICO-->
-            <div class="row">
-
-                <!-- Inicio divider -->
-                <section id="texto3">
-                    <div class="">
-                        <div class="divider"></div>
-                            <h5 class="center-align"l><b>Informes tácticos</b></h5>
-                            <h6><p class="flow-text center-align "></p></h6>
-                        <div class="divider"></div><br>
-                    </div>
-                </section>
-                <!-- Fin divider -->
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Medicamentos usados en recetas</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Informe de los medicamentos más demandados en recetas médicas realizadas con el costo
-                                generado para un periodo determinado.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Medicamentos usados en recetas<i class="material-icons right">close</i></span>
-                            <p>Informe de los medicamentos más demandados en recetas médicas realizadas con el costo
-                                generado para un periodo determinado..</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Uso de odontograma en consultass</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Informe para observar la frecuencia de uso del odontograma en ciertos tratamientos
-                                clasificado por sexo</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Informe de uso del odontograma en consultas<i class="material-icons right">close</i></span>
-                            <p>Resumen de expedientes de pacientes que presentan una deuda para un periodo determinado.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Vencimiento de medicamentos</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Informe de los medicamentos que se han vencido y además los que están próximos a su fecha
-                                de vencimiento determinado el periodo de anticipación de vencimiento.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Vencimiento de medicamentos en inventario<i class="material-icons right">close</i></span>
-                            <p>Informe de los medicamentos que se han vencido y además los que están próximos a su fecha
-                                de vencimiento determinado el periodo de anticipación de vencimiento, por ejemplo 30 días antes de su vencimiento.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Consultas de pacientes recurrentes y nuevos</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Informe del ingreso generado por consultas comparando con los mismos parámetros los
-                                ingresos obtenidos por pacientes nuevos y por pacientes recurrentes.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Consultas de pacientes recurrentes y nuevo<i class="material-icons right">close</i></span>
-                            <p>Informe del ingreso generado por consultas comparando con los mismos parámetros los
-                                ingresos obtenidos por pacientes nuevos y por pacientes recurrentes.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Deudas y pagos</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Informe que muestra las deudas y pagos realizados por los pacientes con mayor deuda.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Deudas y pagos<i class="material-icons right">close</i></span>
-                            <p>Informe que muestra las deudas y pagos realizados por los pacientes con mayor deuda.</p>
-                        </div>
-                    </div>
-                </div>
-
-                                <div class="col s12 m4">
-                    <div class="card hoverable">
-                        <div class="card-image waves-block waves-light activator">
-                            <img class="activator" src="https://cdn.pixabay.com/photo/2016/06/02/02/35/mesh-1430107__340.png">
-                            <span class="card-title white-text"><b>Pacientes con tratamientos especiales</b></span>
-                    <!-- style="left: 225px;"-->
-                            <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
-                                <i class="material-icons">info_outline</i>
-                            </a>
-                            <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
-                        </div>
-                        <div class="card-content">
-                            <p>Informe de los tratamientos especiales que se aplican con su respectivo paciente para un periodo determinado.</p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title">Pacientes con tratamientos especiales<i class="material-icons right">close</i></span>
-                            <p>Informe de los tratamientos especiales que se aplican con su respectivo paciente para un periodo determinado.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- FIN MENU TACTICO-->
-            {% endblock %}
-            </div>
-        </div>
-        <!-- FIN MENU PRINCIPAL-->
-    </div>
-
-    <script  src="https://code.jquery.com/jquery-3.4.1.min.js"
-             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
-
-    </script>
-
-    <script src="{% static 'gerencial/js/sidenav.js' %}"></script>
-    {% include 'material/includes/material_js.html' %}
-
-
-
-
+{% block content %}
+{% endblock content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="{% static 'gerencial/js/sidenav.js' %}"></script>
+<script src="{% static 'gerencial/js/pickers.js'%}"></script>
+{% block messages %}
+{% endblock messages %}
 </body>
 </html>

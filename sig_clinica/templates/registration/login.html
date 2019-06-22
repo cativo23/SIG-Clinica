@@ -1,0 +1,57 @@
+{% extends "material/frontend/base_lockscreen.html" %}
+{% load material_form %}
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+{% block title %}
+    SIG Clinica Manguito - {% trans 'Log in' %}
+{% endblock %}
+
+{% block page_title %}{% trans 'Log in' %}{% endblock %}
+
+{% block content %}
+    <form action="" method="post" id="login-form">{% csrf_token %}
+
+        <div class="wrap-input100 validate-input" data-validate="Se requiere nombre de usuario">
+            <div class="input-field col s7 form-group">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="username" name="username" type="text" class="validate" required autocomplete="off">
+                <label for="username">{% trans "User" %}</label>
+                <span class="helper-text" data-error="Ingrese su Nombre de Usuario" data-success=""></span>
+            </div>
+        </div>
+
+        <div class="wrap-input100 validate-input" data-validate="Se requiere nombre de usuario">
+            <div class="input-field col s7 form-group">
+                <i class="material-icons prefix">lock_outline</i>
+                <input id="password" name="password" type="password" class="validate" required
+                       autocomplete="new-password">
+                <label for="password">{% trans "Password" %}</label>
+                <span class="helper-text" data-error="Ingrese su Contraseña" data-success=""></span>
+            </div>
+        </div>
+        {% url 'password_reset' as password_reset_url %}
+        {% if password_reset_url %}
+            <div class="password-reset-link">
+                <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
+            </div>
+        {% endif %}
+        <div class="action right-align">
+            <button type="submit" name="action" class="btn btn-primary waves-effect waves-light">{% trans 'Log in' %}</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block icon %}account_circle{% endblock %}
+
+
+{% block messages %}
+    {% for message in messages %}
+    {% if message %}
+    <script type="text/javascript">
+        (function () { M.toast({html: '{{ message }}', classes: 'rounded {% if message.tags == 'warning' %} yellow {% elif message.tags == 'error' %} red {% else %} {% endif %}', displayLength: 6000}); })();
+    </script>
+    {% endif %}
+    {% endfor %}
+{% endblock messages %}
+
