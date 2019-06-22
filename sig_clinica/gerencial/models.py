@@ -181,16 +181,17 @@ class Procedimiento(models.Model):
         max_length=12, choices=STATUS_CHOICES, default='recomendado')
 
     def __str__(self):
-        return self.tratamiento.nombreTratamiento
+        return '{} de {}'.format(self.tratamiento.nombreTratamiento, self.consulta_realizada.paciente)
 
 
 class Pago(models.Model):
     Expediente = models.ForeignKey(Expediente, on_delete=models.CASCADE, null=True, blank=False)
     fechaPago = models.DateTimeField('Fecha de Pago', auto_now_add=True)
-    cantidad = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False, default=0)
+    cantidad = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False, default=0.00)
+    procedimiento = models.ForeignKey(Procedimiento, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return '#%s - Pago por: %s del %s' % (self.id, self.cantidad, self.Expediente)
+        return '#%s - Pago por: %s del %s para %s' % (self.fechaPago, self.cantidad, self.Expediente, self.procedimiento.tratamiento.nombreTratamiento)
 
 
 class Receta(models.Model):

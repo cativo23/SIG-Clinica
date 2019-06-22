@@ -144,7 +144,7 @@ LANGUAGES = (
 TIME_ZONE = 'America/El_Salvador'
 
 USE_I18N = True
-USE_L10N = True
+USE_L10N = False
 
 DATE_INPUT_FORMATS = ['%d/%m/%Y']
 DATETIME_INPUT_FORMATS = ['%Y-%m-%d %H:%M:%S']

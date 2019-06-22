@@ -34,13 +34,13 @@
                                     <tbody>
                                     <tr>
                                         <td><b>Menor de 18 años</b></td>
-                                        <td>{{ edad_con_me }}</td>
-                                        <td>{{ total_consulta_men }}</td>
+                                        <td>{{ edad_con_me|default_if_none:"0" }}</td>
+                                        <td>{{ total_consulta_men|default_if_none:"0" }}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Mayor o igual a 18 años</b></td>
-                                        <td>{{ edad_con_ma }}</td>
-                                        <td>{{ total_consulta_may }}</td>
+                                        <td>{{ edad_con_ma|default_if_none:"0" }}</td>
+                                        <td>{{ total_consulta_may|default_if_none:"0" }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -61,13 +61,13 @@
                                     <tbody>
                                     <tr>
                                         <td><b>Masculino</b></td>
-                                        <td>{{ sexo_con_mas }}</td>
-                                        <td>{{ total_consulta_mas}}</td>
+                                        <td>{{ sexo_con_mas|default_if_none:"0" }}</td>
+                                        <td>{{ total_consulta_mas|default_if_none:"0"}}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Femenino</b></td>
-                                        <td>{{ sexo_con_fem }}</td>
-                                        <td>{{ total_consulta_fem }}</td>
+                                        <td>{{ sexo_con_fem|default_if_none:"0" }}</td>
+                                        <td>{{ total_consulta_fem|default_if_none:"0" }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -85,8 +85,8 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>{{ con_total }}</td>
-                                        <td>{{ ingresos }}</td>
+                                        <td>{{ con_total|default_if_none:"0" }}</td>
+                                        <td>{{ ingresos|default_if_none:"0" }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
