@@ -42,6 +42,7 @@ class LoteMedicamento(models.Model):
 class Odontograma(models.Model):
     medico = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True)
     fechaCreacion = models.DateTimeField('date_created', auto_now_add=True)
+    fechaUltimaModificacion = models.DateTimeField('Última modificación', auto_now=True)
     notas = models.TextField()
 
     def __str__(self):

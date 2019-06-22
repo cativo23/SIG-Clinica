@@ -164,6 +164,7 @@ def usuarios(request):
         return render(request, 'auth/users.html', {'user_list': user_list, 'mensaje': mensaje, })
     else:
         mensaje = "No posee permisos para acceder a la página solicitada. Para continuar inicie sesión con un usuario privilegiado"
+        messages.error(request, mensaje)
         return render(request, 'auth/login.html', {'mensaje': mensaje, })
 
 
@@ -191,8 +192,10 @@ def actualizar_usuario(request, pk):
                 user.groups.add(group)
                 user.save()
                 mensaje = "Usuario modificado con éxito"
+                messages.success(mensaje)
             except:
                 mensaje = "Error al modificar el usuario"
+                messages.error(mensaje)
     else:
         groups = user.groups.first()
         if groups:
@@ -235,7 +238,7 @@ def bloquear_usuario(request, pk):
             user.is_active = not user.is_active
             user.save()
             reset(username=user.username)
-            messages.add_message(request, messages.INFO, 'Cambio de estado exitoso')
+            messages.add_message(request, messages.SUCCESS, 'Cambio de estado exitoso')
         except:
             messages.add_message(request, messages.INFO, 'Error al cambiar el estado del usuario')
     else:

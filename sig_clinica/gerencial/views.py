@@ -1,9 +1,10 @@
 import collections
 from datetime import datetime, date
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, Count, F, FloatField, ExpressionWrapper, Q
 from django.shortcuts import render
 
+from authentication.views import estrategico
 from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento
 from .models import Procedimiento, Pago
 
@@ -23,6 +24,7 @@ def index(request):
 
 
 # Funcion que obtiene el RESUMEN DE EXPEDIENTES CREADOS para un periodo
+@user_passes_test(estrategico)
 def obtener_resumen_expcreados(request):
     fecha_inicial = ""
     fecha_final = ""
@@ -112,6 +114,7 @@ def obtener_resumen_expcreados(request):
 
 
 # Funcion que obtiene el RESUMEN DE EXPEDIENTES CON DEUDAS para un periodo
+@user_passes_test(estrategico)
 def obtener_resumen_expdeudas(request):
     fecha_inicial = ""
     fecha_final = ""
@@ -198,6 +201,7 @@ class CincoMasUsados:
         self.cantidadStock = cantidadStock
 
 
+@user_passes_test(estrategico)
 def obtener_resumen_costomed(request):
     fecha_inicial = ""
     fecha_final = ""
@@ -335,6 +339,7 @@ def obtener_resumen_costomed(request):
                            'total_gasto_med': total_gasto_med, 'prueba': prueba})
 
 
+@user_passes_test(estrategico)
 def obtener_resumen_ingresoConsultas(request):
     hoy = date.today()
 
@@ -407,7 +412,8 @@ def obtener_resumen_ingresoConsultas(request):
         return render(request, template_name='resumenes/resumen_ingobtenidos.html')
 
 
-def obtener_resumen_tratmientosreq(request):
+@user_passes_test(estrategico)
+def obtener_resumen_tratmientosrec(request):
     hoy = date.today()
 
     tratamientos = None
@@ -468,3 +474,20 @@ def obtener_resumen_tratmientosreq(request):
                                'tratamientos': tratamientos, 'costo_total': costo_total, 'total_pagado': total_pagado, 'ganancia_total': ganancia_total})
     else:
         return render(request, template_name='resumenes/resumen_tratamientosreq.html')
+
+
+def obtener_informe_odontograma(request):
+    hoy = date.today()
+
+    if request.method == 'POST':
+        fecha_inicial = request.POST.get('fecha_inicial')
+        fecha_final = request.POST.get('fecha_final')
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+
+        return render(request, template_name='informes/uso_odontograma.html',
+                      context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,})
+    else:
+        return render(request, template_name='informes/uso_odontograma.html')
+
+
