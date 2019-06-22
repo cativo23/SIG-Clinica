@@ -410,9 +410,7 @@ def obtener_resumen_ingresoConsultas(request):
 def obtener_resumen_tratmientosreq(request):
     hoy = date.today()
 
-    tratamientos_count = None
-    tratamientos_pagados = None
-    tratamientos_aplicados = None
+    tratamientos = None
     if request.method == 'POST':
 
         fecha_inicial = request.POST.get('fecha_inicial')
@@ -420,33 +418,53 @@ def obtener_resumen_tratmientosreq(request):
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
         if fecha_inicial and fecha_final:
-            tratamientos_aplicados = Tratamiento.objects.filter(
-                nombreTratamiento=F('procedimiento__tratamiento__nombreTratamiento')).filter(
-                procedimiento__consulta_realizada__fechaConsulta__range=[fecha_inicial, fecha_final])
-
-            tratamientos_count = tratamientos_aplicados.values('nombreTratamiento', 'precioBase').annotate(
-                count=Count('nombreTratamiento')).order_by('-count').annotate(
-                total=ExpressionWrapper(F('count') * F('precioBase'), output_field=FloatField()))
 
             procedimientos_pagados = Procedimiento.objects.filter(pago__fechaPago__range=[fecha_inicial, fecha_final])
             tratamientos_pagados = procedimientos_pagados.filter(tratamiento__in=Tratamiento.objects.all()).values(
-                'pago__cantidad',
                 'tratamiento__nombreTratamiento',
                 'tratamiento__precioBase').annotate(count=Count('tratamiento__nombreTratamiento')).order_by(
-                '-count').annotate(
-                total=ExpressionWrapper(F('count') * F('tratamiento__precioBase'), output_field=FloatField()))
-            print(tratamientos_pagados)
+                '-count').annotate(total_pagado=Sum('pago__cantidad'))
+        #    print(tratamientos_pagados)
 
             procedimientos_hechos = Procedimiento.objects.filter(
                 consulta_realizada__fechaConsulta__range=[fecha_inicial, fecha_final])
             tratamientos_aplicados = procedimientos_hechos.filter(tratamiento__in=Tratamiento.objects.all()).values(
                 'tratamiento__nombreTratamiento', 'tratamiento__precioBase').annotate(
-                count=Count('tratamiento__nombreTratamiento')).order_by('-count')
-            print(tratamientos_aplicados)
+                count=Count('tratamiento__nombreTratamiento')).order_by('-count').annotate(
+                total=ExpressionWrapper(F('count') * F('tratamiento__precioBase'), output_field=FloatField()))
+           # print(tratamientos_aplicados)
 
+            tratamientos = []
+            test = {x['tratamiento__nombreTratamiento']: x for x in tratamientos_pagados}
+            for item in tratamientos_aplicados:
+                nombre = item['tratamiento__nombreTratamiento']
+                if item['tratamiento__nombreTratamiento'] in test:
+                    tratamientos.append({
+                        'nombre': item['tratamiento__nombreTratamiento'],
+                        'costo': item['tratamiento__precioBase'],
+                        'total': test[nombre]['total_pagado'],
+                        'cantidad': item['count'],
+                        'ganancia': float(test[nombre]['total_pagado']) - item['total']
+                    })
+                else:
+                    tratamientos.append({
+                        'nombre': item['tratamiento__nombreTratamiento'],
+                        'costo': item['tratamiento__precioBase'],
+                        'total': 0,
+                        'cantidad': item['count'],
+                        'ganancia': - item['total']
+                    })
+
+            costo_total = 0
+            total_pagado = 0
+
+            for tratamiento in tratamientos:
+                costo_total += tratamiento['costo']*tratamiento['cantidad']
+                total_pagado += tratamiento['total']
+
+            ganancia_total = total_pagado-costo_total
         return render(request, template_name='resumenes/resumen_tratamientosreq.html',
                       context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
-                               'tratamientos_count': tratamientos_count, 'tratamientos_pagados': tratamientos_pagados,
-                               'tratamientos_aplicados': tratamientos_aplicados})
+                               'tratamientos': tratamientos, 'costo_total': costo_total, 'total_pagado': total_pagado, 'ganancia_total': ganancia_total})
     else:
         return render(request, template_name='resumenes/resumen_tratamientosreq.html')

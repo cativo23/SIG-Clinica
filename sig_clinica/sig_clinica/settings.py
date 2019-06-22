@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'axes',
-    'gerencial'
+    'gerencial',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

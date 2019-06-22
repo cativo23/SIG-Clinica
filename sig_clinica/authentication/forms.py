@@ -11,11 +11,7 @@ class UsuarioForm(forms.Form):
     email = forms.EmailField(error_messages={'required': 'Campo obligatorio'}, label='Dirección de Correo Electrónico')
 
     # Para solucionar error en las migraciones iniciales
-    try:
-        groups = forms.ChoiceField(choices=[(x.id, x.name) for x in Group.objects.all()], label='Perfil de Acceso',
-                                   help_text='Por favor seleccione el Perfil de Acceso que tendrá este Usuario')
-    except :
-        pass
+    groups = forms.ChoiceField(choices=[(x.id, x.name) for x in Group.objects.all()], label='Perfil de Acceso')
 
     layout = Layout(Fieldset('Agregar Usuario: '), Row('username', 'email'), Row('first_name', 'last_name'),
                     Row('groups'))

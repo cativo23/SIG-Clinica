@@ -11,7 +11,7 @@ urlpatterns = [
     # Inician urls para Usuario
     path('agregar_usuario/', agregar_usuario, name='agregar_usuario'),
     path('usuarios/', usuarios, name='usuarios'),
-    path('actualizar_usuario/', actualizar_usuario, name='actualizar_usuario'),
+    path('actualizar_usuario/<int:pk>/', actualizar_usuario, name='actualizar_usuario'),
     path('eliminar_usuario/<int:pk>/', eliminar_usuario, name='eliminar_usuario'),
     path('bloquear_usuario/<int:pk>/', bloquear_usuario, name='bloquear_usuario'),
     # Finalizan urls para Usuario

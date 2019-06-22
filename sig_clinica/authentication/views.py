@@ -81,11 +81,12 @@ def cuenta(request):
     message = ""
     user = request.user
     if request.POST:
-        if request.POST.get('password'):
-            if request.POST.get('password') == request.POST.get('password2'):
-                user.password = make_password(request.POST.get('password'), None, 'argon2')
+        if request.POST.get('contraseña'):
+            if request.POST.get('contraseña') == request.POST.get('contraseña2'):
+                user.password = make_password(request.POST.get('contraseña'), None, 'argon2')
             else:
                 message = "Las contraseñas no coinciden, vuelva a intentarlo"
+                messages.error(request, message)
                 context = {'nombre': user.first_name,
                            'apellido': user.last_name,
                            'email': user.email,
@@ -101,9 +102,12 @@ def cuenta(request):
         try:
             user.save()
             message = "Datos modificados con éxito"
+            messages.success(request, message)
         except:
             message = "Error al modificar datos"
+            messages.error(request, message)
     user = User.objects.get(pk=user.id)
+    print(message)
     context = {'nombre': user.first_name,
                'apellido': user.last_name,
                'email': user.email,
@@ -139,10 +143,12 @@ def agregar_usuario(request):
                 email = EmailMessage('Creación de password', content, to={user.email, })
                 email.send()
                 mensaje = "Usuario creado con éxito"
+                messages.success(request, mensaje)
                 # Limpiando campos después de guardar (Reset Forms)
                 form = UsuarioForm()
             except:
                 mensaje = "Error al crear el usuario"
+                messages.error(request, mensaje)
 
     else:
         form = UsuarioForm()
@@ -217,7 +223,7 @@ def eliminar_usuario(request, pk):
             messages.add_message(request, messages.INFO, 'Error al eliminar el usuario')
     else:
         messages.add_message(request, messages.INFO, 'No puede eliminar su propio usuario')
-    return HttpResponseRedirect('/usuarios')
+    return HttpResponseRedirect('/auth/usuarios')
 
 
 @login_required

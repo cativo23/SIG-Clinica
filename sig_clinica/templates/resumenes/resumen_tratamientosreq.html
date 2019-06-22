@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
+{% load i18n %}
 {% load l10n %}
 
 {% block title %} Expedientes Creados {% endblock %}
@@ -35,13 +37,13 @@
                                         </thead>
 
                                         <tbody>
-                                        {% for tratamiento in tratamientos_aplicados %}
+                                        {% for tratamiento in tratamientos%}
                                             <tr>
-                                                <td><b>{{ tratamiento.tratamiento__nombreTratamiento }}</b></td>
-                                                <td>{{ tratamiento.tratamiento__precioBase }}</td>
-                                                <td>{{ tratamiento.total }}</td>
-                                                <td>{{ tratamiento.count }}</td>
-                                                <td>{{ tratamiento.ganancia }}</td>
+                                                <td><b>{{ tratamiento.nombre }}</b></td>
+                                                <td>{{ tratamiento.costo|stringformat:'0.2f'|intcomma }}</td>
+                                            <td>{{ tratamiento.total|stringformat:'0.2f'|intcomma }}</td>
+                                            <td>{{ tratamiento.cantidad|stringformat:'0.2f'|intcomma }}</td>
+                                            <td>{{ tratamiento.ganancia|stringformat:'0.2f'|intcomma }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -61,8 +63,9 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>{{ con_total }}</td>
-                                            <td>{{ ingresos }}</td>
+                                            <td>{{ costo_total|stringformat:'0.2f'|intcomma}}</td>
+                                            <td>{{ total_pagado|stringformat:'0.2f'|intcomma }}</td>
+                                            <td>{{ ganancia_total|stringformat:'0.2f'|intcomma }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
