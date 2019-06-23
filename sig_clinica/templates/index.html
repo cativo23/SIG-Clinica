@@ -3,7 +3,7 @@
 {% load static %}
 {% load staticfiles %}
 {% load i18n %}
-
+{% load gerencial_tags %}
 {% block title %} Inicio{% endblock %}
 
 
@@ -24,6 +24,7 @@
 {% block content %}
 
     <!--INICIO MENU ADMINISTRADOR-->
+     {% if request.user|has_group:"administrador" %}
    <div class="container">
     <div class="row"><br>
         <!-- Inicio divider -->
@@ -46,7 +47,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons" >info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:bitacora' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
                     <p>Lleve un registro de las actividades que realizan los usuarios del Sistema de Información Gerencial.</p>
@@ -69,7 +70,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'usuarios' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
                     <p>Realice acciones de gestión de usuarios que pertenecen al Sistema de Información Gerencial.</p>
@@ -86,8 +87,9 @@
     </div>
    </div>
     <!-- FIN MENU ADMINISTRADOR-->
-
+{% endif %}
     <!-- INICIO MENU ESTRATEGICO-->
+     {% if request.user|has_group:"estrategico" %}
 <div class="container">
         <div class="row"><br>
 
@@ -215,7 +217,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:resumen_tratamientorec' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
                     <p>Resumen de los tratamientos que más solicitan los pacientes para un periodo seleccionado.</p>
@@ -234,8 +236,9 @@
     </div>
 </div>
     <!-- FIN MENU ESTRATEGICO-->
-
+{% endif %}
     <!-- INICIO MENU TACTICO-->
+     {% if request.user|has_group:"tactico" %}
 <div class="container">
     <div class="row"><br>
 
@@ -260,7 +263,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:resumen_recetamed' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
                     <p>Informe de los medicamentos que más se usaron en recetas médicas para un período seleccionado.
@@ -286,7 +289,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:informe_odontograma' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
                     <p>Informe para observar la frecuencia de uso del odontograma en ciertos tratamientos
@@ -308,7 +311,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:resumen_vencimiento' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
                     <p>Informe de los medicamentos que se han vencido y además los que están próximos a su fecha
@@ -335,7 +338,7 @@
                     <a class="btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator">
                         <i class="material-icons">info_outline</i>
                     </a>
-                    <a class="btn-floating halfway-fab waves-effect waves-light" href=""><i class="material-icons">arrow_forward</i></a>
+                    <a class="btn-floating halfway-fab waves-effect waves-light" href="{% url 'gerencial:resumen_nuevorecurrente' %}"><i class="material-icons">arrow_forward</i></a>
                 </div>
                 <div class="card-content">
                     <p>Informe del ingreso por consultas comparando con ingresos obtenidos por pacientes nuevos y recurrentes.</p>
@@ -395,33 +398,8 @@
 
     </div>
 </div>
-    <!-- FIN MENU TACTICO-->br
+    <!-- FIN MENU TACTICO-->
+    {% endif %}
 <br><br><br>
 
-    <!-- Footer -->
-    <footer class="page-footer" style="margin-left: 0px">
-        <div class="container">
-            <div class="row">
-                <div class="col l6 s12">
-                    <h5 class="white-text">Footer Content</h5>
-                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
-                        content.</p>
-                </div>
-                <div class="col l4 offset-l2 s12">
-                    <h5 class="white-text">Links</h5>
-                    <ul>
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright">
-            <div class="container">
-                © 2014 Copyright Text
-            </div>
-        </div>
-    </footer>
 {% endblock content %}

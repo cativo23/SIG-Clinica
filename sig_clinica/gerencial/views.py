@@ -896,13 +896,11 @@ def registro_bitacora(request, accion):
 @user_passes_test(administrador)
 def bitacora(request):
     object_list = []
-    c = []
+    c = {}
     consultas = Bitacora.objects.raw(
-        "SELECT DISTINCTROW  auth_group.name ,gerencial_bitacora. * " +
-        "from  auth_user_groups JOIN  gerencial_bitacora on user_id = usuario_id Join auth_group on group_id=auth_group.id  ")
+        "SELECT DISTINCT auth_group.name, gerencial_bitacora.* FROM auth_user_groups JOIN  gerencial_bitacora on user_id = usuario_id Join auth_group on group_id=auth_group.id;")
 
     object_list = list(consultas)
-
     # Contexto
     c['object_list'] = object_list
 

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% include 'material/includes/material_css.html' %}
 <script src="{% static 'material/js/jquery.js' %}"></script>
@@ -51,3 +52,17 @@
     {% endif %}
     {% endfor %}
 {% endblock messages %}
+
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li >
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
+{% endblock %}

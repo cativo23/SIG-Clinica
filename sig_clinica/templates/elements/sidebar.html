@@ -1,6 +1,7 @@
 {% load static %}
 {% load staticfiles %}
 {% load i18n %}
+{% load gerencial_tags %}
 
 <ul id="slide-out" class="sidenav">
     <li>
@@ -9,21 +10,45 @@
                 <img src="{% static 'gerencial/img/ocean.jpg' %}">
             </div>
             {% if user.is_authenticated %}
-            <a href="#user"><img class="circle" src="{% static 'gerencial/img/person1.jpg' %}"></a>
-            <a href="#name"><span class="white-text name">{{ user }}</span></a>
-            <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
-                {% else %}
+                <a href="{% url 'cuenta' %}"><img class="circle" src="{% static 'gerencial/img/person1.jpg' %}"></a>
+                <a href="{% url 'cuenta' %}"><span class="white-text name">{{ user }}</span></a>
+                <a href="{% url 'cuenta' %}"><span class="white-text email">{{ user.email }}</span></a>
+            {% else %}
                 <a href="#user"><img class="circle" src="{% static 'gerencial/img/person2.jpg' %}"></a>
-            <a href="#name"><span class="white-text name">{% trans 'Anonymous' %}</span></a>
-            <a href="#email"><span class="white-text email">{% trans '----' %}</span></a>
+                <a href="#name"><span class="white-text name">{% trans 'Anonymous' %}</span></a>
+                <a href="#email"><span class="white-text email">{% trans '----' %}</span></a>
             {% endif %}
         </div>
     </li>
-    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-    <li><a href="#!">Second Link</a></li>
+    {% if request.user|has_group:"administrador" %}
+        <li><a class="subheader">Administración</a></li>
+    <li><a class="waves-effect" href="{% url 'usuarios' %}"><i class="material-icons">person</i>Usuarios</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:bitacora' %}">Bitácora</a></li>
     <li>
         <div class="divider"></div>
     </li>
-    <li><a class="subheader">Subheader</a></li>
-    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+ {% endif %}
+{% if request.user|has_group:"estrategico" %}
+        <li><a class="subheader">Estratéfigo</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_expcreados' %}"><i class="material-icons">person</i>Expedientes Creados</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_expdeudas' %}">Expedientes con Deudas</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_costomed' %}">Demanda Medicamentos</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_ingrObtenido' %}">Ingresos por Consulta</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_tratamientorec' %}">Tratamientos Recurrentes</a></li>
+    <li>
+        <div class="divider"></div>
+    </li>
+ {% endif %}
+{% if request.user|has_group:"tactico" %}
+        <li><a class="subheader">Táctico</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_recetamed' %}">Medicamentos en Recetas Medicas</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:informe_odontograma' %}"><i class="material-icons">person</i>Uso Odontograma</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_vencimiento' %}">Vencimiento de Medicamentos</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_nuevorecurrente' %}">Pacientes Nuevos y Recurrentes</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_nuevorecurrente' %}">Falta el de ariel</a></li>
+    <li><a class="waves-effect" href="{% url 'gerencial:resumen_nuevorecurrente' %}">Falta el de ariel</a></li>
+    <li>
+        <div class="divider"></div>
+    </li>
+ {% endif %}
 </ul>

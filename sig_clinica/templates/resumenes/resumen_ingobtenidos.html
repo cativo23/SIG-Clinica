@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block title %} Expedientes Creados {% endblock %}
 {% block pantalla %} Resumen de Expedientes Creados  {% endblock %}
@@ -116,4 +117,17 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li >
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
 {% endblock %}

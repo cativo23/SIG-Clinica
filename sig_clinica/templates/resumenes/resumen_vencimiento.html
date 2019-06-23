@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block title %} Resumen de Vencimiendo de Medicamentos  {% endblock %}
 {% block pantalla %} Resumen de Vencimiendo de Medicamentos {% endblock %}
@@ -105,4 +106,18 @@
     </div>
 </div>
 </div>
+{% endblock %}
+
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li >
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
 {% endblock %}
