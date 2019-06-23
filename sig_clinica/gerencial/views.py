@@ -4,44 +4,19 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, Count, F, FloatField, ExpressionWrapper, Q
 from django.shortcuts import render
 
-from authentication.views import estrategico
-from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma
-from .models import Procedimiento, Pago
-from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento
+from authentication.views import estrategico, administrador, tactico
+from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma, Bitacora
 from .models import Procedimiento, Pago, Receta
 
-
-
-# from auth1.views import administrador
 
 def fecha_18():
     current = datetime.now().date()
     return date(current.year - 18, current.month, current.day)
 
 
-# Create your views here.
-# @user_passes_test(administrador)
+# Create your views here
 @login_required()
 def index(request):
-    fecha1=datetime.now().date()
-    fecha2=datetime.now().date()
-    total=[]
-
-    meds = Medicamento.objects.all()
-    meds1 = []
-    lotes = LoteMedicamento.objects.filter(fecha_entrada__range=[fecha1, fecha2])
-    for lote in lotes:
-        meds1.append(meds.filter(lotemedicamento=lote))
-
-    hola = collections.Counter(meds1)
-    print(hola)
-    print(meds1)
-
-
-    for lote in lotes:
-        total.append(lote.cantidad * lote.medicamento.precio_producto)
-    print(total)
-    
     return render(request, template_name='index.html')
 
 
@@ -499,6 +474,7 @@ def obtener_resumen_tratmientosrec(request):
         return render(request, template_name='resumenes/resumen_tratamientosreq.html')
 
 
+@user_passes_test(tactico)
 def obtener_informe_odontograma(request):
     hoy = date.today()
     max = 5
@@ -525,9 +501,11 @@ def obtener_informe_odontograma(request):
         total_odontogramas = odontogramas_fem + odontogramas_mas
 
         tratamientos_frecuentes = Procedimiento.objects.filter(odontograma__in=odontogramas).values(
-            'tratamiento__nombreTratamiento', 'tratamiento__precioBase').annotate(count=Count('tratamiento__nombreTratamiento')).order_by('-count')[:max]
+            'tratamiento__nombreTratamiento', 'tratamiento__precioBase').annotate(
+            count=Count('tratamiento__nombreTratamiento')).order_by('-count')[:max]
 
-        piezas_frecuentes = Procedimiento.objects.filter(odontograma__in=odontogramas).values('tratamiento__nombreTratamiento', 'pieza').annotate(rep=Count('pieza')).order_by('-rep')
+        piezas_frecuentes = Procedimiento.objects.filter(odontograma__in=odontogramas).values(
+            'tratamiento__nombreTratamiento', 'pieza').annotate(rep=Count('pieza')).order_by('-rep')
 
         print(piezas_frecuentes)
 
@@ -542,17 +520,19 @@ def obtener_informe_odontograma(request):
         for tratamiento in tratamientos:
             for s in piezas_frecuentes:
                 if tratamiento['nombre'] == s['tratamiento__nombreTratamiento']:
-                    if len(tratamiento['piezas']) <= max-1:
+                    if len(tratamiento['piezas']) <= max - 1:
                         tratamiento['piezas'].append(s['pieza'])
 
         return render(request, template_name='informes/uso_odontograma.html',
-                      context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'tratamientos': tratamientos,
-                               'cant_consultas': cant_consultas, 'cant_odontogramas': cant_odontogramas, 'total_contultas': total_consultas,
-                               'total_odontogramas': total_odontogramas, 'consultas_fem': consultas_fem, 'consultas_mas': consultas_mas, 'odontogramas_fem': odontogramas_fem,
+                      context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
+                               'tratamientos': tratamientos,
+                               'cant_consultas': cant_consultas, 'cant_odontogramas': cant_odontogramas,
+                               'total_contultas': total_consultas,
+                               'total_odontogramas': total_odontogramas, 'consultas_fem': consultas_fem,
+                               'consultas_mas': consultas_mas, 'odontogramas_fem': odontogramas_fem,
                                'odontogramas_mas': odontogramas_mas})
     else:
         return render(request, template_name='informes/uso_odontograma.html')
-
 
 
 class RecetaMasUsados:
@@ -565,7 +545,8 @@ class RecetaMasUsados:
         self.precio = precio
 
 
-#Resumen RecetaMed
+# Resumen RecetaMed
+@user_passes_test(estrategico)
 def obtener_resumen_recetamed(request):
     fecha_inicial = ""
     fecha_final = ""
@@ -634,7 +615,8 @@ def obtener_resumen_recetamed(request):
             if len(lista_mas_usados) >= 9:
                 i = 0
                 for totales in range(9):
-                    total = LoteMedicamento.objects.filter(medicamento__receta__nombreReceta=lista_mas_usados[i]).aggregate(
+                    total = LoteMedicamento.objects.filter(
+                        medicamento__receta__nombreReceta=lista_mas_usados[i]).aggregate(
                         Sum('cantidad'))
                     mas_usados_tot.append(total.get('cantidad__sum'))
                     i = i + 1
@@ -642,7 +624,8 @@ def obtener_resumen_recetamed(request):
             else:
                 i = 0
                 for totales in range(len(lista_mas_usados)):
-                    total = LoteMedicamento.objects.filter(medicamento__receta__nombreReceta=lista_mas_usados[i]).aggregate(
+                    total = LoteMedicamento.objects.filter(
+                        medicamento__receta__nombreReceta=lista_mas_usados[i]).aggregate(
                         Sum('cantidad'))
                     mas_usados_tot.append(total.get('cantidad__sum'))
                     i = i + 1
@@ -650,31 +633,30 @@ def obtener_resumen_recetamed(request):
 
             # Aqui se llena los objetos que se enviaran al html, se envia "resumen"
             resumen = []
-            i=0
+            i = 0
             # Comprobando que existen al menos 5 mediamentos mas tuilizados en recetas
             for medicamentos in range(len(mas_usados_rec)):
-                    meds = Medicamento.objects.filter(receta__nombreReceta=lista_mas_usados[i])
-                    i = i + 1
-            
+                meds = Medicamento.objects.filter(receta__nombreReceta=lista_mas_usados[i])
+                i = i + 1
 
             if len(lista_mas_usados) >= 9:
                 i = 0
                 for repetir in range(9):
                     objeto = RecetaMasUsados(prueba.get(mas_usados_rec[i].nombreReceta),
-                                            mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
-                                            meds[i].marca_producto,
-                                            meds[i].formafarmaceutica,
-                                            meds[i].precio_producto)
+                                             mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
+                                             meds[i].marca_producto,
+                                             meds[i].formafarmaceutica,
+                                             meds[i].precio_producto)
                     resumen.append(objeto)
                     i = i + 1
             else:
                 i = 0
                 for repetir in range(len(lista_mas_usados)):
                     objeto = RecetaMasUsados(prueba.get(mas_usados_rec[i].nombreReceta),
-                                            mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
-                                            meds[i].marca_producto,
-                                            meds[i].formafarmaceutica,
-                                            meds[i].precio_producto)
+                                             mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
+                                             meds[i].marca_producto,
+                                             meds[i].formafarmaceutica,
+                                             meds[i].precio_producto)
                     resumen.append(objeto)
                     i = i + 1
 
@@ -688,7 +670,7 @@ def obtener_resumen_recetamed(request):
                 medicamento = Medicamento.objects.filter(nombre_producto=l)
                 for m in medicamento:
                     total_gasto_med = total_gasto_med + \
-                        m.precio_producto * mas_usados_tot[i]
+                                      m.precio_producto * mas_usados_tot[i]
                     print("Precio uni:", m.precio_producto,
                           "Cantidad: ", mas_usados_tot[i])
                     i = i + 1
@@ -703,14 +685,15 @@ def obtener_resumen_recetamed(request):
 class vencimiento:
     def __init__(self, nombre, marca, forma, precio, cantidadactual, vence):
         self.nombre = nombre
-        self.marca= marca
+        self.marca = marca
         self.forma = forma
         self.precio = precio
         self.cantidadactual = cantidadactual
         self.vence = vence
 
 
-#Resumen Vencimiento
+# Resumen Vencimiento
+@user_passes_test(tactico)
 def obtener_resumen_vencimiento(request):
     fecha_inicial = ""
     fecha_final = ""
@@ -727,16 +710,17 @@ def obtener_resumen_vencimiento(request):
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
         if fecha_inicial and fecha_final:
-
             # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
 
             tabla1 = Medicamento.objects.all()
             # print(total_gasto_med)
     return render(request, template_name="resumenes/resumen_vencimiento.html",
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
-                           'tabla1': tabla1,})
+                           'tabla1': tabla1, })
 
-#Resumen NuevoRecurrente
+
+# Resumen NuevoRecurrente
+@user_passes_test(tactico)
 def obtener_resumen_nuevorecurrente(request):
     hoy = date.today()
 
@@ -776,14 +760,16 @@ def obtener_resumen_nuevorecurrente(request):
 
         if fecha_inicial and fecha_final:
             rconsultas = Consulta.objects.filter(
-                fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+                fechaConsulta__range=[fecha_inicial, fecha_final]).filter(
+                paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
             rpagos = Pago.objects.filter(
                 fechaPago__range=[fecha_inicial, fecha_final]).filter(Expediente__fechaCreacion__lte=fecha_inicial)
 
-
             # TABLA POR SEXO RECURRENTE
-            rsexo_con_mas = rconsultas.filter(paciente__paciente__sexo='M').all().filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
-            rsexo_con_fem = rconsultas.filter(paciente__paciente__sexo='F').all().filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+            rsexo_con_mas = rconsultas.filter(paciente__paciente__sexo='M').all().filter(
+                paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+            rsexo_con_fem = rconsultas.filter(paciente__paciente__sexo='F').all().filter(
+                paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
 
             rsexo_con_mas_num = rsexo_con_mas.count()
             rsexo_con_fem_num = rsexo_con_fem.count()
@@ -802,17 +788,21 @@ def obtener_resumen_nuevorecurrente(request):
             fecha_menor = fecha_18()
 
             rmenores_con = rconsultas.filter(
-                paciente__paciente__fechaNacimiento__gte=fecha_menor).filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+                paciente__paciente__fechaNacimiento__gte=fecha_menor).filter(
+                paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
             rmayores_con = rconsultas.filter(
-                paciente__paciente__fechaNacimiento__lte=fecha_menor).filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+                paciente__paciente__fechaNacimiento__lte=fecha_menor).filter(
+                paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
             redad_con_me = len(rmenores_con)
             redad_con_ma = len(rmayores_con)
 
             rtotal_consulta_men = \
-                rpagos.filter(Expediente__paciente__fechaNacimiento__gte=fecha_menor).filter(Expediente__fechaCreacion__lte=fecha_inicial).aggregate(Sum("cantidad"))[
+                rpagos.filter(Expediente__paciente__fechaNacimiento__gte=fecha_menor).filter(
+                    Expediente__fechaCreacion__lte=fecha_inicial).aggregate(Sum("cantidad"))[
                     "cantidad__sum"]
             rtotal_consulta_may = \
-                rpagos.filter(Expediente__paciente__fechaNacimiento__lte=fecha_menor).filter(Expediente__fechaCreacion__lte=fecha_inicial).aggregate(Sum("cantidad"))[
+                rpagos.filter(Expediente__paciente__fechaNacimiento__lte=fecha_menor).filter(
+                    Expediente__fechaCreacion__lte=fecha_inicial).aggregate(Sum("cantidad"))[
                     "cantidad__sum"]
 
             consultas = Consulta.objects.filter(
@@ -820,9 +810,10 @@ def obtener_resumen_nuevorecurrente(request):
             pagos = Pago.objects.filter(
                 fechaPago__range=[fecha_inicial, fecha_final])
 
-            #PARA NUEVO
+            # PARA NUEVO
             nconsultas = Consulta.objects.filter(
-                fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
+                fechaConsulta__range=[fecha_inicial, fecha_final]).filter(
+                paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
             npagos = Pago.objects.filter(
                 fechaPago__range=[fecha_inicial, fecha_final]).filter(Expediente__fechaCreacion__gte=fecha_inicial)
 
@@ -850,17 +841,21 @@ def obtener_resumen_nuevorecurrente(request):
             fecha_menor = fecha_18()
 
             nmenores_con = nconsultas.filter(
-                paciente__paciente__fechaNacimiento__gte=fecha_menor).filter(paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
+                paciente__paciente__fechaNacimiento__gte=fecha_menor).filter(
+                paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
             nmayores_con = nconsultas.filter(
-                paciente__paciente__fechaNacimiento__lte=fecha_menor).filter(paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
+                paciente__paciente__fechaNacimiento__lte=fecha_menor).filter(
+                paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
             nedad_con_me = len(nmenores_con)
             nedad_con_ma = len(nmayores_con)
 
             ntotal_consulta_men = \
-                npagos.filter(Expediente__paciente__fechaNacimiento__gte=fecha_menor).filter(Expediente__fechaCreacion__gte=fecha_inicial).aggregate(Sum("cantidad"))[
+                npagos.filter(Expediente__paciente__fechaNacimiento__gte=fecha_menor).filter(
+                    Expediente__fechaCreacion__gte=fecha_inicial).aggregate(Sum("cantidad"))[
                     "cantidad__sum"]
             ntotal_consulta_may = \
-                npagos.filter(Expediente__paciente__fechaNacimiento__lte=fecha_menor).filter(Expediente__fechaCreacion__gte=fecha_inicial).aggregate(Sum("cantidad"))[
+                npagos.filter(Expediente__paciente__fechaNacimiento__lte=fecha_menor).filter(
+                    Expediente__fechaCreacion__gte=fecha_inicial).aggregate(Sum("cantidad"))[
                     "cantidad__sum"]
 
             consultas = Consulta.objects.filter(
@@ -872,8 +867,6 @@ def obtener_resumen_nuevorecurrente(request):
             con_total = consultas.count()
             ingresos = pagos.aggregate(Sum("cantidad"))["cantidad__sum"]
 
-
-
         return render(request, template_name='resumenes/resumen_nuevorecurrente.html',
                       context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
                                'rsexo_con_mas': rsexo_con_mas_num, 'rsexo_con_fem': rsexo_con_fem_num,
@@ -883,7 +876,37 @@ def obtener_resumen_nuevorecurrente(request):
                                'redad_con_me': redad_con_me, 'redad_con_ma': redad_con_ma, 'con_total': con_total,
                                'nedad_con_me': nedad_con_me, 'nedad_con_ma': nedad_con_ma,
                                'ingresos': ingresos, 'rtotal_consulta_men': rtotal_consulta_men,
-                               "rtotal_consulta_may": rtotal_consulta_may,'ntotal_consulta_men': ntotal_consulta_men,
+                               "rtotal_consulta_may": rtotal_consulta_may, 'ntotal_consulta_men': ntotal_consulta_men,
                                "ntotal_consulta_may": ntotal_consulta_may})
     else:
         return render(request, template_name='resumenes/resumen_nuevorecurrente.html')
+
+
+def registro_bitacora(request, accion):
+    user = request.user
+    Bitacora.objects.create(
+        usuario=user,
+        accion=accion,
+        fecha=datetime.datetime.now()
+    )
+    return 0
+
+
+@login_required
+@user_passes_test(administrador)
+def bitacora(request):
+    object_list = []
+    c = []
+    consultas = Bitacora.objects.raw(
+        "SELECT DISTINCTROW  auth_group.name ,gerencial_bitacora. * " +
+        "from  auth_user_groups JOIN  gerencial_bitacora on user_id = usuario_id Join auth_group on group_id=auth_group.id  ")
+
+    object_list = list(consultas)
+
+    # Contexto
+    c['object_list'] = object_list
+
+    c['columnas'] = ["Nombre se Usuario", "Accion", "Fecha", "Rol"]
+    c['title'] = "Bitacora de Usuarios"
+
+    return render(request, 'gerencial/bitacora.html', c)

@@ -43,7 +43,7 @@ def login(request):
             if next:
                 return redirect(next)
             else:
-                return redirect('/')
+                return redirect('index')
         else:
             message = ["Usuario o password Incorrecto", messages.WARNING]
             try:

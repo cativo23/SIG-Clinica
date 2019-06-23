@@ -101,8 +101,12 @@ WSGI_APPLICATION = 'sig_clinica.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bd_sig',
+        'USER': 'clinica_user',
+        'PASSWORD': 'admin123',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -156,7 +160,8 @@ DATETIME_FORMAT = 'd/m/Y H i s'
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static_files/'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils import timezone as tz
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -192,3 +193,9 @@ class Especificacion(models.Model):
     receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
     dosis = models.CharField('Dosis', max_length=45, blank=False, null=False)
     duracion = models.CharField('Duracion', max_length=45, blank=False, null=False)
+
+
+class Bitacora(models.Model):
+    usuario=models.ForeignKey(User,null=False, on_delete=models.CASCADE)
+    accion=models.CharField('Accion realizada',max_length=255)
+    fecha=models.DateTimeField('Fecha accion',null=False)
