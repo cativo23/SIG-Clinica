@@ -7,6 +7,9 @@ from django.shortcuts import render
 from authentication.views import estrategico
 from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma
 from .models import Procedimiento, Pago
+from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento
+from .models import Procedimiento, Pago, Receta
+
 
 
 # from auth1.views import administrador
@@ -20,6 +23,25 @@ def fecha_18():
 # @user_passes_test(administrador)
 @login_required()
 def index(request):
+    fecha1=datetime.now().date()
+    fecha2=datetime.now().date()
+    total=[]
+
+    meds = Medicamento.objects.all()
+    meds1 = []
+    lotes = LoteMedicamento.objects.filter(fecha_entrada__range=[fecha1, fecha2])
+    for lote in lotes:
+        meds1.append(meds.filter(lotemedicamento=lote))
+
+    hola = collections.Counter(meds1)
+    print(hola)
+    print(meds1)
+
+
+    for lote in lotes:
+        total.append(lote.cantidad * lote.medicamento.precio_producto)
+    print(total)
+    
     return render(request, template_name='index.html')
 
 
@@ -530,3 +552,338 @@ def obtener_informe_odontograma(request):
                                'odontogramas_mas': odontogramas_mas})
     else:
         return render(request, template_name='informes/uso_odontograma.html')
+
+
+
+class RecetaMasUsados:
+    def __init__(self, n, nombre, nombremed, marca, forma, precio):
+        self.n = n
+        self.nombre = nombre
+        self.nombremed = nombremed
+        self.marca = marca
+        self.forma = forma
+        self.precio = precio
+
+
+#Resumen RecetaMed
+def obtener_resumen_recetamed(request):
+    fecha_inicial = ""
+    fecha_final = ""
+    hoy = date.today()
+
+    resumen = ""
+    total_gasto_med = ""
+
+    prueba = ""
+
+    if request.method == 'POST':
+        fecha_inicial = request.POST.get('fecha_inicial')
+        fecha_final = request.POST.get('fecha_final')
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+        if fecha_inicial and fecha_final:
+
+            # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
+
+            rec_deman_periodo = Receta.objects.filter(consulta__fechaConsulta__range=[fecha_inicial, fecha_final])
+            # print(med_deman_periodo)
+
+            lista_recetas = []
+            for rec in rec_deman_periodo:
+                lista_recetas.append(rec.nombreReceta)
+            # print(lista_medicamentos)
+
+            # Diccionario con frecuencia de aparicion de "lista_medicamentos", 'medicamento': frecuencia_de _uso
+            dicc_mas_usados = collections.Counter(lista_recetas)  # Objeto counter
+            prueba = collections.Counter(lista_recetas)
+
+            # Lista de los producto sin repetir
+            lista = list(dicc_mas_usados)
+
+            # Obtiene una lista de 5 elemento ordenada de mayor a menos frecuencia de uso en recetas
+            lista_mas_usados = []
+            for ejecutar in range(8):
+                i = 0
+                for l in lista:
+                    frecuencia_max = max(dicc_mas_usados.values())
+                    frecuencia = dicc_mas_usados.get(l)
+                    if frecuencia_max == frecuencia:
+                        dicc_mas_usados.pop(l)
+                        lista_mas_usados.append(l)
+                        lista.pop(i)
+                    i = i + 1
+
+            mas_usados_rec = []
+            if len(lista_mas_usados) >= 9:
+                i = 0
+                for rec in range(9):
+                    mas_usados_rec.append(Receta.objects.get(
+                        nombreReceta=lista_mas_usados[i]))
+                    i = i + 1
+                # print(mas_usados_med)
+            else:
+                i = 0
+                for rec in range(len(lista_mas_usados)):
+                    mas_usados_rec.append(Receta.objects.get(nombreReceta=lista_mas_usados[i]))
+                    i = i + 1
+                # print(mas_usados_med)
+
+            # Totales de lotes
+            mas_usados_tot = []
+            # Comprobando que existen al menos 5 mediamentos mas tuilizados en recetas
+            if len(lista_mas_usados) >= 9:
+                i = 0
+                for totales in range(9):
+                    total = LoteMedicamento.objects.filter(medicamento__receta__nombreReceta=lista_mas_usados[i]).aggregate(
+                        Sum('cantidad'))
+                    mas_usados_tot.append(total.get('cantidad__sum'))
+                    i = i + 1
+                # print(mas_usados_tot)
+            else:
+                i = 0
+                for totales in range(len(lista_mas_usados)):
+                    total = LoteMedicamento.objects.filter(medicamento__receta__nombreReceta=lista_mas_usados[i]).aggregate(
+                        Sum('cantidad'))
+                    mas_usados_tot.append(total.get('cantidad__sum'))
+                    i = i + 1
+                # print(mas_usados_tot)
+
+            # Aqui se llena los objetos que se enviaran al html, se envia "resumen"
+            resumen = []
+            i=0
+            # Comprobando que existen al menos 5 mediamentos mas tuilizados en recetas
+            for medicamentos in range(len(mas_usados_rec)):
+                    meds = Medicamento.objects.filter(receta__nombreReceta=lista_mas_usados[i])
+                    i = i + 1
+            
+
+            if len(lista_mas_usados) >= 9:
+                i = 0
+                for repetir in range(9):
+                    objeto = RecetaMasUsados(prueba.get(mas_usados_rec[i].nombreReceta),
+                                            mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
+                                            meds[i].marca_producto,
+                                            meds[i].formafarmaceutica,
+                                            meds[i].precio_producto)
+                    resumen.append(objeto)
+                    i = i + 1
+            else:
+                i = 0
+                for repetir in range(len(lista_mas_usados)):
+                    objeto = RecetaMasUsados(prueba.get(mas_usados_rec[i].nombreReceta),
+                                            mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
+                                            meds[i].marca_producto,
+                                            meds[i].formafarmaceutica,
+                                            meds[i].precio_producto)
+                    resumen.append(objeto)
+                    i = i + 1
+
+            # TABLA 2 TOTAL GASTADO EN MEDICAMENTO
+
+            total_gasto_med = 0
+            # lista contiene los medicamentos usados en el periodo sin repetir medicamentos
+            lista2 = lista_mas_usados
+            i = 0
+            for l in lista2:
+                medicamento = Medicamento.objects.filter(nombre_producto=l)
+                for m in medicamento:
+                    total_gasto_med = total_gasto_med + \
+                        m.precio_producto * mas_usados_tot[i]
+                    print("Precio uni:", m.precio_producto,
+                          "Cantidad: ", mas_usados_tot[i])
+                    i = i + 1
+
+            print(mas_usados_tot)
+            # print(total_gasto_med)
+    return render(request, template_name="resumenes/resumen_recetamed.html",
+                  context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
+                           'total_gasto_med': total_gasto_med, 'prueba': prueba})
+
+
+class vencimiento:
+    def __init__(self, nombre, marca, forma, precio, cantidadactual, vence):
+        self.nombre = nombre
+        self.marca= marca
+        self.forma = forma
+        self.precio = precio
+        self.cantidadactual = cantidadactual
+        self.vence = vence
+
+
+#Resumen Vencimiento
+def obtener_resumen_vencimiento(request):
+    fecha_inicial = ""
+    fecha_final = ""
+    hoy = date.today()
+
+    resumen = ""
+    tabla1 = ""
+
+    prueba = ""
+
+    if request.method == 'POST':
+        fecha_inicial = request.POST.get('fecha_inicial')
+        fecha_final = request.POST.get('fecha_final')
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+        if fecha_inicial and fecha_final:
+
+            # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
+
+            tabla1 = Medicamento.objects.all()
+            # print(total_gasto_med)
+    return render(request, template_name="resumenes/resumen_vencimiento.html",
+                  context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
+                           'tabla1': tabla1,})
+
+#Resumen NuevoRecurrente
+def obtener_resumen_nuevorecurrente(request):
+    hoy = date.today()
+
+    rsexo_con_mas_num = ""
+    rsexo_con_fem_num = ""
+
+    rtotal_consulta_mas = 0
+    rtotal_consulta_fem = 0
+
+    redad_con_me = ""
+    redad_con_ma = ""
+
+    rtotal_consulta_men = 0
+    rtotal_consulta_may = 0
+
+    nsexo_con_mas_num = ""
+    nsexo_con_fem_num = ""
+
+    ntotal_consulta_mas = 0
+    ntotal_consulta_fem = 0
+
+    nedad_con_me = ""
+    nedad_con_ma = ""
+
+    ntotal_consulta_men = 0
+    ntotal_consulta_may = 0
+
+    con_total = 0
+    ingresos = 0
+
+    if request.method == 'POST':
+
+        fecha_inicial = request.POST.get('fecha_inicial')
+        fecha_final = request.POST.get('fecha_final')
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+
+        if fecha_inicial and fecha_final:
+            rconsultas = Consulta.objects.filter(
+                fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+            rpagos = Pago.objects.filter(
+                fechaPago__range=[fecha_inicial, fecha_final]).filter(Expediente__fechaCreacion__lte=fecha_inicial)
+
+
+            # TABLA POR SEXO RECURRENTE
+            rsexo_con_mas = rconsultas.filter(paciente__paciente__sexo='M').all().filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+            rsexo_con_fem = rconsultas.filter(paciente__paciente__sexo='F').all().filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+
+            rsexo_con_mas_num = rsexo_con_mas.count()
+            rsexo_con_fem_num = rsexo_con_fem.count()
+
+            rpagosM = rpagos.filter(Expediente__paciente__sexo='M').filter(Expediente__fechaCreacion__lte=fecha_inicial)
+            rtotal_consulta_mas = rpagosM.aggregate(
+                Sum("cantidad"))["cantidad__sum"]
+
+            rpagosF = rpagos.filter(Expediente__paciente__sexo='F').filter(
+                Expediente__fechaCreacion__lte=fecha_inicial)
+            rtotal_consulta_fem = rpagosF.aggregate(
+                Sum("cantidad"))["cantidad__sum"]
+
+            # TABLA POR EDAD RECURRENTE
+
+            fecha_menor = fecha_18()
+
+            rmenores_con = rconsultas.filter(
+                paciente__paciente__fechaNacimiento__gte=fecha_menor).filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+            rmayores_con = rconsultas.filter(
+                paciente__paciente__fechaNacimiento__lte=fecha_menor).filter(paciente__paciente__expediente__fechaCreacion__lte=fecha_inicial)
+            redad_con_me = len(rmenores_con)
+            redad_con_ma = len(rmayores_con)
+
+            rtotal_consulta_men = \
+                rpagos.filter(Expediente__paciente__fechaNacimiento__gte=fecha_menor).filter(Expediente__fechaCreacion__lte=fecha_inicial).aggregate(Sum("cantidad"))[
+                    "cantidad__sum"]
+            rtotal_consulta_may = \
+                rpagos.filter(Expediente__paciente__fechaNacimiento__lte=fecha_menor).filter(Expediente__fechaCreacion__lte=fecha_inicial).aggregate(Sum("cantidad"))[
+                    "cantidad__sum"]
+
+            consultas = Consulta.objects.filter(
+                fechaConsulta__range=[fecha_inicial, fecha_final])
+            pagos = Pago.objects.filter(
+                fechaPago__range=[fecha_inicial, fecha_final])
+
+            #PARA NUEVO
+            nconsultas = Consulta.objects.filter(
+                fechaConsulta__range=[fecha_inicial, fecha_final]).filter(paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
+            npagos = Pago.objects.filter(
+                fechaPago__range=[fecha_inicial, fecha_final]).filter(Expediente__fechaCreacion__gte=fecha_inicial)
+
+            # TABLA POR SEXO NUEVO
+            nsexo_con_mas = nconsultas.filter(paciente__paciente__sexo='M').all().filter(
+                paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
+            nsexo_con_fem = nconsultas.filter(paciente__paciente__sexo='F').all().filter(
+                paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
+
+            nsexo_con_mas_num = nsexo_con_mas.count()
+            nsexo_con_fem_num = nsexo_con_fem.count()
+
+            npagosM = npagos.filter(Expediente__paciente__sexo='M').filter(
+                Expediente__fechaCreacion__gte=fecha_inicial)
+            ntotal_consulta_mas = npagosM.aggregate(
+                Sum("cantidad"))["cantidad__sum"]
+
+            npagosF = npagos.filter(Expediente__paciente__sexo='F').filter(
+                Expediente__fechaCreacion__gte=fecha_inicial)
+            ntotal_consulta_fem = npagosF.aggregate(
+                Sum("cantidad"))["cantidad__sum"]
+
+            # TABLA POR EDAD NUEVO
+
+            fecha_menor = fecha_18()
+
+            nmenores_con = nconsultas.filter(
+                paciente__paciente__fechaNacimiento__gte=fecha_menor).filter(paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
+            nmayores_con = nconsultas.filter(
+                paciente__paciente__fechaNacimiento__lte=fecha_menor).filter(paciente__paciente__expediente__fechaCreacion__gte=fecha_inicial)
+            nedad_con_me = len(nmenores_con)
+            nedad_con_ma = len(nmayores_con)
+
+            ntotal_consulta_men = \
+                npagos.filter(Expediente__paciente__fechaNacimiento__gte=fecha_menor).filter(Expediente__fechaCreacion__gte=fecha_inicial).aggregate(Sum("cantidad"))[
+                    "cantidad__sum"]
+            ntotal_consulta_may = \
+                npagos.filter(Expediente__paciente__fechaNacimiento__lte=fecha_menor).filter(Expediente__fechaCreacion__gte=fecha_inicial).aggregate(Sum("cantidad"))[
+                    "cantidad__sum"]
+
+            consultas = Consulta.objects.filter(
+                fechaConsulta__range=[fecha_inicial, fecha_final])
+            pagos = Pago.objects.filter(
+                fechaPago__range=[fecha_inicial, fecha_final])
+
+            # TABLA 3 TOTALES
+            con_total = consultas.count()
+            ingresos = pagos.aggregate(Sum("cantidad"))["cantidad__sum"]
+
+
+
+        return render(request, template_name='resumenes/resumen_nuevorecurrente.html',
+                      context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
+                               'rsexo_con_mas': rsexo_con_mas_num, 'rsexo_con_fem': rsexo_con_fem_num,
+                               'rtotal_consulta_mas': rtotal_consulta_mas, 'rtotal_consulta_fem': rtotal_consulta_fem,
+                               'nsexo_con_mas': nsexo_con_mas_num, 'nsexo_con_fem': nsexo_con_fem_num,
+                               'ntotal_consulta_mas': ntotal_consulta_mas, 'ntotal_consulta_fem': ntotal_consulta_fem,
+                               'redad_con_me': redad_con_me, 'redad_con_ma': redad_con_ma, 'con_total': con_total,
+                               'nedad_con_me': nedad_con_me, 'nedad_con_ma': nedad_con_ma,
+                               'ingresos': ingresos, 'rtotal_consulta_men': rtotal_consulta_men,
+                               "rtotal_consulta_may": rtotal_consulta_may,'ntotal_consulta_men': ntotal_consulta_men,
+                               "ntotal_consulta_may": ntotal_consulta_may})
+    else:
+        return render(request, template_name='resumenes/resumen_nuevorecurrente.html')
