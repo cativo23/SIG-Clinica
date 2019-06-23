@@ -5,7 +5,7 @@ from django.db.models import Sum, Count, F, FloatField, ExpressionWrapper, Q
 from django.shortcuts import render
 
 from authentication.views import estrategico
-from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento
+from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma
 from .models import Procedimiento, Pago
 
 
@@ -430,7 +430,7 @@ def obtener_resumen_tratmientosrec(request):
                 'tratamiento__nombreTratamiento',
                 'tratamiento__precioBase').annotate(count=Count('tratamiento__nombreTratamiento')).order_by(
                 '-count').annotate(total_pagado=Sum('pago__cantidad'))
-        #    print(tratamientos_pagados)
+            #    print(tratamientos_pagados)
 
             procedimientos_hechos = Procedimiento.objects.filter(
                 consulta_realizada__fechaConsulta__range=[fecha_inicial, fecha_final])
@@ -438,7 +438,7 @@ def obtener_resumen_tratmientosrec(request):
                 'tratamiento__nombreTratamiento', 'tratamiento__precioBase').annotate(
                 count=Count('tratamiento__nombreTratamiento')).order_by('-count').annotate(
                 total=ExpressionWrapper(F('count') * F('tratamiento__precioBase'), output_field=FloatField()))
-           # print(tratamientos_aplicados)
+            # print(tratamientos_aplicados)
 
             tratamientos = []
             test = {x['tratamiento__nombreTratamiento']: x for x in tratamientos_pagados}
@@ -465,29 +465,68 @@ def obtener_resumen_tratmientosrec(request):
             total_pagado = 0
 
             for tratamiento in tratamientos:
-                costo_total += tratamiento['costo']*tratamiento['cantidad']
+                costo_total += tratamiento['costo'] * tratamiento['cantidad']
                 total_pagado += tratamiento['total']
 
-            ganancia_total = total_pagado-costo_total
+            ganancia_total = total_pagado - costo_total
         return render(request, template_name='resumenes/resumen_tratamientosreq.html',
                       context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
-                               'tratamientos': tratamientos, 'costo_total': costo_total, 'total_pagado': total_pagado, 'ganancia_total': ganancia_total})
+                               'tratamientos': tratamientos, 'costo_total': costo_total, 'total_pagado': total_pagado,
+                               'ganancia_total': ganancia_total})
     else:
         return render(request, template_name='resumenes/resumen_tratamientosreq.html')
 
 
 def obtener_informe_odontograma(request):
     hoy = date.today()
-
+    max = 5
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
 
+        consultas_realizadas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final])
+        odontogramas = Odontograma.objects.filter(expediente__consulta__in=consultas_realizadas).filter(
+            fechaUltimaModificacion__range=[fecha_inicial, fecha_final]).distinct()
+        cant_consultas = consultas_realizadas.count()
+        cant_odontogramas = odontogramas.count()
+
+        consultas_fem = consultas_realizadas.filter(paciente__paciente__sexo='F').count()
+        consultas_mas = consultas_realizadas.filter(paciente__paciente__sexo='M').count()
+
+        total_consultas = consultas_mas + consultas_fem
+
+        odontogramas_fem = odontogramas.filter(expediente__paciente__sexo='F').count()
+        odontogramas_mas = odontogramas.filter(expediente__paciente__sexo='M').count()
+
+        total_odontogramas = odontogramas_fem + odontogramas_mas
+
+        tratamientos_frecuentes = Procedimiento.objects.filter(odontograma__in=odontogramas).values(
+            'tratamiento__nombreTratamiento', 'tratamiento__precioBase').annotate(count=Count('tratamiento__nombreTratamiento')).order_by('-count')[:max]
+
+        piezas_frecuentes = Procedimiento.objects.filter(odontograma__in=odontogramas).values('tratamiento__nombreTratamiento', 'pieza').annotate(rep=Count('pieza')).order_by('-rep')
+
+        print(piezas_frecuentes)
+
+        tratamientos = []
+        for tratamiento in tratamientos_frecuentes:
+            tratamientos.append({
+                "nombre": tratamiento['tratamiento__nombreTratamiento'],
+                "piezas": [],
+                "costo": tratamiento['tratamiento__precioBase']
+            })
+
+        for tratamiento in tratamientos:
+            for s in piezas_frecuentes:
+                if tratamiento['nombre'] == s['tratamiento__nombreTratamiento']:
+                    if len(tratamiento['piezas']) <= max-1:
+                        tratamiento['piezas'].append(s['pieza'])
+
         return render(request, template_name='informes/uso_odontograma.html',
-                      context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,})
+                      context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'tratamientos': tratamientos,
+                               'cant_consultas': cant_consultas, 'cant_odontogramas': cant_odontogramas, 'total_contultas': total_consultas,
+                               'total_odontogramas': total_odontogramas, 'consultas_fem': consultas_fem, 'consultas_mas': consultas_mas, 'odontogramas_fem': odontogramas_fem,
+                               'odontogramas_mas': odontogramas_mas})
     else:
         return render(request, template_name='informes/uso_odontograma.html')
-
-

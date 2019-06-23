@@ -32,8 +32,8 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>0</td>
-                                                    <td>0</td>
+                                                    <td>{{ cant_consultas }}</td>
+                                                    <td>{{ cant_odontogramas }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -53,9 +53,19 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td>Masculino</td>
+                                            <td>{{ consultas_mas }}</td>
+                                            <td>{{ odontogramas_mas }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Femenino</td>
+                                            <td>{{ consultas_fem }}</td>
+                                            <td>{{ odontogramas_fem }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Total</b></td>
+                                            <td>{{ total_contultas }}</td>
+                                            <td>{{ total_odontogramas }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -73,11 +83,16 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
+                                        {% for tratamiento in tratamientos %}
+                                            <tr>
+                                            <td>{{ tratamiento.nombre }}</td>
+                                            <td>
+                                                {{ tratamiento.piezas }}
+                                            </td>
+                                            <td>{{ tratamiento.costo }}</td>
+                                            </tr>
+                                        {% endfor %}
+
                                         </tbody>
                                     </table>
                                 </div>
