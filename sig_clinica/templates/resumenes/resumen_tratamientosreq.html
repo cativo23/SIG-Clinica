@@ -4,13 +4,13 @@
 {% load i18n %}
 {% load l10n %}
 
-{% block title %} Expedientes Creados {% endblock %}
-{% block pantalla %} Resumen de Expedientes Creados  {% endblock %}
+{% block title %} Tratamientos Recurrentes {% endblock %}
+{% block pantalla %} Resumen de Tratamientos Recurrentes  {% endblock %}
 {% block descripcion %} {% endblock %}
 
 {% block content %}
     <div class="container">
-        <h3 class="center-align">Ingresos por Consultas</h3>
+        <h3 class="center-align">Tratamientos Recurrentes</h3>
 
         {% include "elements/parametros.html" %}
 
@@ -20,7 +20,7 @@
                     <div class="card-content">
                         {% if fecha_inicial and fecha_final %}
                             Fecha de emisión: {{ hoy }}
-                            <span class="card-title"><b>Resumen de Ingresos por Consultas del {{ fecha_inicial }}
+                            <span class="card-title"><b> Resumen de Tratamientos Recurrentes{{ fecha_inicial }}
                         al {{ fecha_final }}</b></span>
 
                             <div id="tabla2" class="row">

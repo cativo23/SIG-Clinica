@@ -60,7 +60,6 @@ def obtener_resumen_expcreados(request):
                 paciente__paciente__sexo='F').count()
 
             # TABLA 2 POR EDAD
-
             pacientes_exp = Paciente.objects.filter(expediente__fechaCreacion__range=[fecha_inicial, fecha_final])
 
             menores_exp = []
@@ -93,7 +92,6 @@ def obtener_resumen_expcreados(request):
                     menores_con.append(paciente_con)
                 else:
                     mayores_con.append(paciente_con)
-
             edad_con_me = len(menores_con)
             edad_con_ma = len(mayores_con)
 
