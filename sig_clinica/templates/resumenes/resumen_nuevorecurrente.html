@@ -4,13 +4,13 @@
 {% load i18n %}
 {% load l10n %}
 
-{% block title %} Nuevo Recurrente {% endblock %}
-{% block pantalla %} Resumen de Consultas Realizadas por Nuevos y Recurrentes Pacientes {% endblock %}
+{% block title %}Consultas de Pacientes Nuevos y Frecuentes {% endblock %}
+{% block pantalla %} Resumen de Consultas de Pacientes Nuevos y Frecuentes {% endblock %}
 {% block descripcion %} {% endblock %}
 
 {% block content %}
 <div class="container">
-    <h3 class="center-align">Ingresos por Consultas por Nuevos y Recurrentes Pacientes</h3>
+    <h3 class="center-align">Consultas de Pacientes Nuevos y Frecuentes</h3>
 
     {% include "elements/parametros.html" %}
 
@@ -20,11 +20,12 @@
                 <div class="card-content">
                     {% if fecha_inicial and fecha_final %}
                     Fecha de emisión: {{ hoy }}
-                    <span class="card-title"><b>Resumen de Ingresos Nuevos y Recurrentes del {{ fecha_inicial }}
+                    <span class="card-title"><b>Informe de Consultas de Pacientes Nuevos y Frecuentes del {{ fecha_inicial }}
                             al {{ fecha_final }}</b></span>
-                    <h3>Clientes Recurrentes</h3>
+
                     <div id="tabla2" class="row">
                         <div class="col s10 push-s1">
+                            <h5>Clientes Recurrentes</h5>
                             <table class="highlight responsive-table">
                                 <thead>
                                     <tr>
@@ -76,9 +77,10 @@
                             </table>
                         </div>
                     </div><br>
-                    <h3>Clientes Nuevos</h3>
+
                     <div id="tabla2" class="row">
                         <div class="col s10 push-s1">
+                            <h5>Clientes Nuevos</h5>
                             <table class="highlight responsive-table">
                                 <thead>
                                     <tr>
@@ -131,10 +133,9 @@
                         </div>
                     </div><br>
 
-                    <h3>Totales</h3>
-
                     <div id="tabla3" class="row">
                         <div class="col s10 push-s1">
+                            <h5>Totales</h5>
                             <table class="highlight responsive-table centered">
                                 <thead>
                                     <tr>

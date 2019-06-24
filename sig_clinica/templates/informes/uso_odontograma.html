@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Demanda y Costo de Medicamentos {% endblock %}
-{% block pantalla %} Resumen de Demanda y Costo en Medicamentos  {% endblock %}
+{% block title %} Uso de Odontograma en Consultas {% endblock %}
+{% block pantalla %} Informe de Uso de Odontograma en Consultas  {% endblock %}
 {% block descripcion %} {% endblock %}
 
 {% block content %}
     <div class="container">
-        <h3 class="center-align">Demanda y Costo de Medicamentos</h3>
+        <h3 class="center-align">Uso de Odontograma en Consultas</h3>
         <!--<b>Frecuencia de uso:</b> {{ prueba }}<br><br> -->
 
         {% include "elements/parametros.html" %}
@@ -18,7 +18,7 @@
                     <div class="card-content">
                         {% if fecha_inicial and fecha_final %}
                             Fecha de emisión: {{ hoy }}
-                            <span class="card-title"><b>Resumen de Demanda y Costo de Medicamentos del {{ fecha_inicial }} al
+                            <span class="card-title"><b>Informe de Uso de Odontograma en Consultas del {{ fecha_inicial }} al
                                 {{ fecha_final }}</b></span>
 
                             <div id="tabla1" class="row">
