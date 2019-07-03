@@ -14,10 +14,20 @@
             done: 'Aceptar',
         },
         maxDate: new Date(),
-        setDefaultDate : true,
-        defaultDate: new Date(),
         onSelect: function(time){
-            console.log(time);
+            var dat = time.getDate()+'/'+(time.getMonth()+1)+"/"+time.getFullYear();
+            var elem = document.querySelectorAll('.datepicker2');
+            var instance = M.Datepicker.getInstance(elem[0]);
+            var dat1 = instance.date;
+            console.log(dat1 < time);
+            if (dat1 < time){
+                instance.date = time;
+                instance.gotoDate(time);
+                document.getElementById('fecha_final').value = dat;
+            }else{
+                instance.gotoDate(dat1);
+            }
+            instance.options.minDate = time;
         }
     });
 
@@ -36,19 +46,19 @@
             done: 'Aceptar',
         },
         maxDate: new Date(),
-        setDefaultDate : true,
-        defaultDate: new Date(),
         onSelect: function(time){
+            var dat = time.getDate()+'/'+(time.getMonth()+1)+"/"+time.getFullYear();
             var elem = document.querySelectorAll('.datepicker1');
             var instance = M.Datepicker.getInstance(elem[0]);
-             instance.setDate(time);
-             instance.gotoDate(time);
-             instance.defaultDate = time;
-             instance.options.maxDate = time;
-             instance.options.defaultDate = time;
-             instance.date = time;
-            console.log("hola");
-            console.log(instance);
+            var dat1 = instance.date;
+            if (dat1 > time){
+                instance.date = time;
+                instance.gotoDate(time);
+                document.getElementById('fecha_inicial').value = dat;
+            }else{
+                instance.gotoDate(dat1);
+            }
+            instance.options.maxDate = time;
         }
     });
 });
