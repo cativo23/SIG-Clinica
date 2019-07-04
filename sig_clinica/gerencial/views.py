@@ -207,6 +207,7 @@ def obtener_resumen_costomed(request):
 
     prueba = ""
 
+    reporte = 'Costo Medicamentos'
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
@@ -327,7 +328,7 @@ def obtener_resumen_costomed(request):
             # print(total_gasto_med)
     return render(request, template_name="resumenes/resumen_costomed.html",
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
-                           'total_gasto_med': total_gasto_med, 'prueba': prueba})
+                           'total_gasto_med': total_gasto_med, 'prueba': prueba, 'reporte': reporte})
 
 
 @user_passes_test(estrategico)

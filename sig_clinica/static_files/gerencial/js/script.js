@@ -59,13 +59,13 @@
                                 break;
 
                             case 'previous':
-                                btnDisplay = '<i class="material-icons">chevron_left</i>';
+                                btnDisplay = '<i data-html2canvas-ignore="true" class="material-icons">chevron_left</i>';
                                 btnClass = button + (page > 0 ?
                                     '' : ' disabled');
                                 break;
 
                             case 'next':
-                                btnDisplay = '<i class="material-icons">chevron_right</i>';
+                                btnDisplay = '<i data-html2canvas-ignore="true" class="material-icons">chevron_right</i>';
                                 btnClass = button + (page < pages - 1 ?
                                     '' : ' disabled');
                                 break;
@@ -120,7 +120,7 @@
             }
 
             attach(
-                $(host).empty().html('<ul class="material-pagination"/>').children('ul'),
+                $(host).empty().html('<ul data-html2canvas-ignore="true" class="material-pagination"/>').children('ul'),
                 buttons
             );
 
@@ -207,9 +207,13 @@ $(document).ready(function () {
                 '<option value="30">30</option>' +
                 '<option value="40">40</option>' +
                 '<option value="50">50</option>' +
-                '<option value="-1">Todos</option>' +
+                '<option value="-1" selected="true">Todos</option>' +
                 '</select></div>'
         },
         bAutoWidth: false
     });
+    $('#datatable_info').attr('data-html2canvas-ignore',"true");
+    $('#datatable_length').attr('data-html2canvas-ignore',"true");
+    $('#datatable_filter').attr('data-html2canvas-ignore',"true")
 });
+

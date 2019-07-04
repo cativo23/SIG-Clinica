@@ -52,10 +52,19 @@
 <script src="{% static 'gerencial/js/sidenav.js' %}"></script>
 <script src="{% static 'gerencial/js/pickers.js' %}"></script>
 <script src="{% static 'gerencial/js/script.js' %}"></script>
-
+<script src="{% static 'gerencial/js/html2pdf.bundle.min.js' %}"></script>
 <script>
-
-
+    function print1() {
+        var element = document.getElementById('render');
+        var opt = {
+            margin: 1,
+            filename: '{{ reporte }}',
+            image: {type: 'jpeg', quality: 1},
+            html2canvas: {scale: 2, },
+            jsPDF: {unit: 'in', format: 'letter', orientation: 'portrait'}
+        };
+        html2pdf().set(opt).from(element).save();
+    }
 </script>
 {% block messages %}
 {% endblock messages %}
