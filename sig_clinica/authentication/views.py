@@ -43,7 +43,7 @@ def login(request):
             if next:
                 return redirect(next)
             else:
-                return redirect('index')
+                return redirect('/')
         else:
             message = ["Usuario o password Incorrecto", messages.WARNING]
             try:
@@ -146,8 +146,8 @@ def agregar_usuario(request):
                 messages.success(request, mensaje)
                 # Limpiando campos después de guardar (Reset Forms)
                 form = UsuarioForm()
-            except:
-                mensaje = "Error al crear el usuario"
+            except Exception as e:
+                mensaje = "Error al crear el usuario, {}".format(e)
                 messages.error(request, mensaje)
 
     else:
@@ -192,10 +192,10 @@ def actualizar_usuario(request, pk):
                 user.groups.add(group)
                 user.save()
                 mensaje = "Usuario modificado con éxito"
-                messages.success(mensaje)
-            except:
-                mensaje = "Error al modificar el usuario"
-                messages.error(mensaje)
+                messages.success(request,mensaje)
+            except Exception as e:
+                mensaje = "Error al modificar el usuario {}".format(e)
+                messages.error(request, mensaje)
     else:
         groups = user.groups.first()
         if groups:

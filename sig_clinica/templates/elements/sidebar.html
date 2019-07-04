@@ -29,7 +29,7 @@
     </li>
  {% endif %}
 {% if request.user|has_group:"estrategico" %}
-        <li><a class="subheader">Estratéfigo</a></li>
+        <li><a class="subheader">Estratégico</a></li>
     <li><a class="waves-effect" href="{% url 'gerencial:resumen_expcreados' %}"><i class="material-icons">person</i>Expedientes Creados</a></li>
     <li><a class="waves-effect" href="{% url 'gerencial:resumen_expdeudas' %}">Expedientes con Deudas</a></li>
     <li><a class="waves-effect" href="{% url 'gerencial:resumen_costomed' %}">Demanda Medicamentos</a></li>
