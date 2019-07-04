@@ -5,8 +5,8 @@ from django.db.models import Sum, Count, F, FloatField, ExpressionWrapper, Q
 from django.shortcuts import render
 
 from authentication.views import estrategico, administrador, tactico
-from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma, Bitacora
-from .models import Procedimiento, Pago, Receta
+from gerencial.models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma, Bitacora
+from gerencial.models import Procedimiento, Pago, Receta
 
 
 def fecha_18():
@@ -712,11 +712,12 @@ def obtener_resumen_vencimiento(request):
         if fecha_inicial and fecha_final:
             # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
 
-            tabla1 = Medicamento.objects.all()
+            medicamentoEntradoFiltrado = Medicamento.objects.filter(lotemedicamento__fecha_entrada__range=[fecha_inicial, fecha_final],lotemedicamento__fecha_vencimiento__gt=fecha_final).annotate(count=Count('lotemedicamento__medicamento__nombre_producto')).annotate(total_cantidad=Sum('lotemedicamento__cantidad'))
+
             # print(total_gasto_med)
     return render(request, template_name="resumenes/resumen_vencimiento.html",
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
-                           'tabla1': tabla1, })
+                           'medicamentoEntradoFiltrado': medicamentoEntradoFiltrado, })
 
 
 # Resumen NuevoRecurrente

@@ -38,14 +38,14 @@
                                 </thead>
 
                                 <tbody>
-                                    {% for tabla in tabla1 %}
+                                    {% for tabla in medicamentoEntradoFiltrado %}
                                     <tr>
                                         <td>{{ tabla.nombre_producto }}</td>
                                         <td>{{ tabla.marca_producto }}</td>
                                         <td>{{ tabla.formafarmaceutica }}</td>
                                         <td>{{ tabla.precio_producto }}</td>
                                         <td>{{ tabla.existencia_producto }}</td>
-                                        <td>En construcción</td>
+                                        <td>{{ tabla.total_cantidad }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
