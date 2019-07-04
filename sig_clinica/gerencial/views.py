@@ -702,7 +702,7 @@ def obtener_resumen_vencimiento(request):
     resumen = ""
     tabla1 = ""
 
-    prueba = ""
+    medicamentoEntradoFiltrado = ""
 
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
