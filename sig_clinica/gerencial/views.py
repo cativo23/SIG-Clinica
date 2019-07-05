@@ -1,5 +1,7 @@
 import collections
 from datetime import datetime, date
+
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, Count, F, FloatField, ExpressionWrapper, Q
 from django.shortcuts import render
@@ -7,6 +9,7 @@ from django.shortcuts import render
 from authentication.views import estrategico, administrador, tactico
 from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma, Bitacora
 from .models import Procedimiento, Pago, Receta
+from etl import service
 
 
 def fecha_18():
@@ -99,6 +102,8 @@ def obtener_resumen_expcreados(request):
             exp_total = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).count()
             con_total = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).count()
 
+            registro_bitacora(request, "Generacion de resumen de Expedientes Creados")
+
     return render(request, template_name='resumenes/resumen_expcreados.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
                            'sexo_exp_mas': sexo_exp_mas, 'sexo_exp_fem': sexo_exp_fem,
@@ -176,6 +181,8 @@ def obtener_resumen_expdeudas(request):
             else:
                 exp_mayor_deuda = "No hay expedientes con deudas"
                 total_mayor_deuda = 0
+
+        registro_bitacora(request, "Generacion de resumen de Expedientes Con Deudas")
 
     return render(request, template_name='resumenes/resumen_expdeudas.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
@@ -358,8 +365,6 @@ def obtener_resumen_ingresoConsultas(request):
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
 
         if fecha_inicial and fecha_final:
-
-
             consultas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final])
             pagos = Pago.objects.filter(fechaPago__range=[fecha_inicial, fecha_final])
 
@@ -887,7 +892,7 @@ def registro_bitacora(request, accion):
     Bitacora.objects.create(
         usuario=user,
         accion=accion,
-        fecha=datetime.datetime.now()
+        fecha=datetime.now()
     )
     return 0
 
@@ -904,7 +909,19 @@ def bitacora(request):
     # Contexto
     c['object_list'] = object_list
 
-    c['columnas'] = ["Nombre se Usuario", "Accion", "Fecha", "Rol"]
+    c['columnas'] = ["Tipo de Usuario", "Accion", "Fecha", "Rol"]
     c['title'] = "Bitacora de Usuarios"
 
     return render(request, 'gerencial/bitacora.html', c)
+
+
+def etl(request):
+    if request.method == 'POST':
+        if "etl" in request.POST:
+            hoy = str(datetime.now())
+            service.run()
+            registro_bitacora(request, "Ejecucion de ETL a las " + hoy)
+            messages.success(request, "ETL ejecutado correctamente")
+        return render(request, 'gerencial/etl.html')
+    else:
+        return render(request, 'gerencial/etl.html')

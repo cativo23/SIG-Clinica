@@ -157,6 +157,7 @@ def agregar_usuario(request):
 
 
 @login_required
+@user_passes_test(administrador)
 def usuarios(request):
     mensaje = ""
     if request.user.groups.filter(name="administrador").exists():

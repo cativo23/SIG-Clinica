@@ -1,0 +1,2 @@
+#!/bin/bash 8. source /sig_clinica/env/bin/activate
+python /home/cativo23/Desktop/SIG-Clinica/sig_clinica/sig_clinica/manage.py runserver

@@ -10,7 +10,11 @@ class UsuarioForm(forms.Form):
     last_name = forms.CharField(error_messages={'required': 'Campo obligatorio'}, label='Apellidos')
     email = forms.EmailField(error_messages={'required': 'Campo obligatorio'}, label='Dirección de Correo Electrónico')
 
-    groups = forms.ChoiceField(choices=[(x.id, x.name) for x in Group.objects.all()], label='Perfil de Acceso')
+    try:
+        groups = forms.ChoiceField(choices=[(x.id, x.name) for x in Group.objects.all()], label='Perfil de Acceso',
+                                   help_text='Por favor seleccione el Perfil de Acceso que tendrá este Usuario')
+    except:
+        pass
 
     layout = Layout(Fieldset('Agregar Usuario: '), Row('username', 'email'), Row('first_name', 'last_name'),
                     Row('groups'))
