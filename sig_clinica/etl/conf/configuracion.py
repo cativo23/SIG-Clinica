@@ -4,7 +4,7 @@ from .tablaOrigen import TablaOrigen
 class Configuracion:
 
 #   Credenciales de base de datos Origen
-    USER_SOURCE='clinica_usser'
+    USER_SOURCE='clinica_user'
     PASSWORD_SOURCE='admin123'
     DATABASE_SOURCE='clinica_db'
 #   Credenciales de base de datos Destino
@@ -14,137 +14,125 @@ class Configuracion:
 
 
     def getTables():
-        departamento=TablaDestino("gerencial_departamento",[
-                AtributoDestino('id',TablaOrigen('administracion_departamento','id')),
-                AtributoDestino('nombre',TablaOrigen('administracion_departamento','nombre'),'string')
+        doctor=TablaDestino("gerencial_doctor",[
+                AtributoDestino('id',TablaOrigen('transaccional_doctor','id')),
+                AtributoDestino('nombre',TablaOrigen('transaccional_doctor','nombre'),'string')
                         ])
-        municipio=TablaDestino("gerencial_municipio",[
-                AtributoDestino('id',TablaOrigen('administracion_municipio','id')),
-                AtributoDestino('nombre',TablaOrigen('administracion_municipio','nombre'),'string'),
-                AtributoDestino('departamento_id',TablaOrigen('administracion_municipio','departamento_id'))
-
+        medicamento = TablaDestino("gerencial_medicamento",[
+                AtributoDestino('id',TablaOrigen('transaccional_medicamento','id')),
+                AtributoDestino('nombre_producto',TablaOrigen('transaccional_medicamento','nombre_producto'),'string'),
+                AtributoDestino('marca_producto',TablaOrigen('transaccional_medicamento','marca_producto'),'string'),
+                AtributoDestino('existencia_producto',TablaOrigen('transaccional_medicamento','existencia_producto')),
+                AtributoDestino('precio_producto',TablaOrigen('transaccional_medicamento','precio_producto')),
+                AtributoDestino('formafarmaceutica', TablaOrigen('transaccional_medicamento', 'formafarmaceutica'),'string')                
                         ])
-        donacion=TablaDestino('gerencial_donacion',[
-            AtributoDestino('id',TablaOrigen('donaciones_donacion','id')),
-            AtributoDestino('fecha_remesa', TablaOrigen('donaciones_donacion', 'fecha_remesa'), 'string'),
-            AtributoDestino('cantidad',TablaOrigen('donaciones_donacion','cantidad'))
-                        ])
-        cita_medica=TablaDestino('gerencial_citamedica',[
-            AtributoDestino('id',TablaOrigen('control_citamedica','id')),
-            AtributoDestino('fecha',TablaOrigen('control_citamedica','fecha'),'string'),
-            AtributoDestino('precio_consulta', TablaOrigen('control_citamedica', 'precio_consulta')),
-            AtributoDestino('precio_examen', TablaOrigen('control_citamedica', 'precio_examen')),
-            AtributoDestino('examen_id', TablaOrigen('control_citamedica', 'examen_id')),
-            AtributoDestino('medico_id', TablaOrigen('control_citamedica', 'medico_id')),
-            AtributoDestino('plan_tratamiento_id', TablaOrigen('control_citamedica', 'plan_tratamiento_id'))
-                        ])
-        empleado=TablaDestino('gerencial_empleado',[
-            AtributoDestino('id',TablaOrigen('administracion_empleado','id')),
-            AtributoDestino('especialidad_id',TablaOrigen('administracion_empleado','especialidad_id'))
-        ])
 
-        especialidad=TablaDestino('gerencial_especialidad',[
-            AtributoDestino('id',TablaOrigen('administracion_especialidad','id')),
-            AtributoDestino('nombre',TablaOrigen('administracion_especialidad','nombre'),'string')
-        ])
-        planTratamiento=TablaDestino('gerencial_plantratamiento',[
-            AtributoDestino('id',TablaOrigen('control_plantratamiento','id')),
-            AtributoDestino('fecha_inicio', TablaOrigen('control_plantratamiento', 'fecha_inicio'), 'string'),
-            AtributoDestino('fecha_fin',TablaOrigen('control_plantratamiento','fecha_fin'),'string'),
-            AtributoDestino('estado', TablaOrigen('control_plantratamiento', 'estado'), 'string'),
-            AtributoDestino('expediente_id',TablaOrigen('control_plantratamiento','expediente_id'))
-        ])
-        examen=TablaDestino('gerencial_examen',[
-            AtributoDestino('id',TablaOrigen('control_examen','id')),
-            AtributoDestino('nombre',TablaOrigen('control_examen','nombre'),'string'),
-            AtributoDestino('estado',TablaOrigen('control_examen','estado'),'string') #NOTA: incluir atributo en el modelo
-        ])
-        paciente=TablaDestino('gerencial_paciente',[
-            AtributoDestino('id',TablaOrigen('administracion_paciente','id')),
-            AtributoDestino('fecha_nacimiento',TablaOrigen('administracion_paciente','fecha_nacimiento'),'string'),
-            AtributoDestino('sexo',TablaOrigen('administracion_paciente','sexo'),'string'),
-            AtributoDestino('municipio_id',TablaOrigen('administracion_paciente','municipio_id'))
-        ])
-        expediente=TablaDestino('gerencial_expediente',[
-            AtributoDestino('id',TablaOrigen('administracion_expediente','id')),
-            AtributoDestino('num_expediente',TablaOrigen('administracion_expediente','num_expediente'),'string'),
-            AtributoDestino('fecha_apertura',TablaOrigen('administracion_expediente','fecha_apertura'),'string'),
-            AtributoDestino('empleado_id',TablaOrigen('administracion_expediente','creado_por_id')),
-            AtributoDestino('paciente_id', TablaOrigen('administracion_expediente', 'paciente_id')),
-            AtributoDestino('tarifa_id',TablaOrigen('administracion_expediente','id',TablaOrigen('administracion_socioeconomico','tarifa_id')))
-        ])
-        medicamento=TablaDestino('gerencial_medicamento',[
-            AtributoDestino('id',TablaOrigen('control_medicamento','id')),
-            AtributoDestino('nombre',TablaOrigen('control_medicamento','nombre'),'string'),
-            AtributoDestino('estado',TablaOrigen('control_medicamento','estado'),'string')
-        ])
-        tarifa=TablaDestino('gerencial_tarifa',[
-            AtributoDestino('id',TablaOrigen('administracion_tarifa','id')),
-            AtributoDestino('nombre', TablaOrigen('administracion_tarifa','nombre'),'string'),
-            AtributoDestino('monto', TablaOrigen('administracion_tarifa','monto')),
-            AtributoDestino('examen_id', TablaOrigen('administracion_tarifa','examen_id')),
-            AtributoDestino('tarifa_padre_id', TablaOrigen('administracion_tarifa','tarifa_padre_id'))
-        ])
-        grupoApoyo=TablaDestino('gerencial_grupoapoyo',[
-            AtributoDestino('id', TablaOrigen('administracion_grupoapoyo','id')),
-            AtributoDestino('tema', TablaOrigen('administracion_grupoapoyo','tema'),'string'),
-            AtributoDestino('fecha',TablaOrigen('administracion_grupoapoyo','fecha'),'string'),
-            AtributoDestino('ponente', TablaOrigen('administracion_grupoapoyo','ponente_id',TablaOrigen('administracion_ponente','nombre')),'string'),
-            AtributoDestino('cantidad',TablaOrigen('administracion_grupoapoyo','id',TablaOrigen('administracion_grupoapoyo_participantes','grupoapoyo_id')))
-        ],True,'cantidad','SELECT administracion_grupoapoyo.id,administracion_grupoapoyo.tema,administracion_grupoapoyo.fecha,administracion_ponente.nombre,count(c.grupoapoyo_id)  from administracion_grupoapoyo natural JOIN administracion_ponente LEFT JOIN (SELECT id,grupoapoyo_id FROM administracion_grupoapoyo_pacientes UNION ALL  SELECT id,grupoapoyo_id FROM administracion_grupoapoyo_participantes) AS c ON administracion_grupoapoyo.id=c.grupoapoyo_id group by administracion_grupoapoyo.id,administracion_grupoapoyo.tema,administracion_grupoapoyo.fecha')
+        medicamento = TablaDestino("gerencial_lotemedicamento",[
+                AtributoDestino('id',TablaOrigen('transaccional_lotemedicamento','id')),
+                AtributoDestino('fecha_vencimiento',TablaOrigen('transaccional_lotemedicamento','fecha_vencimiento'),'string'),
+                AtributoDestino('cantidad',TablaOrigen('transaccional_lotemedicamento','cantidad')),
+                AtributoDestino('medicamento_id',TablaOrigen('transaccional_lotemedicamento','medicamento_id')),
+                AtributoDestino('fecha_entrada',TablaOrigen('transaccional_lotemedicamento','fecha_vencimiento'),'string'),
+                ])
 
-        loteMedicamento=TablaDestino('gerencial_lotemedicamento',[
-            AtributoDestino('id',TablaOrigen('control_lotemedicamento','id')),
-            AtributoDestino('fecha_vencimiento',TablaOrigen('control_lotemedicamento','fecha_vencimiento'),'string'),
-            AtributoDestino('cantidad',TablaOrigen('control_lotemedicamento','cantidad_ingreso')),
-            AtributoDestino('medicamento_id',TablaOrigen('control_lotemedicamento','medicamento_id'))
-        ])
+        odontograma = TablaDestino("gerencial_odontograma",[
+                AtributoDestino('id',TablaOrigen('transaccional_odontograma','id')),
+                AtributoDestino('fechaCreacion',TablaOrigen('transaccional_odontograma','fechaCreacion'),'string'),
+                AtributoDestino('notas',TablaOrigen('transaccional_odontograma','notas'),'string'),
+                AtributoDestino('medico_id',TablaOrigen('transaccional_odontograma','medico_id')),
+                AtributoDestino('fechaUltimaModificacion',TablaOrigen('transaccional_odontograma','fechaUltimaModificacion'),'string'),
+                ])
+        
+        paciente = TablaDestino("gerencial_paciente",[
+                AtributoDestino('id',TablaOrigen('transaccional_paciente','id')),
+                AtributoDestino('nombresPaciente',TablaOrigen('transaccional_paciente','nombresPaciente'),'string'),
+                AtributoDestino('apellidosPaciente',TablaOrigen('transaccional_paciente','apellidosPaciente'),'string'),
+                AtributoDestino('sexo',TablaOrigen('transaccional_paciente','sexo'), 'string'),
+                AtributoDestino('fechaNacimiento',TablaOrigen('transaccional_paciente','fechaNacimiento'),'string'),
+                AtributoDestino('referencia',TablaOrigen('transaccional_paciente','referencia'),'string')
+                ])
 
-        planTratamiento=TablaDestino('gerencial_plantratamiento',[
-            AtributoDestino('id',TablaOrigen('control_plantratamiento','id')),
-            AtributoDestino('fecha_inicio', TablaOrigen('control_plantratamiento', 'fecha_inicio'), 'string'),
-            AtributoDestino('fecha_fin', TablaOrigen('control_plantratamiento', 'fecha_fin'), 'string'),
-            AtributoDestino('estado', TablaOrigen('control_plantratamiento', 'estado')),
-            AtributoDestino('expediente_id', TablaOrigen('control_plantratamiento', 'expediente_id'))
-        ])
+        expediente = TablaDestino("gerencial_expediente",[
+                AtributoDestino('id',TablaOrigen('transaccional_expediente','id')),
+                AtributoDestino('fechaCreacion',TablaOrigen('transaccional_expediente','fechaCreacion'),'string'),
+                AtributoDestino('pagado',TablaOrigen('transaccional_expediente','pagado'),'string'),
+                AtributoDestino('saldo',TablaOrigen('transaccional_expediente','saldo'),),
+                AtributoDestino('observacionExp',TablaOrigen('transaccional_expediente','observacionExp'),'string'),
+                AtributoDestino('odontograma_id',TablaOrigen('transaccional_expediente','odontograma_id')),
+                AtributoDestino('paciente_id',TablaOrigen('transaccional_expediente','paciente_id'))
+                ])
+        cita = TablaDestino("gerencial_cita",[
+                AtributoDestino('id',TablaOrigen('transaccional_cita','id')),
+                AtributoDestino('asuntoCita',TablaOrigen('transaccion_cita','asuntoCita'),'string'),
+                AtributoDestino('fechaCita',TablaOrigen('transaccional_cita','fechaCita'),'string'),
+                AtributoDestino('horaCita',TablaOrigen('transaccional_cita','horaCita'),'string'),
+                AtributoDestino('observacionCita',TablaOrigen('transaccional_cita','observacionCita'),'string'),
+                AtributoDestino('doctor_id',TablaOrigen('transaccional_cita','doctor_id')),
+                AtributoDestino('paciente_id',TablaOrigen('transaccional_cita','paciente_id'))
+                ])
+        tratamiento = TablaDestino("gerencial_tratamiento",[
+                AtributoDestino('id',TablaOrigen('transaccional_tratamiento','id')),
+                AtributoDestino('nombreTratamiento',TablaOrigen('transaccion_tratamiento','nombreTratamiento'),'string'),
+                AtributoDestino('descripcionTratamiento',TablaOrigen('transaccional_tratamiento','descripcionTratamiento'),'string'),
+                AtributoDestino('precioBase',TablaOrigen('transaccional_tratamiento','precioBase'),'string')
+                ])
 
-        citaMedica=TablaDestino('genencial_citamedica',[
-            AtributoDestino('id',TablaOrigen('control_citamedica','id')),
-            AtributoDestino('fecha',TablaOrigen('control_citamedica','fecha')),
-            AtributoDestino('precio_consulta',TablaOrigen('control_citamedica','precio_consulta')),
-            AtributoDestino('precio_examen', TablaOrigen('control_citamedica', 'precio_examen')),
-            AtributoDestino('examen_id', TablaOrigen('control_citamedica', 'examen_id')),
-            AtributoDestino('medico_id', TablaOrigen('control_citamedica', 'medico_id')),
-            AtributoDestino('plan_tratamiento_id', TablaOrigen('control_citamedica', 'plan_tratamiento_id'))
-        ])
+        consulta = TablaDestino("gerencial_consulta",[
+                AtributoDestino('id',TablaOrigen('transaccional_consulta','id')),
+                AtributoDestino('fechaConsulta',TablaOrigen('transaccion_consulta','fechaConsulta'),'string'),
+                AtributoDestino('horaInicio',TablaOrigen('transaccional_consulta','horaInicio'),'string'),
+                AtributoDestino('horaFinal',TablaOrigen('transaccional_consulta','horaFinal'),'string'),
+                AtributoDestino('observacionCons',TablaOrigen('transaccional_consulta','observacionCons'),'string'),
+                AtributoDestino('doctor_id',TablaOrigen('transaccional_consulta','doctor_id')),
+                AtributoDestino('paciente_id',TablaOrigen('transaccional_consulta','paciente_id')),
+                AtributoDestino('precio',TablaOrigen('transaccional_consulta','precio')),
+                ])
 
-        salida=TablaDestino('gerencial_salida',[
-            AtributoDestino('id',TablaOrigen('donaciones_detallesalida','id')),
-            AtributoDestino('fecha',TablaOrigen('donaciones_detallesalida', 'fecha', TablaOrigen('donaciones_salida', 'fecha')),'string'),
-            AtributoDestino('cantidad',TablaOrigen('donaciones_detallesalida','cantidad')),
-            AtributoDestino('medicamento_id',TablaOrigen('donaciones_detallesalida','medicamento_id'))
-        ])
+        procedimiento = TablaDestino("gerencial_procedimiento",[
+                AtributoDestino('id',TablaOrigen('transaccional_procedimiento','id')),
+                AtributoDestino('pieza',TablaOrigen('transaccional_procedimiento','pieza'),'string'),
+                AtributoDestino('cara',TablaOrigen('transaccional_procedimiento','cara'),'string'),
+                AtributoDestino('diagnostico',TablaOrigen('transaccional_procedimiento','diagnostico'), 'string'),
+                AtributoDestino('notas',TablaOrigen('transaccional_procedimiento','notas'),'string'),
+                AtributoDestino('status',TablaOrigen('transaccional_procedimiento','status'),'string'),
+                AtributoDestino('odontograma_id',TablaOrigen('transaccional_procedimiento','odontograma_id')),
+                AtributoDestino('tratamiento_id',TablaOrigen('transaccional_procedimiento','tratamiento_id')),
+                AtributoDestino('consulta_realizada_id',TablaOrigen('transaccional_procedimiento','consulta_realizada_id')),
+                ])
 
+        pago = TablaDestino("gerencial_pago",[
+                AtributoDestino('id',TablaOrigen('transaccional_pago','id')),
+                AtributoDestino('fechaPago',TablaOrigen('transaccional_pago','fechaPago'),'string'),
+                AtributoDestino('cantidad',TablaOrigen('transaccional_pago','cantidad'),'string'),
+                AtributoDestino('Expediente_id',TablaOrigen('transaccional_pago','Expediente_id')),
+                AtributoDestino('procedimiento_id',TablaOrigen('transaccional_pago','Expediente_id')),
+                ])
+        
+        receta = TablaDestino("gerencial_receta",[
+                AtributoDestino('id',TablaOrigen('transaccional_receta','id')),
+                AtributoDestino('consulta_id',TablaOrigen('transaccional_receta','consulta_id')),
+                AtributoDestino('nombreReceta',TablaOrigen('transaccional_receta','nombreReceta'),'string'),
+                ])
 
-
-
+        especificacion = TablaDestino("gerencial_especificacion",[
+                AtributoDestino('id',TablaOrigen('transaccional_especificacion','id')),
+                AtributoDestino('dosis',TablaOrigen('transaccional_especificacion','dosis'),'string'),
+                AtributoDestino('duracion',TablaOrigen('transaccional_especificacion','duracion'),'string'),
+                AtributoDestino('medicamento_id',TablaOrigen('transaccional_especificacion','medicamento_id')),
+                AtributoDestino('receta_id',TablaOrigen('transaccional_especificacion','receta_id')),
+                ])
 
         entidades=[]
+        entidades.append(doctor)
         entidades.append(medicamento)
-        entidades.append(donacion)
-        entidades.append(especialidad)
-        entidades.append(empleado)
-        entidades.append(departamento)
-        entidades.append(municipio)
+        entidades.append(odontograma)
         entidades.append(paciente)
-        entidades.append(examen)
-        entidades.append(tarifa)
         entidades.append(expediente)
-        entidades.append(grupoApoyo)
-        entidades.append(loteMedicamento)
-        entidades.append(planTratamiento)
-        entidades.append(cita_medica)
-        entidades.append(salida)
-
-
+        entidades.append(cita)
+        entidades.append(tratamiento)
+        entidades.append(consulta)
+        entidades.append(procedimiento)
+        entidades.append(pago)
+        entidades.append(receta)
+        entidades.append(especificacion)
         return entidades

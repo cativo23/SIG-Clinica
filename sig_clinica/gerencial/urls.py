@@ -18,5 +18,5 @@ urlpatterns = [
     path('resumen_vencimiento/', obtener_resumen_vencimiento, name='resumen_vencimiento'),
     path('resumen_nuevorecurrente/', obtener_resumen_nuevorecurrente, name='resumen_nuevorecurrente'),
     path('bitacora/', bitacora, name='bitacora'),
-    path('etl/', etl,name='etl')
+    path('mantenimiento/', etl,name='etl')
 ]

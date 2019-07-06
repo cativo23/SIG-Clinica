@@ -10,6 +10,8 @@ from authentication.views import estrategico, administrador, tactico
 from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma, Bitacora
 from .models import Procedimiento, Pago, Receta
 from etl import service
+import os
+import subprocess
 
 
 def fecha_18():
@@ -909,19 +911,29 @@ def bitacora(request):
     # Contexto
     c['object_list'] = object_list
 
-    c['columnas'] = ["Tipo de Usuario", "Accion", "Fecha", "Rol"]
+    c['columnas'] = ["Nombre de Usuario", "Accion Realizada", "Fecha", "Rol"]
     c['title'] = "Bitacora de Usuarios"
 
     return render(request, 'gerencial/bitacora.html', c)
 
-
+@user_passes_test(administrador)
 def etl(request):
     if request.method == 'POST':
         if "etl" in request.POST:
             hoy = str(datetime.now())
-            service.run()
-            registro_bitacora(request, "Ejecucion de ETL a las " + hoy)
-            messages.success(request, "ETL ejecutado correctamente")
+            result = service.run()
+            if  result == 1:
+                registro_bitacora(request, "Ejecucion correcta de ETL a las " + hoy)
+                messages.success(request, "ETL ejecutado correctamente")
+            else:
+                registro_bitacora(request, "Ejecucion incorrecta de ETL a las " + hoy)
+                messages.error(request, "ETL ejecutado incorrectamente")
+        
+        if  "respaldo" in request.POST:
+            resu = os.system('PGPASSWORD=\'admin123\' /root/Desktop/SIG/SIG-Clinica/Scripts/backup.sh')
+            #resul = subprocess.check_output(['/root/Desktop/SIG/SIG-Clinica/Scripts/backup.sh', 'PGPASSWORD=\'admin123\''])
+            messages.success(request, "Backup BD del "+ str(datetime.today()))
+
         return render(request, 'gerencial/etl.html')
     else:
         return render(request, 'gerencial/etl.html')

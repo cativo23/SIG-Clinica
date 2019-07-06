@@ -2,7 +2,7 @@
 class Cargar:
     def cargarModelos(objetos,cursor):
         for objeto in list(reversed(objetos)):
-            drop="DELETE  FROM "+objeto.nombre+" ORDER BY id DESC"
+            drop="DELETE FROM "+objeto.nombre
             cursor.execute(drop)
             print(drop)
         #print(len(objetos[0].datos))

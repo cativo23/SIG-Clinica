@@ -40,12 +40,12 @@ class Extraer:
                             pivote=pivote.tablaOrigen
                             tablasAnidadas.append(pivote.nombre)
                 else:
-                    query =query + tablas.atributos[i].tablaOrigen.nombre + '.'+ tablas.atributos[i].tablaOrigen.atributoOrigen
+                    query =query + '\"'+ tablas.atributos[i].tablaOrigen.atributoOrigen+'\"'
                 i = i + 1
                 if(i!=len(tablas.atributos)):
                     query=query+','
 
-            query = query + " FROM " + tablas.atributos[0].tablaOrigen.nombre
+            query = query + " FROM " + '\"' + tablas.atributos[0].tablaOrigen.nombre+'\"'
             #####Para agregar el where e parte de las tablas
             if tablas.proceso:
                 query=query+  ' NATURAL JOIN administracion_ponente LEFT JOIN administracion_grupoapoyo_participantes     ON '
@@ -58,7 +58,7 @@ class Extraer:
                     for anidada in tablasAnidadas:
                        query=query+" NATURAL LEFT JOIN "+anidada
 
-            print('======QUERY======='+query)
+            print('======QUERY=======\n'+query)
             #Ejecuta la sentencia
             cursor.execute(query)
             #print(tablas.nombre+'-----')
