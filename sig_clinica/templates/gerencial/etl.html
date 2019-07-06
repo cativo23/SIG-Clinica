@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load i18n %}
+
 
 {% block content %}
     <div class="container">
@@ -46,3 +48,17 @@
     {% endif %}
     {% endfor %}
 {% endblock messages %}
+
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li>
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
+{% endblock %}

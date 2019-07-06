@@ -19,10 +19,10 @@
                     <div class="card-content">
                         {% if fecha_inicial and fecha_final %}
                             <div id="render">
-                                Fecha de emisión: {{ hoy }}
+                                Fecha de emisión: {{ hoy|date:'d/m/Y' }}
                                 <div class="table-header">
-                    <span class="table-title"><b>Resumen de Demanda y Costo de Medicamentos del {{ fecha_inicial }} al
-                        {{ fecha_final }}</b></span>
+                    <span class="table-title"><b>Resumen de Demanda y Costo de Medicamentos del {{ fecha_inicial|date:'d/m/Y' }} al
+                        {{ fecha_final|date:'d/m/Y' }}</b></span>
                                     <div class="actions " data-html2canvas-ignore="true">
                                         <a onclick="return false;" href="#"
                                            class="search-toggle waves-effect btn-flat nopadding"><i
@@ -71,18 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="botones" class="row">
-                                <div class="col s12 m6 push-m1">
-                                    <a class="waves-effect waves-light btn">Exportar</a>
-                                </div>
-
-                                <div class="col s12 m6 push-m1">
-                                    <a class=" waves-light btn">Generar PDF</a>
-                                    <a class=" waves-light btn" class=" waves-light btn"
-                                       onclick="print1()">Imprimir</a>
-                                    <a class=" waves-light btn">Ayuda</a>
-                                </div>
-                            </div>
+                            {%  include 'elements/botones.html' %}
                             <br>
                         {% else %}
                             <div class="row">

@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import obtener_resumen_expcreados, obtener_resumen_costomed, obtener_resumen_expdeudas, \
     obtener_resumen_ingresoConsultas, index, obtener_resumen_tratmientosrec, obtener_resumen_recetamed, \
-    obtener_resumen_vencimiento, obtener_resumen_nuevorecurrente, obtener_informe_odontograma, bitacora, etl
+    obtener_resumen_vencimiento, obtener_resumen_nuevorecurrente, obtener_informe_odontograma, bitacora, etl, informe_tratamientos_especiales
 
 app_name = 'gerencial'
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('resumen_recetamed/', obtener_resumen_recetamed, name='resumen_recetamed'),
     path('resumen_vencimiento/', obtener_resumen_vencimiento, name='resumen_vencimiento'),
     path('resumen_nuevorecurrente/', obtener_resumen_nuevorecurrente, name='resumen_nuevorecurrente'),
+    path('resumen_especiales', informe_tratamientos_especiales, name='especiales'),
     path('bitacora/', bitacora, name='bitacora'),
-    path('mantenimiento/', etl,name='etl')
+    path('mantenimiento/', etl, name='etl')
 ]

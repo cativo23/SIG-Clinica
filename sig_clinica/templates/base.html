@@ -19,6 +19,7 @@
 
         <link rel="stylesheet" type="text/css" href="{% static 'gerencial/css/style.css' %}">
 
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         {% block extrahead %}{% endblock %}
@@ -30,7 +31,7 @@
     <nav class="blue darken-2">
         <div class="container">
             <div class="nav-wrapper">
-                <a href="index.html" class="brand-logo right">SIG-Manguito</a>
+                <a href="/" class="brand-logo right">SIG-Manguito</a>
                 <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large left"><i
                         class="material-icons">menu</i></a>
                 {% block navbar %}
@@ -53,6 +54,12 @@
 <script src="{% static 'gerencial/js/pickers.js' %}"></script>
 <script src="{% static 'gerencial/js/script.js' %}"></script>
 <script src="{% static 'gerencial/js/html2pdf.bundle.min.js' %}"></script>
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.core.min.js"></script>
+<script src="{% static 'gerencial/js/FileSaver.min.js' %}"></script>
+<script src="https://unpkg.com/tableexport@5.2.0/dist/js/tableexport.min.js"></script>
+
+<script src="{% static 'gerencial/js/jquery.mask.js' %}"></script>
 <script>
     function print1() {
         var element = document.getElementById('render');
@@ -65,6 +72,28 @@
         };
         html2pdf().set(opt).from(element).save();
     }
+</script>
+<script>
+function fnExcelReport() {
+    var tT = new XMLSerializer().serializeToString(document.getElementById('datatable')); //Serialised table
+    tT += new XMLSerializer().serializeToString(document.getElementById('tabla1'))
+var tF = '{% if reporte%} {{ reporte }} {% endif %}.xls'; //Filename
+var tB = new Blob([tT]); //Blub
+
+if(window.navigator.msSaveOrOpenBlob){
+    //Store Blob in IE
+    window.navigator.msSaveOrOpenBlob(tB, tF)
+}
+else{
+    //Store Blob in others
+    var tA = document.body.appendChild(document.createElement('a'));
+    tA.href = URL.createObjectURL(tB);
+    tA.download = tF;
+    tA.style.display = 'none';
+    tA.click();
+    tA.parentNode.removeChild(tA)
+}
+}
 </script>
 {% block messages %}
 {% endblock messages %}

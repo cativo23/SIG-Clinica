@@ -17,9 +17,10 @@
                 <div class="card">
                     <div class="card-content">
                      {% if fecha_inicial and fecha_final %}
-                     Fecha de emisión: {{ hoy }}
-                        <span class="card-title"><b>Resumen de Ingresos por Consultas del {{ fecha_inicial }}
-                        al {{ fecha_final }}</b></span>
+                     <div id="render">
+                     Fecha de emisión: {{ hoy|date:'d/m/Y' }}
+                        <span class="card-title"><b>Resumen de Ingresos por Consultas del {{ fecha_inicial|date:'d/m/Y' }}
+                        al {{ fecha_final|date:'d/m/Y' }}</b></span>
 
                         <div id="tabla2" class="row">
                             <div class="col s10 push-s1">
@@ -93,18 +94,9 @@
                                 </table>
                             </div>
                         </div><br>
+                     </div>
 
-                        <div id="botones" class="row">
-                            <div class="col s12 m6 push-m1">
-                                <a class="waves-effect waves-light btn">Exportar</a>
-                            </div>
-
-                            <div class="col s12 m6 push-m1">
-                                <a class=" waves-light btn">Generar PDF</a>
-                                <a class=" waves-light btn" class=" waves-light btn" onclick="printJS('printJS-form', 'html')">Imprimir</a>
-                                <a class=" waves-light btn">Ayuda</a>
-                            </div>
-                        </div>
+                        {%  include 'elements/botones.html' %}
                      {% else %}
                         <div class="row">
                             <div class="col s12"><br>

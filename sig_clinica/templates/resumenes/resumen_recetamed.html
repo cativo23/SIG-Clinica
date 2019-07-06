@@ -14,25 +14,30 @@
     {% include "elements/parametros.html" %}
 
     <div class="row">
-        <div class="col s12">
-            <div class="card">
-                <div class="card-content">
-                    {% if fecha_inicial and fecha_final %}
-                    Fecha de emisión: {{ hoy }}
-                    <span class="card-title"><b>Resumen Utilización de Medicamentos en Recetas del {{ fecha_inicial }} al
-                            {{ fecha_final }}</b></span>
+            <div id="admin" class="col s12">
+                <div class="card material-table">
+                    <div class="card-content">
+                        {% if fecha_inicial and fecha_final %}
+                            <div id="render">
+                                Fecha de emisión: {{ hoy|date:'d/m/Y' }}
+                                <div class="table-header">
+                    <span class="table-title"><b>Resumen de Medicamentos Mas Recetados del {{ fecha_inicial|date:'d/m/Y' }} al
+                        {{ fecha_final|date:'d/m/Y' }}</b></span>
+                                    <div class="actions " data-html2canvas-ignore="true">
+                                        <a onclick="return false;" href="#"
+                                           class="search-toggle waves-effect btn-flat nopadding"><i
+                                                class="material-icons">search</i></a>
+                                    </div>
+                                </div>
 
-                    <div id="tabla1" class="row">
-                        <div class="col s10 push-s1"><br>
-                            {% if resumen %}
-                            <table class="highlight responsive-table centered">
-                                <thead>
+                                <table id="datatable" class="highlight responsive-table centered">
+                                    <thead>
                                     <tr>
                                         <th>Veces Recetado</th>
                                         <th>Nombre Receta</th>
-                                        <th>Medicamentos Más Demandados</th>
+                                        <th>Medicamento <br>Más Demandados</th>
                                         <th>Marca medicamento</th>
-                                        <th>Forma farmaceutica</th>
+                                        <th>Forma <br>farmaceutica</th>
                                         <th>Precio Unitario ($)</th>
                                     </tr>
                                 </thead>
@@ -49,78 +54,38 @@
                                     </tr>
                                     {% endfor %}
                                 </tbody>
-                            </table>
+                                </table>
+                                <div id="tabla2" class="row">
+                                    <div class="col s10 push-s1">
+                                        <table class="highlight responsive-table centered">
+                                            <thead>
+                                            <tr>
+                                                <th>Total Gastado en Obtencion de Medicamento ($)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ total_gasto_med }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            {%  include 'elements/botones.html' %}
                             <br>
-                            {% else %}
-                            <table class="highlight responsive-table centered">
-                                <thead>
-                                    <tr>
-                                        <th>Veces Recetado</th>
-                                        <th>Nombre Receta</th>
-                                        <th>Medicamentos Más Demandados</th>
-                                        <th>Marca medicamento</th>
-                                        <th>Forma farmaceutica</th>
-                                        <th>Precio Unitario ($)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr style="col">
-                                        <td colspan="6">
-                                            <h5>No se encontraron demandas de medicamentos</h5>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <br>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div id="tabla2" class="row">
-                        <div class="col s10 push-s1">
-                            <table class="highlight responsive-table centered">
-                                <thead>
-                                    <tr>
-                                        <th>Total Gastado en Obtencion de Medicamento ($)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ total_gasto_med }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div id="botones" class="row">
-                        <div class="col s12 m6 push-m1">
-                            <a class="waves-effect waves-light btn">Exportar</a>
-                        </div>
-
-                        <div class="col s12 m6 push-m1">
-                            <a class=" waves-light btn">Generar PDF</a>
-                            <a class=" waves-light btn" class=" waves-light btn"
-                                onclick="printJS('printJS-form', 'html')">Imprimir</a>
-                            <a class=" waves-light btn">Ayuda</a>
-                        </div>
-                    </div>
-
-                </div>
-                {% else %}
-                <div class="row">
-                    <div class="col s12"><br>
-                        <h4 style="text-align: center">¡No se ha seleccionado un período para su resumen!</h4>
+                        {% else %}
+                            <div class="row">
+                                <div class="col s12"><br>
+                                    <h4 style="text-align: center">¡No se ha seleccionado un período para su
+                                        resumen!</h4>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-                {% endif %}
-
-                <script>
-                    var boton_enviar = document.getElementById('boton_enviar').onclick = "location.href='{% url 'gerencial:resumen_recetamed' %}'"
-                </script>
             </div>
         </div>
-    </div>
 </div>
 </div>
 {% endblock %}

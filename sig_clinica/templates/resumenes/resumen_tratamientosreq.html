@@ -15,75 +15,73 @@
         {% include "elements/parametros.html" %}
 
         <div class="row">
-            <div class="col s12">
-                <div class="card">
+            <div id="admin" class="col s12">
+                <div class="card material-table">
                     <div class="card-content">
                         {% if fecha_inicial and fecha_final %}
-                            Fecha de emisión: {{ hoy }}
-                            <span class="card-title"><b> Resumen de Tratamientos Recurrentes{{ fecha_inicial }}
-                        al {{ fecha_final }}</b></span>
+                            <div id="render">
+                                Fecha de emisión: {{ hoy|date:'d/m/Y' }}
+                                <div class="table-header">
+                    <span class="table-title"><b>Resumen de Tratamientos Recurrentes{{ fecha_inicial|date:'d/m/Y'  }}
+                        al {{ fecha_final|date:'d/m/Y'  }}</b></span>
+                                    <div class="actions " data-html2canvas-ignore="true">
+                                        <a onclick="return false;" href="#"
+                                           class="search-toggle waves-effect btn-flat nopadding"><i
+                                                class="material-icons">search</i></a>
+                                    </div>
+                                </div>
 
-                            <div id="tabla2" class="row">
-                                <div class="col s10 push-s1">
-                                    <table class="highlight responsive-table centered">
-                                        <thead>
-                                        <tr>
-                                            <th><b>Tratamiento</b></th>
-                                            <th>Costo en materiales/procedimientos ($)</th>
-                                            <th>Total pagado ($)</th>
-                                            <th>Cantidad de veces que se realizó tratamiento</th>
-                                            <th>Ganancia</th>
-                                        </tr>
-                                        </thead>
+                                <table id="datatable" class="highlight responsive-table centered">
+                                    <thead>
+                                    <tr>
+                                        <th><b>Tratamiento</b></th>
+                                        <th>Costo en materiales <br>/procedimientos ($)</th>
+                                        <th>Total pagado ($)</th>
+                                        <th>Cantidad de veces que <br>se realizó tratamiento</th>
+                                        <th>Ganancia</th>
+                                    </tr>
+                                    </thead>
 
+                                    {% if tratamientos %}
                                         <tbody>
-                                        {% for tratamiento in tratamientos%}
+                                        {% for tratamiento in tratamientos %}
                                             <tr>
                                                 <td><b>{{ tratamiento.nombre }}</b></td>
                                                 <td>{{ tratamiento.costo|stringformat:'0.2f'|intcomma }}</td>
-                                            <td>{{ tratamiento.total|stringformat:'0.2f'|intcomma }}</td>
-                                            <td>{{ tratamiento.cantidad|stringformat:'0.2f'|intcomma }}</td>
-                                            <td>{{ tratamiento.ganancia|stringformat:'0.2f'|intcomma }}</td>
+                                                <td>{{ tratamiento.total|stringformat:'0.2f'|intcomma }}</td>
+                                                <td>{{ tratamiento.cantidad|stringformat:'0.2f'|intcomma }}</td>
+                                                <td>{{ tratamiento.ganancia|stringformat:'0.2f'|intcomma }}</td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
-                                    </table>
-                                </div>
-                            </div><br>
+                                    {% else %}
 
-                            <div id="tabla3" class="row">
-                                <div class="col s10 push-s1">
-                                    <table class="highlight responsive-table centered">
-                                        <thead>
-                                        <tr>
-                                            <th>Costo en materiales/procedimientos ($)</th>
-                                            <th>Total pagado ($)</th>
-                                            <th>Ganancia total ($)</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>{{ costo_total|stringformat:'0.2f'|intcomma}}</td>
-                                            <td>{{ total_pagado|stringformat:'0.2f'|intcomma }}</td>
-                                            <td>{{ ganancia_total|stringformat:'0.2f'|intcomma }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div><br>
 
-                            <div id="botones" class="row">
-                                <div class="col s12 m6 push-m1">
-                                    <a class="waves-effect waves-light btn">Exportar</a>
-                                </div>
-
-                                <div class="col s12 m6 push-m1">
-                                    <a class=" waves-light btn">Generar PDF</a>
-                                    <a class=" waves-light btn" class=" waves-light btn"
-                                       onclick="printJS('printJS-form', 'html')">Imprimir</a>
-                                    <a class=" waves-light btn">Ayuda</a>
+                                    {% endif %}
+                                </table>
+                                <div id="tabla2" class="row">
+                                    <div class="col s10 push-s1">
+                                        <table class="highlight responsive-table centered">
+                                            <thead>
+                                            <tr>
+                                                <th>Costo en materiales/procedimientos ($)</th>
+                                                <th>Total pagado ($)</th>
+                                                <th>Ganancia total ($)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ costo_total|stringformat:'0.2f'|intcomma}}</td>
+                                                <td>{{ total_pagado|stringformat:'0.2f'|intcomma }}</td>
+                                                <td>{{ ganancia_total|stringformat:'0.2f'|intcomma }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+                            {% include 'elements/botones.html' %}
+                            <br>
                         {% else %}
                             <div class="row">
                                 <div class="col s12"><br>
@@ -101,7 +99,7 @@
 
 {% block navbar %}
     <ul class="left hide-on-med-and-down">
-        <li >
+        <li>
             <a href="/">{% trans 'Home' %}</a>
         </li>
         <li>

@@ -1,28 +1,57 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Demanda y Costo de Medicamentos {% endblock %}
+{% block title %} Uso Odontograma {% endblock %}
 {% block pantalla %} Resumen de Demanda y Costo en Medicamentos  {% endblock %}
 {% block descripcion %} {% endblock %}
 
 {% block content %}
     <div class="container">
-        <h3 class="center-align">Demanda y Costo de Medicamentos</h3>
+        <h3 class="center-align">Uso de Odontograma</h3>
         <!--<b>Frecuencia de uso:</b> {{ prueba }}<br><br> -->
 
         {% include "elements/parametros.html" %}
-
         <div class="row">
-            <div class="col s12">
-                <div class="card">
+            <div id="admin" class="col s12">
+                <div class="card material-table">
                     <div class="card-content">
                         {% if fecha_inicial and fecha_final %}
-                            Fecha de emisión: {{ hoy }}
-                            <span class="card-title"><b>Resumen de Demanda y Costo de Medicamentos del {{ fecha_inicial }} al
-                                {{ fecha_final }}</b></span>
+                            <div id="render">
+                                Fecha de emisión: {{ hoy|date:'d/m/Y' }}
+                                <div class="table-header">
+                    <span class="table-title"><b>Resumen del Uso de Odontograma del {{ fecha_inicial|date:'d/m/Y' }} al
+                                    {{ fecha_final|date:'d/m/Y' }}</b></span>
+                                    <div class="actions " data-html2canvas-ignore="true">
+                                        <a id = "ignore" onclick="return false;" href="#"
+                                           class="search-toggle waves-effect btn-flat nopadding"><i
+                                                class="material-icons">search</i></a>
+                                    </div>
+                                </div>
 
-                            <div id="tabla1" class="row">
-                                <div class="col s10 push-s1"><br>
+                                <table id="datatable" class="highlight responsive-table centered">
+                                    <thead>
+                                            <tr>
+                                                <th>Tratamientos más frecuente en odontogramas</th>
+                                                <th>Número de pieza dental más afectada</th>
+                                                <th>Costo del tratamiento ($)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for tratamiento in tratamientos %}
+                                                <tr>
+                                                    <td>{{ tratamiento.nombre }}</td>
+                                                    <td>
+                                                        {{ tratamiento.piezas }}
+                                                    </td>
+                                                    <td>{{ tratamiento.costo }}</td>
+                                                </tr>
+                                            {% endfor %}
+
+                                            </tbody>
+                                </table>
+
+                                <div id="tabla1" class="row">
+                                    <div class="col s10 push-s1"><br>
                                         <table class="highlight responsive-table centered">
                                             <thead>
                                             <tr>
@@ -31,87 +60,52 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>{{ cant_consultas }}</td>
-                                                    <td>{{ cant_odontogramas }}</td>
-                                                </tr>
+                                            <tr>
+                                                <td>{{ cant_consultas }}</td>
+                                                <td>{{ cant_odontogramas }}</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                         <br>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div id="tabla2" class="row">
-                                <div class="col s10 push-s1">
-                                    <table class="highlight responsive-table centered">
-                                        <thead>
-                                        <tr>
-                                            <th>Sexo</th>
-                                            <th>Consultas Realizadas</th>
-                                            <th>Odontogramas Modificados</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>Masculino</td>
-                                            <td>{{ consultas_mas }}</td>
-                                            <td>{{ odontogramas_mas }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Femenino</td>
-                                            <td>{{ consultas_fem }}</td>
-                                            <td>{{ odontogramas_fem }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Total</b></td>
-                                            <td>{{ total_contultas }}</td>
-                                            <td>{{ total_odontogramas }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div id="tabla3" class="row">
-                                <div class="col s10 push-s1">
-                                    <table class="highlight responsive-table centered">
-                                        <thead>
-                                        <tr>
-                                            <th>Tratamientos más frecuente en odontogramas</th>
-                                            <th>Número de pieza dental más afectada</th>
-                                            <th>Costo del tratamiento ($)</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for tratamiento in tratamientos %}
+                                <div id="tabla2" class="row">
+                                    <div class="col s10 push-s1">
+                                        <table class="highlight responsive-table centered">
+                                            <thead>
                                             <tr>
-                                            <td>{{ tratamiento.nombre }}</td>
-                                            <td>
-                                                {{ tratamiento.piezas }}
-                                            </td>
-                                            <td>{{ tratamiento.costo }}</td>
+                                                <th>Sexo</th>
+                                                <th>Consultas Realizadas</th>
+                                                <th>Odontogramas Modificados</th>
                                             </tr>
-                                        {% endfor %}
-
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Masculino</td>
+                                                <td>{{ consultas_mas }}</td>
+                                                <td>{{ odontogramas_mas }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Femenino</td>
+                                                <td>{{ consultas_fem }}</td>
+                                                <td>{{ odontogramas_fem }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Total</b></td>
+                                                <td>{{ total_contultas }}</td>
+                                                <td>{{ total_odontogramas }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div id="botones" class="row">
-                                <div class="col s12 m6 push-m1">
-                                    <a class="waves-effect waves-light btn">Exportar</a>
-                                </div>
 
-                                <div class="col s12 m6 push-m1">
-                                    <a class=" waves-light btn">Generar PDF</a>
-                                    <a class=" waves-light btn" class=" waves-light btn"
-                                       onclick="printJS('printJS-form', 'html')">Imprimir</a>
-                                    <a class=" waves-light btn">Ayuda</a>
-                                </div>
-                            </div>
 
                             </div>
+                            {%  include 'elements/botones.html' %}
+                            <br>
                         {% else %}
                             <div class="row">
                                 <div class="col s12"><br>
@@ -120,10 +114,7 @@
                                 </div>
                             </div>
                         {% endif %}
-
-                    <script>
-                        var boton_enviar = document.getElementById('boton_enviar').onclick = "location.href='{% url 'gerencial:resumen_costomed' %}'"
-                    </script>
+                    </div>
                 </div>
             </div>
         </div>

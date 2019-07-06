@@ -26,101 +26,96 @@
 
         {% include "elements/parametros.html" %}
 
-                                    <a class=" waves-light btn modal-trigger" href="#modal">Ayuda</a>
+        <a class=" waves-light btn modal-trigger" href="#modal">Ayuda</a>
         <div class="row">
             <div class="col s12">
                 <div class="card">
                     <div class="card-content">
                         {% if fecha_inicial and fecha_final %}
-                            Fecha de emisión: {{ hoy }}
-                            <span class="card-title"><b>Resumen de Expedientes Creados del {{ fecha_inicial }}
-                            al {{ fecha_final }}</b></span>
+                            <div id="render">
+                                Fecha de emisión: {{ hoy|date:'d/m/Y' }}
+                                <span class="card-title"><b>Resumen de Expedientes Creados del {{ fecha_inicial|date:'d/m/Y' }}
+                            al {{ fecha_final|date:'d/m/Y' }}</b></span>
 
-                            <div id="tabla1" class="row">
-                                <div class="col s10 push-s1"><br>
-                                    <table class="highlight responsive-table" id="tablea">
-                                        <thead>
-                                        <tr>
-                                            <th>Sexo</th>
-                                            <th>Expedientes Creados</th>
-                                            <th>Consultas Realizadas</th>
-                                        </tr>
-                                        </thead>
+                                <div id="tabla1" class="row">
+                                    <div class="col s10 push-s1"><br>
+                                        <table class="highlight responsive-table" id="tablea">
+                                            <thead>
+                                            <tr>
+                                                <th>Sexo</th>
+                                                <th>Expedientes Creados</th>
+                                                <th>Consultas Realizadas</th>
+                                            </tr>
+                                            </thead>
 
-                                        <tbody>
-                                        <tr>
-                                            <td><b>Masculino</b></td>
-                                            <td>{{ sexo_exp_mas }}</td>
-                                            <td>{{ sexo_con_mas }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Femenino</b></td>
-                                            <td>{{ sexo_exp_fem }}</td>
-                                            <td>{{ sexo_con_fem }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                            <tbody>
+                                            <tr>
+                                                <td><b>Masculino</b></td>
+                                                <td>{{ sexo_exp_mas }}</td>
+                                                <td>{{ sexo_con_mas }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Femenino</b></td>
+                                                <td>{{ sexo_exp_fem }}</td>
+                                                <td>{{ sexo_con_fem }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div><br>
+                                <br>
 
-                            <div id="tabla2" class="row">
-                                <div class="col s10 push-s1"><br>
-                                    <table class="highlight responsive-table">
-                                        <thead>
-                                        <tr>
-                                            <th>Población</th>
-                                            <th>Expedientes Creados</th>
-                                            <th>Consultas Realizadas</th>
-                                        </tr>
-                                        </thead>
+                                <div id="tabla2" class="row">
+                                    <div class="col s10 push-s1"><br>
+                                        <table class="highlight responsive-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Población</th>
+                                                <th>Expedientes Creados</th>
+                                                <th>Consultas Realizadas</th>
+                                            </tr>
+                                            </thead>
 
-                                        <tbody>
-                                        <tr>
-                                            <td><b>Menor de 18 años</b></td>
-                                            <td>{{ edad_exp_me }}</td>
-                                            <td>{{ edad_con_me }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>Mayor o igual a 18 años</b></td>
-                                            <td>{{ edad_exp_ma }}</td>
-                                            <td>{{ edad_con_ma }}</td>
+                                            <tbody>
+                                            <tr>
+                                                <td><b>Menor de 18 años</b></td>
+                                                <td>{{ edad_exp_me }}</td>
+                                                <td>{{ edad_con_me }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Mayor o igual a 18 años</b></td>
+                                                <td>{{ edad_exp_ma }}</td>
+                                                <td>{{ edad_con_ma }}</td>
 
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div><br>
+                                <br>
 
-                            <div id="tabla3" class="row">
-                                <div class="col s10 push-s1"><br>
-                                    <table class="highlight responsive-table centered">
-                                        <thead>
-                                        <tr>
-                                            <th>Expedientes Nuevos</th>
-                                            <th>Consultas Realizadas por Pacientes Nuevos</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>{{ exp_total }}</td>
-                                            <td>{{ con_total }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div id="tabla3" class="row">
+                                    <div class="col s10 push-s1"><br>
+                                        <table class="highlight responsive-table centered">
+                                            <thead>
+                                            <tr>
+                                                <th>Expedientes Nuevos</th>
+                                                <th>Consultas Realizadas por Pacientes Nuevos</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ exp_total }}</td>
+                                                <td>{{ con_total }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div><br>
-
-                            <div id="botones" class="row">
-                                <div class="col s12 m6 push-m1">
-                                    <a class="waves-effect waves-light btn">Exportar</a>
-                                </div>
-
-                                <div class="col s12 m6 push-m1">
-                                    <a class=" waves-light btn">Generar PDF</a>
-                                    <a class=" waves-light btn" class=" waves-light btn"
-                                       onclick="printJS('printJS-form', 'html')">Imprimir</a>
-                                </div>
+                                <br>
                             </div>
+
+                            {% include 'elements/botones.html' %}
                         {% else %}
                             <div class="row">
                                 <div class="col s12"><br>

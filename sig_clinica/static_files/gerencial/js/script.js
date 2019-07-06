@@ -214,6 +214,6 @@ $(document).ready(function () {
     });
     $('#datatable_info').attr('data-html2canvas-ignore',"true");
     $('#datatable_length').attr('data-html2canvas-ignore',"true");
-    $('#datatable_filter').attr('data-html2canvas-ignore',"true")
+    $('#datatable_filter').attr('data-html2canvas-ignore',"true");
 });
 

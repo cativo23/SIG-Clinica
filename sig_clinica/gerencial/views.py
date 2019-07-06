@@ -7,7 +7,8 @@ from django.db.models import Sum, Count, F, FloatField, ExpressionWrapper, Q
 from django.shortcuts import render
 
 from authentication.views import estrategico, administrador, tactico
-from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma, Bitacora
+from .models import Expediente, Paciente, Consulta, Medicamento, LoteMedicamento, Tratamiento, Odontograma, Bitacora, \
+    Cita
 from .models import Procedimiento, Pago, Receta
 from etl import service
 import os
@@ -17,6 +18,18 @@ import subprocess
 def fecha_18():
     current = datetime.now().date()
     return date(current.year - 18, current.month, current.day)
+
+
+def checkDates(fechaInicial, fechaFinal):
+    dates = [fechaInicial, fechaFinal]
+    hoy = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)
+    if fechaFinal == hoy:
+        dates[1] = datetime.now()
+        print(dates[1])
+    if fechaInicial == hoy:
+        dates[0] = hoy
+        print(dates[0])
+    return dates
 
 
 # Create your views here
@@ -51,6 +64,10 @@ def obtener_resumen_expcreados(request):
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
+
         if fecha_inicial and fecha_final:
 
             # TABLA 1 POR SEXO
@@ -104,7 +121,9 @@ def obtener_resumen_expcreados(request):
             exp_total = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).count()
             con_total = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final]).count()
 
-            registro_bitacora(request, "Generacion de resumen de Expedientes Creados")
+        registro_bitacora(request, "Generacion de resumen de Expedientes Creados")
+
+    reporte = "Reporte Expedientes"
 
     return render(request, template_name='resumenes/resumen_expcreados.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
@@ -112,7 +131,7 @@ def obtener_resumen_expcreados(request):
                            'sexo_con_mas': sexo_con_mas, 'sexo_con_fem': sexo_con_fem,
                            'edad_exp_me': edad_exp_me, 'edad_exp_ma': edad_exp_ma,
                            'edad_con_me': edad_con_me, 'edad_con_ma': edad_con_ma,
-                           'exp_total': exp_total, 'con_total': con_total})
+                           'exp_total': exp_total, 'con_total': con_total, 'reporte': reporte})
 
 
 # Funcion que obtiene el RESUMEN DE EXPEDIENTES CON DEUDAS para un periodo
@@ -137,6 +156,10 @@ def obtener_resumen_expdeudas(request):
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
+
         if fecha_inicial and fecha_final:
 
             # TABLA 1: EXPEDIENTES CON DEUDAS Y MONTO TOTAL DE ESOS EXPEDIENTES
@@ -185,6 +208,7 @@ def obtener_resumen_expdeudas(request):
                 total_mayor_deuda = 0
 
         registro_bitacora(request, "Generacion de resumen de Expedientes Con Deudas")
+    reporte = "Reporte Expedientes con Deuda"
 
     return render(request, template_name='resumenes/resumen_expdeudas.html',
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
@@ -192,6 +216,7 @@ def obtener_resumen_expdeudas(request):
                            'dueda_mayor20': dueda_mayor20, 'total_deuda20': total_deuda20,
                            'porce_deuda20': porce_deuda20,
                            'exp_mayor_deuda': exp_mayor_deuda, 'total_mayor_deuda': total_mayor_deuda,
+                           'reporte': reporte
                            })
 
 
@@ -216,12 +241,15 @@ def obtener_resumen_costomed(request):
 
     prueba = ""
 
-    reporte = 'Costo Medicamentos'
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
+
         if fecha_inicial and fecha_final:
 
             # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
@@ -333,8 +361,9 @@ def obtener_resumen_costomed(request):
                     print("Precio uni:", m.precio_producto, "Cantidad: ", mas_usados_tot[i])
                     i = i + 1
 
-            print(mas_usados_tot)
-            # print(total_gasto_med)
+        registro_bitacora(request, "Generacion de Reporte de Costo de Medicamentos")
+    reporte = 'Resumen de Costo de Medicamentos'
+    # print(total_gasto_med)
     return render(request, template_name="resumenes/resumen_costomed.html",
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
                            'total_gasto_med': total_gasto_med, 'prueba': prueba, 'reporte': reporte})
@@ -365,6 +394,9 @@ def obtener_resumen_ingresoConsultas(request):
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
 
         if fecha_inicial and fecha_final:
             consultas = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial, fecha_final])
@@ -403,13 +435,16 @@ def obtener_resumen_ingresoConsultas(request):
             con_total = consultas.count()
             ingresos = pagos.aggregate(Sum("cantidad"))["cantidad__sum"]
 
+            registro_bitacora(request, "Generacion de Resumen de Ingresos Obtenidos por Consulta")
+        reporte = 'Reporte de Ingresos por Consulta'
+
         return render(request, template_name='resumenes/resumen_ingobtenidos.html',
                       context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
                                'sexo_con_mas': sexo_con_mas_num, 'sexo_con_fem': sexo_con_fem_num,
                                'total_consulta_mas': total_consulta_mas, 'total_consulta_fem': total_consulta_fem,
                                'edad_con_me': edad_con_me, 'edad_con_ma': edad_con_ma, 'con_total': con_total,
                                'ingresos': ingresos, 'total_consulta_men': total_consulta_men,
-                               "total_consulta_may": total_consulta_may})
+                               "total_consulta_may": total_consulta_may, 'reporte': reporte})
     else:
         return render(request, template_name='resumenes/resumen_ingobtenidos.html')
 
@@ -424,6 +459,10 @@ def obtener_resumen_tratmientosrec(request):
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
+
         if fecha_inicial and fecha_final:
 
             # Tabla 1: 10 tratamientos recurrentes
@@ -471,10 +510,14 @@ def obtener_resumen_tratmientosrec(request):
                 total_pagado += tratamiento['total']
 
             ganancia_total = total_pagado - costo_total
+
+            registro_bitacora(request, "Generacion del Resumen de Tratamientos Recurrentes")
+
+        reporte = "Reporte de Tratamientos Recurrentes"
         return render(request, template_name='resumenes/resumen_tratamientosreq.html',
                       context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
                                'tratamientos': tratamientos, 'costo_total': costo_total, 'total_pagado': total_pagado,
-                               'ganancia_total': ganancia_total})
+                               'ganancia_total': ganancia_total, 'reporte': reporte})
     else:
         return render(request, template_name='resumenes/resumen_tratamientosreq.html')
 
@@ -488,6 +531,10 @@ def obtener_informe_odontograma(request):
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
 
         # TABLA 1 TOTALES ODONTOGRAMAS USADOS Y CONSULTAS HECHAS
         num = 5
@@ -529,6 +576,9 @@ def obtener_informe_odontograma(request):
                 if tratamiento['nombre'] == s['tratamiento__nombreTratamiento']:
                     if len(tratamiento['piezas']) <= num - 1:
                         tratamiento['piezas'].append(s['pieza'])
+        registro_bitacora(request, "Generacion del resumen sobre uso de odontogramas")
+
+        reporte = "Reporte de Uso de Odontogramas"
 
         return render(request, template_name='informes/uso_odontograma.html',
                       context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
@@ -537,7 +587,7 @@ def obtener_informe_odontograma(request):
                                'total_contultas': total_consultas,
                                'total_odontogramas': total_odontogramas, 'consultas_fem': consultas_fem,
                                'consultas_mas': consultas_mas, 'odontogramas_fem': odontogramas_fem,
-                               'odontogramas_mas': odontogramas_mas})
+                               'odontogramas_mas': odontogramas_mas, 'reporte': reporte})
     else:
         return render(request, template_name='informes/uso_odontograma.html')
 
@@ -569,6 +619,10 @@ def obtener_resumen_recetamed(request):
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
+
         if fecha_inicial and fecha_final:
 
             # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
@@ -682,11 +736,12 @@ def obtener_resumen_recetamed(request):
                           "Cantidad: ", mas_usados_tot[i])
                     i = i + 1
 
-            print(mas_usados_tot)
-            # print(total_gasto_med)
+            registro_bitacora(request, "Generacion del Resumen de Medicamentos Mas usados en Recetas")
+
+    reporte = "Reporte de Medicamentos usados en recetas"
     return render(request, template_name="resumenes/resumen_recetamed.html",
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
-                           'total_gasto_med': total_gasto_med, 'prueba': prueba})
+                           'total_gasto_med': total_gasto_med, 'prueba': prueba, 'reporte': reporte})
 
 
 class vencimiento:
@@ -709,21 +764,33 @@ def obtener_resumen_vencimiento(request):
     resumen = ""
     tabla1 = ""
 
-    prueba = ""
+    medicamentoEntradoFiltrado = ""
 
     if request.method == 'POST':
         fecha_inicial = request.POST.get('fecha_inicial')
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
+
         if fecha_inicial and fecha_final:
             # TABLA 1 MEDICAMENTOS MAS DEMANDADOS
 
-            tabla1 = Medicamento.objects.all()
-            # print(total_gasto_med)
+            medicamentoEntradoFiltrado = Medicamento.objects.filter(
+                lotemedicamento__fecha_entrada__range=[fecha_inicial, fecha_final],
+                lotemedicamento__fecha_vencimiento__gt=fecha_final).annotate(
+                count=Count('lotemedicamento__medicamento__nombre_producto')).annotate(
+                total_cantidad=Sum('lotemedicamento__cantidad'))
+
+            registro_bitacora(request, "Generacion del Resumen Vencimiento de Medicamentos")
+
+    reporte = "Reporte de Vencimiento de Medicamentos"
     return render(request, template_name="resumenes/resumen_vencimiento.html",
                   context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy, 'resumen': resumen,
-                           'tabla1': tabla1, })
+                           'medicamentoEntradoFiltrado': medicamentoEntradoFiltrado, 'reporte': reporte})
 
 
 # Resumen NuevoRecurrente
@@ -764,6 +831,10 @@ def obtener_resumen_nuevorecurrente(request):
         fecha_final = request.POST.get('fecha_final')
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
 
         if fecha_inicial and fecha_final:
             rconsultas = Consulta.objects.filter(
@@ -873,6 +944,9 @@ def obtener_resumen_nuevorecurrente(request):
             # TABLA 3 TOTALES
             con_total = consultas.count()
             ingresos = pagos.aggregate(Sum("cantidad"))["cantidad__sum"]
+            registro_bitacora(request, "Generacion del Resumen de Expedientes Nuevos y Recurrentes")
+
+        reporte = "Reporte de Pacientes nuevos y Recurrentes"
 
         return render(request, template_name='resumenes/resumen_nuevorecurrente.html',
                       context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
@@ -884,7 +958,7 @@ def obtener_resumen_nuevorecurrente(request):
                                'nedad_con_me': nedad_con_me, 'nedad_con_ma': nedad_con_ma,
                                'ingresos': ingresos, 'rtotal_consulta_men': rtotal_consulta_men,
                                "rtotal_consulta_may": rtotal_consulta_may, 'ntotal_consulta_men': ntotal_consulta_men,
-                               "ntotal_consulta_may": ntotal_consulta_may})
+                               "ntotal_consulta_may": ntotal_consulta_may, 'reporte': reporte}, )
     else:
         return render(request, template_name='resumenes/resumen_nuevorecurrente.html')
 
@@ -916,24 +990,168 @@ def bitacora(request):
 
     return render(request, 'gerencial/bitacora.html', c)
 
+
 @user_passes_test(administrador)
 def etl(request):
     if request.method == 'POST':
         if "etl" in request.POST:
             hoy = str(datetime.now())
             result = service.run()
-            if  result == 1:
+            if result == 1:
                 registro_bitacora(request, "Ejecucion correcta de ETL a las " + hoy)
                 messages.success(request, "ETL ejecutado correctamente")
             else:
                 registro_bitacora(request, "Ejecucion incorrecta de ETL a las " + hoy)
                 messages.error(request, "ETL ejecutado incorrectamente")
-        
-        if  "respaldo" in request.POST:
+
+        if "respaldo" in request.POST:
             resu = os.system('PGPASSWORD=\'admin123\' /root/Desktop/SIG/SIG-Clinica/Scripts/backup.sh')
-            #resul = subprocess.check_output(['/root/Desktop/SIG/SIG-Clinica/Scripts/backup.sh', 'PGPASSWORD=\'admin123\''])
-            messages.success(request, "Backup BD del "+ str(datetime.today()))
+            registro_bitacora(request, "Backup BD del " + str(datetime.today()))
+            messages.success(request, "Backup realizado correctamente")
 
         return render(request, 'gerencial/etl.html')
     else:
         return render(request, 'gerencial/etl.html')
+
+
+class PacienteTratamiento:
+    def __init__(self, paciente, tratamiento, fecha1, fecha2, observaciones):
+        self.paciente = paciente
+        self.tratamiento = tratamiento
+        self.fecha1 = fecha1
+        self.fecha2 = fecha2
+        self.observaciones = observaciones
+
+
+def informe_tratamientos_especiales(request):
+    fecha_inicial = ""
+
+    fecha_final = ""
+
+    hoy = datetime.today()
+
+    expediente_list = []
+
+    procedimientos_list = []
+
+    odontograma_list = []
+
+    PacienteTratamiento_list = []
+
+    consulta_list = []
+
+    tratamiento = Tratamiento.objects.all()
+
+    paciente = Paciente.objects.all()
+
+    print(*paciente)
+
+    print(len(paciente))
+
+    for pacientelist in paciente:
+
+        try:
+
+            expediente = Expediente.objects.get(paciente=pacientelist)
+
+            expediente_list.append(expediente)
+
+        except:
+
+            print("No encontre")
+
+    for expediente in expediente_list:
+
+        try:
+
+            odontograma = Odontograma.objects.get(expediente=expediente)
+
+            odontograma_list.append(odontograma)
+
+        except:
+
+            print("")
+
+    for i in odontograma_list:
+
+        date = "2019-06-11"
+
+        newdate1 = datetime.strptime(date, "%Y-%m-%d")
+
+        if (i.fechaCreacion <= newdate1):
+
+            print(i.fechaCreacion)
+
+
+    if request.method == 'POST':
+
+        fecha_inicial = request.POST.get('fecha_inicial')
+
+        fecha_final = request.POST.get('fecha_final')
+
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
+
+        print(fecha_final, "fecha final")
+
+        print(fecha_inicial, "fecha final")
+
+        odontograma = Odontograma.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final])
+
+        print(len(odontograma), "Cantidad de odontogramas")
+
+        for odontograma in odontograma:
+
+            try:
+
+                print("------------------------------------")
+
+                odontograma_list.append(odontograma)
+
+                print(odontograma.fechaCreacion)
+
+                expediente = Expediente.objects.get(odontograma=odontograma)
+
+                print(expediente.paciente)
+
+                expediente_list.append(expediente)
+
+                procedimiento = Procedimiento.objects.get(odontograma=odontograma)
+
+                print(procedimiento.tratamiento)
+
+                procedimientos_list.append(procedimiento)
+
+                consulta = Consulta.objects.get(paciente=expediente)
+
+                try:
+
+                    cita2 = Cita.objects.get(paciente=expediente)
+
+                    print(cita2.estado, "Estado")
+
+                    if cita2.estado == "Pendiente":
+
+                        fechasiguiente = cita2.fechaCita
+
+                except:
+
+                    fechasiguiente = "-"
+
+            except:
+
+                print("Algo salio mal")
+
+            p = PacienteTratamiento(expediente.paciente, procedimiento.tratamiento, consulta.fechaConsulta, fechasiguiente,
+                                consulta.observacionCons)
+
+            PacienteTratamiento_list.append(p)
+
+    return render(request, template_name='gerencial/informe_tratamientos_especiales.html', context={
+            'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
+            'PacienteTratamiento_list': PacienteTratamiento_list
+        })
