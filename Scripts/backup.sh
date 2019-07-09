@@ -2,7 +2,6 @@
 
 # A simple script to perform postgres db backup.
 
-EMAIL="db_bak_account@gmail.com"
 DATABASE="bd_sig"
 DATE=$(date +"%d-%m-%Y_%H:%M:%S")
 FILE="/root/Desktop/SIG/SIG-Clinica/Scripts/backups/$DATABASE_$DATE.sql"

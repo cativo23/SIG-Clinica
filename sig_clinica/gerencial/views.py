@@ -697,29 +697,29 @@ def obtener_resumen_recetamed(request):
             i = 0
             # Comprobando que existen al menos 5 mediamentos mas tuilizados en recetas
             for medicamentos in range(len(mas_usados_rec)):
-                meds = Medicamento.objects.filter(receta__nombreReceta=lista_mas_usados[i])
+                meds = Medicamento.objects.filter(receta__nombreReceta=lista_mas_usados[0])
                 i = i + 1
 
-            if len(lista_mas_usados) >= 9:
-                i = 0
-                for repetir in range(9):
-                    objeto = RecetaMasUsados(prueba.get(mas_usados_rec[i].nombreReceta),
-                                             mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
-                                             meds[i].marca_producto,
-                                             meds[i].formafarmaceutica,
-                                             meds[i].precio_producto)
-                    resumen.append(objeto)
-                    i = i + 1
-            else:
-                i = 0
-                for repetir in range(len(lista_mas_usados)):
-                    objeto = RecetaMasUsados(prueba.get(mas_usados_rec[i].nombreReceta),
-                                             mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
-                                             meds[i].marca_producto,
-                                             meds[i].formafarmaceutica,
-                                             meds[i].precio_producto)
-                    resumen.append(objeto)
-                    i = i + 1
+                if len(lista_mas_usados) >= 9:
+                    i = 0
+                    for repetir in range(9):
+                        objeto = RecetaMasUsados(prueba.get(mas_usados_rec[i].nombreReceta),
+                                                 mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
+                                                 meds[i].marca_producto,
+                                                 meds[i].formafarmaceutica,
+                                                 meds[i].precio_producto)
+                        resumen.append(objeto)
+                        i = i + 1
+                else:
+                    i = 0
+                    for repetir in range(len(lista_mas_usados)-1):
+                        objeto = RecetaMasUsados(prueba.get(mas_usados_rec[i].nombreReceta),
+                                                 mas_usados_rec[i].nombreReceta, meds[i].nombre_producto,
+                                                 meds[i].marca_producto,
+                                                 meds[i].formafarmaceutica,
+                                                 meds[i].precio_producto)
+                        resumen.append(objeto)
+                        i = i + 1
 
             # TABLA 2 TOTAL GASTADO EN MEDICAMENTO
 
@@ -1023,6 +1023,7 @@ class PacienteTratamiento:
         self.observaciones = observaciones
 
 
+@user_passes_test(tactico)
 def informe_tratamientos_especiales(request):
     fecha_inicial = ""
 
@@ -1091,7 +1092,7 @@ def informe_tratamientos_especiales(request):
 
         fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
         fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
-
+        print
         fechas = checkDates(fecha_inicial, fecha_final)
         fecha_inicial = fechas[0]
         fecha_final = fechas[1]
@@ -1099,7 +1100,7 @@ def informe_tratamientos_especiales(request):
         print(fecha_final, "fecha final")
 
         print(fecha_inicial, "fecha final")
-
+        
         odontograma = Odontograma.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final])
 
         print(len(odontograma), "Cantidad de odontogramas")
@@ -1155,3 +1156,116 @@ def informe_tratamientos_especiales(request):
             'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,
             'PacienteTratamiento_list': PacienteTratamiento_list
         })
+
+
+class PacienteDeuda:
+    def __init__(self,expediente,consultas,ultima,siguiente):
+        self.expediente = expediente
+        self.consultas = consultas
+        self.ultima = ultima
+        self.siguiente = siguiente
+
+
+# Funcion que obtiene el RESUMEN DE EXPEDIENTES CON DEUDAS para un periodo
+@user_passes_test(tactico)
+def obtener_resumen_expdeudas1(request):
+    fecha_inicial = ""
+    fecha_final = ""
+    hoy = datetime.today()
+    expcondeuda = 0
+    fechasiguiente=""
+    mayor50=0
+    totalmayor50=0
+    fecha=""
+    total_deuda=""
+    exp_deuda = ""
+    expedeuda=""
+    exp_deuda_total = ""
+    exp_pagado = ""
+    dueda_mayor20 = ""
+    total_deuda20 = ""
+    porce_deuda20 = ""
+    lista_expedientes_deuda=[]
+    exp_mayor_deuda = ""
+    total_mayor_deuda = ""
+
+    if request.method == 'POST':
+        fecha_inicial = request.POST.get('fecha_inicial')
+        fecha_final = request.POST.get('fecha_final')
+
+        fecha_inicial = datetime.strptime(fecha_inicial, '%d/%m/%Y')
+        fecha_final = datetime.strptime(fecha_final, '%d/%m/%Y')
+
+        fechas = checkDates(fecha_inicial, fecha_final)
+        fecha_inicial = fechas[0]
+        fecha_final = fechas[1]
+
+        if fecha_inicial and fecha_final:
+
+            # TABLA 1: EXPEDIENTES CON DEUDAS Y MONTO TOTAL DE ESOS EXPEDIENTES
+            exp_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gt=0).count()
+
+            expedientes_con_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gt=0)
+            exp_deuda_total = 0
+            exp_pagado = 0
+            for expediente_deu in expedientes_con_deuda:
+                
+                exp_deuda_total = exp_deuda_total + expediente_deu.saldo
+                exp_pagado = exp_pagado + expediente_deu.pagado
+                print("prueba")
+
+            # TABLA 2: PACIENTES CON CON DEUDAS MAYORES A 20, TOTAL Y PORCENTAJE
+            dueda_mayor20 = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gt=0).count()
+            print(dueda_mayor20,"Deuda mayor que 20")
+            expedientes_deuda_mayor20 = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).filter(saldo__gt=0).order_by('saldo')
+            print(len(expedeuda))
+            for expedeuda in expedientes_deuda_mayor20:
+                if expedeuda.saldo>=50:
+                    mayor50= mayor50+1
+                    totalmayor50= totalmayor50 + expedeuda.saldo
+                print(expedeuda.paciente)
+                consulta = Consulta.objects.filter(paciente=expedeuda).count()
+                print(consulta,"Consulta")
+                auxi=0
+                try:
+                    fecha = Consulta.objects.filter(paciente=expedeuda)
+                    print(fecha.fechaConsulta,"fecha ultima")
+                    
+                except:
+                    fecha = Consulta.objects.filter(fechaConsulta__range=[fecha_inicial,fecha_final])
+                    
+                try:
+                    cita2 = Cita.objects.filter(paciente=expedeuda)
+                    print(cita2.estado,"Estado")
+                    if cita2.estado== "Pendiente":
+                        fechasiguiente = cita2.fechaCita
+                except:
+                    fechasiguiente = "-"
+                
+                pd = PacienteDeuda(expedeuda,consulta,fecha.fechaConsulta,fechasiguiente)
+                lista_expedientes_deuda.append(pd)
+            total_deuda20 = 0
+            for expediente_mayo20 in expedientes_deuda_mayor20:
+                total_deuda20 = total_deuda20 + expediente_mayo20.saldo
+            try:
+                porce_deuda20 = "{:.2f}".format(dueda_mayor20 / exp_deuda * 100)
+            except:
+                porce_deuda20=""
+            exps_mayor_deuda = Expediente.objects.filter(fechaCreacion__range=[fecha_inicial, fecha_final]).order_by("-saldo")
+
+            
+            
+            print(totalmayor50,"mayor50")
+            print(exp_deuda_total,"total")
+            try:
+                porce_deuda20 = "{:.2f}".format(totalmayor50 / exp_deuda_total * 100)
+            except:
+                 porce_deuda20=56
+            # TABLA 3: EXPEDIENTE CON MAYOR DEUDA Y MONTO DE LA DEUDA
+
+    return render(request, template_name='gerencial/resumen_expdeudas.html',
+                  context={'fecha_inicial': fecha_inicial, 'fecha_final': fecha_final, 'hoy': hoy,'expcondeuda':expcondeuda,
+                           'exp_deuda': exp_deuda,'mayor50':mayor50, 'exp_deuda_total': exp_deuda_total,'exp_pagado':exp_pagado,'lista_expedientes_deuda':lista_expedientes_deuda,
+                           'dueda_mayor20': dueda_mayor20, 'totalmayor50':totalmayor50,'total_deuda20': total_deuda20, 'porce_deuda20': porce_deuda20,
+                           
+                           })

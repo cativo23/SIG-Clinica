@@ -27,7 +27,7 @@ class Configuracion:
                 AtributoDestino('formafarmaceutica', TablaOrigen('transaccional_medicamento', 'formafarmaceutica'),'string')                
                         ])
 
-        medicamento = TablaDestino("gerencial_lotemedicamento",[
+        lotemedicamento = TablaDestino("gerencial_lotemedicamento",[
                 AtributoDestino('id',TablaOrigen('transaccional_lotemedicamento','id')),
                 AtributoDestino('fecha_vencimiento',TablaOrigen('transaccional_lotemedicamento','fecha_vencimiento'),'string'),
                 AtributoDestino('cantidad',TablaOrigen('transaccional_lotemedicamento','cantidad')),
@@ -125,6 +125,7 @@ class Configuracion:
         entidades=[]
         entidades.append(doctor)
         entidades.append(medicamento)
+        entidades.append(lotemedicamento)
         entidades.append(odontograma)
         entidades.append(paciente)
         entidades.append(expediente)
@@ -132,7 +133,7 @@ class Configuracion:
         entidades.append(tratamiento)
         entidades.append(consulta)
         entidades.append(procedimiento)
-        entidades.append(pago)
+        #entidades.append(pago)
         entidades.append(receta)
         entidades.append(especificacion)
         return entidades
