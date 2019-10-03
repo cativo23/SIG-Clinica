@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+{% load l10n %}
+
+{% block title %} Nuevo Recurrente {% endblock %}
+{% block pantalla %} Resumen de Consultas Realizadas por Nuevos y Recurrentes Pacientes {% endblock %}
+{% block descripcion %} {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="center-align">Ingresos por Consultas por Nuevos y Recurrentes Pacientes</h3>
+
+    {% include "elements/parametros.html" %}
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    {% if fecha_inicial and fecha_final %}
+                   <div id="render">
+                    Fecha de emisión: {{ hoy|date:'d/m/Y'  }}
+                    <span class="card-title"><b>Resumen de Ingresos Nuevos y Recurrentes del {{ fecha_inicial|date:'d/m/Y'  }}
+                            al {{ fecha_final|date:'d/m/Y'  }}</b></span>
+                    <h5>Clientes Recurrentes</h5>
+                    <div id="tabla2" class="row">
+                        <div class="col s10 push-s1">
+                            <table class="highlight responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th><b>Población</b></th>
+                                        <th>Consultas Realizadas</th>
+                                        <th>Monto ($)</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td><b>Menor de 18 años</b></td>
+                                        <td>{{ redad_con_me|default_if_none:"0" }}</td>
+                                        <td>{{ rtotal_consulta_men|default_if_none:"0"|stringformat:'0.2f'|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Mayor o igual a 18 años</b></td>
+                                        <td>{{ redad_con_ma|default_if_none:"0" }}</td>
+                                        <td>{{ rtotal_consulta_may|default_if_none:"0"|stringformat:'0.2f'|intcomma }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><br>
+
+                    <div id="tabla1" class="row">
+                        <div class="col s10 push-s1">
+                            <table class="highlight responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sexo</th>
+                                        <th>Consultas Realizadas</th>
+                                        <th>Monto ($)</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td><b>Masculino</b></td>
+                                        <td>{{ rsexo_con_mas|default_if_none:"0" }}</td>
+                                        <td>{{ rtotal_consulta_mas|default_if_none:"0"|stringformat:'0.2f'|intcomma}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Femenino</b></td>
+                                        <td>{{ rsexo_con_fem|default_if_none:"0" }}</td>
+                                        <td>{{ rtotal_consulta_fem|default_if_none:"0"|stringformat:'0.2f'|intcomma }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <h5>Clientes Nuevos</h5>
+                    <div id="tabla2" class="row">
+                        <div class="col s10 push-s1">
+                            <table class="highlight responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th><b>Población</b></th>
+                                        <th>Consultas Realizadas</th>
+                                        <th>Monto ($)</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td><b>Menor de 18 años</b></td>
+                                        <td>{{ nedad_con_me|default_if_none:"0" }}</td>
+                                        <td>{{ ntotal_consulta_men|default_if_none:"0"|stringformat:'0.2f'|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Mayor o igual a 18 años</b></td>
+                                        <td>{{ nedad_con_ma|default_if_none:"0" }}</td>
+                                        <td>{{ ntotal_consulta_may|default_if_none:"0"|stringformat:'0.2f'|intcomma }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="tabla1" class="row">
+                        <div class="col s10 push-s1">
+                            <table class="highlight responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sexo</th>
+                                        <th>Consultas Realizadas</th>
+                                        <th>Monto ($)</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td><b>Masculino</b></td>
+                                        <td>{{ nsexo_con_mas|default_if_none:"0" }}</td>
+                                        <td>{{ ntotal_consulta_mas|default_if_none:"0"|stringformat:'0.2f'|intcomma}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Femenino</b></td>
+                                        <td>{{ nsexo_con_fem|default_if_none:"0" }}</td>
+                                        <td>{{ ntotal_consulta_fem|default_if_none:"0"|stringformat:'0.2f'|intcomma }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><br>
+
+                    <h5>Totales</h5>
+
+                    <div id="tabla3" class="row">
+                        <div class="col s10 push-s1">
+                            <table class="highlight responsive-table centered">
+                                <thead>
+                                    <tr>
+                                        <th>Consultas Realizadas</th>
+                                        <th>Ingresos por Consultas Realizadas ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ con_total|default_if_none:"0"|stringformat:'0.2f'|intcomma }}</td>
+                                        <td>{{ ingresos|default_if_none:"0"|stringformat:'0.2f'|intcomma }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><br>
+                   </div>
+
+                    {%  include 'elements/botones.html' %}
+                    {% else %}
+                    <div class="row">
+                        <div class="col s12"><br>
+                            <h4 style="text-align: center">¡No se ha seleccionado un período para su resumen!</h4>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li >
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
+{% endblock %}

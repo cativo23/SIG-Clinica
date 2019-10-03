@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %} Expedientes con Deudas {% endblock %}
+{% block pantalla %} Resumen de Expedientes con Deudas {% endblock %}
+{% block descripcion %}  {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h3 class="center-align">Expedientes con Deudas</h3>
+
+        {% include "elements/parametros.html" %}
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            {% if fecha_inicial and fecha_final %}
+                            <div id="render">
+                            Fecha de emisión: {{ hoy|date:'d/m/Y' }} <br>
+                                <span class="card-title"><b>Resumen de Expedientes con Deudas del {{ fecha_inicial|date:'d/m/Y' }}
+                                    al {{ fecha_final|date:'d/m/Y' }}</b></span>
+                                <div id="tabla1" class="row">
+                                    <div class="col s10 push-s1"><br>
+                                         <table class="highlight responsive-table centered">
+                                            <thead>
+                                            <tr>
+                                                <th>Cantidad de Expedientes con Deuda</th>
+                                                <th>Monto Total en deuda ($)</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ exp_deuda }}</td>
+                                                <td>{{ exp_deuda_total }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><br>
+
+                                <div id="tabla2" class="row">
+                                    <div class="col s10 push-s1">
+                                        <table class="highlight responsive-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td><b>Pacientes con deuda mayor o igual a $20.00</b></td>
+                                                    <td >{{ dueda_mayor20 }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Monto total de personas con deuda mayor o igual a $20.00</b></td>
+                                                    <td>{{ total_deuda20 }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Porcentaje que ocupan de las deudas totales</b></td>
+                                                    <td>% {{ porce_deuda20 }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><br>
+
+                                <div id="tabla3" class="row">
+                                    <div class="col s10 push-s1">
+                                        <table class="highlight responsive-table centered">
+                                            <thead>
+                                            <tr>
+                                                <th>Expediente con Mayor Deuda </th>
+                                                <th>Monto de la Deuda ($)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ exp_mayor_deuda }}</td>
+                                                <td>{{ total_mayor_deuda }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><br>
+                            </div>
+
+                                {%  include 'elements/botones.html' %}
+
+                            {% else %}
+                                <div class="row">
+                                    <div class="col s12"><br>
+                                        <h4 style="text-align: center">¡No se ha seleccionado un período para su resumen!</h4>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <script>
+                                var boton_enviar = document.getElementById('boton_enviar').onclick="location.href='{% url 'gerencial:resumen_expdeudas' %}'"
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}
+
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li >
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
+{% endblock %}

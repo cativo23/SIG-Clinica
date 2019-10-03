@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li>
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block title %} Expedientes Creados {% endblock %}
+{% block pantalla %} Resumen de Expedientes Creados  {% endblock %}
+{% block descripcion %} {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h3 class="center-align">Expedientes Creados</h3>
+
+        {% include "elements/parametros.html" %}
+
+        
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        {% if fecha_inicial and fecha_final %}
+                            <div id="render">
+                                Fecha de emisión: {{ hoy|date:'d/m/Y' }}
+                                <span class="card-title"><b>Resumen de Expedientes Creados del {{ fecha_inicial|date:'d/m/Y' }}
+                            al {{ fecha_final|date:'d/m/Y' }}</b></span>
+
+                                <div id="tabla1" class="row">
+                                    <div class="col s10 push-s1"><br>
+                                        <table class="highlight responsive-table" id="tablea">
+                                            <thead>
+                                            <tr>
+                                                <th>Sexo</th>
+                                                <th>Expedientes Creados</th>
+                                                <th>Consultas Realizadas</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td><b>Masculino</b></td>
+                                                <td>{{ sexo_exp_mas }}</td>
+                                                <td>{{ sexo_con_mas }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Femenino</b></td>
+                                                <td>{{ sexo_exp_fem }}</td>
+                                                <td>{{ sexo_con_fem }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div id="tabla2" class="row">
+                                    <div class="col s10 push-s1"><br>
+                                        <table class="highlight responsive-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Población</th>
+                                                <th>Expedientes Creados</th>
+                                                <th>Consultas Realizadas</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td><b>Menor de 18 años</b></td>
+                                                <td>{{ edad_exp_me }}</td>
+                                                <td>{{ edad_con_me }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Mayor o igual a 18 años</b></td>
+                                                <td>{{ edad_exp_ma }}</td>
+                                                <td>{{ edad_con_ma }}</td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div id="tabla3" class="row">
+                                    <div class="col s10 push-s1"><br>
+                                        <table class="highlight responsive-table centered">
+                                            <thead>
+                                            <tr>
+                                                <th>Expedientes Nuevos</th>
+                                                <th>Consultas Realizadas por Pacientes Nuevos</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ exp_total }}</td>
+                                                <td>{{ con_total }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+
+                            {% include 'elements/botones.html' %}
+                        {% else %}
+                            <div class="row">
+                                <div class="col s12"><br>
+                                    <h4 style="text-align: center">¡No se ha seleccionado un período para su
+                                        resumen!</h4>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <!-- Modal Structure -->
+                        <div id="modal" class="modal">
+                            <div class="modal-content">
+                                <h4>Ayuda</h4>
+                                <p>El Expediente hjkghjgkjhg</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

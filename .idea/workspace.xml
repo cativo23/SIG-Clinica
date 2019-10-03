@@ -1,0 +1,928 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b591d41d-2954-4da9-9d53-3089a3e3425b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/sig_clinica/templates/elements/botones.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sig_clinica/templates/gerencial/informe_tratamientos_especiales.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/gerencial/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/gerencial/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/gerencial/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/gerencial/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/static/gerencial/js/sidenav.js" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/static/gerencial/js/sidenav.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/static/material/imgs/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/static/material/imgs/favicon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/static/material/imgs/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/static/material/imgs/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/html2pdf.bundle.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/html2pdf.bundle.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/elements/parametros.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/elements/parametros.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/elements/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/elements/sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/gerencial/bitacora.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/gerencial/bitacora.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/gerencial/etl.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/gerencial/etl.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/informes/uso_odontograma.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/informes/uso_odontograma.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_costomed.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_costomed.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_expcreados.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_expcreados.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_expdeudas.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_expdeudas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_ingobtenidos.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_ingobtenidos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_nuevorecurrente.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_nuevorecurrente.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_recetamed.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_recetamed.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_tratamientosreq.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_tratamientosreq.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_vencimiento.html" beforeDir="false" afterPath="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_vencimiento.html" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="SIG-Clinica" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/script.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="507">
+              <caret line="216" column="66" selection-start-line="216" selection-start-column="66" selection-end-line="216" selection-end-column="66" />
+              <folding>
+                <element signature="e#40#6879#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_costomed.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="536">
+              <caret line="73" column="28" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="66" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/templates/informes/uso_odontograma.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-line="122" />
+              <folding>
+                <element signature="n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+                <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_vencimiento.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="372">
+              <caret line="77" selection-start-line="77" selection-end-line="89" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/templates/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-298">
+              <caret line="61" column="48" selection-start-line="61" selection-start-column="48" selection-end-line="61" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/templates/elements/botones.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="82" selection-start-line="3" selection-start-column="82" selection-end-line="3" selection-end-column="82" />
+              <folding>
+                <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/gerencial/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-453">
+              <caret line="1090" selection-start-line="1090" selection-end-line="1090" />
+              <folding>
+                <element signature="e#1623#4549#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/templates/gerencial/informe_tratamientos_especiales.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/gerencial/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="20" column="49" lean-forward="true" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sig_clinica/templates/elements/parametros.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="472">
+              <caret line="37" column="113" selection-start-line="37" selection-start-column="113" selection-end-line="37" selection-end-column="113" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>black-text</find>
+      <find>&lt;a class=&quot;btn-floating halfway-fab waves-effect waves-light blue-grey darken-3 left activator&quot;&gt;</find>
+      <find>Cancel</find>
+      <find>pickers</find>
+      <find>datepicker</find>
+      <find>'AXES_CACHE</find>
+      <find>'axes.middleware</find>
+      <find>PasswordRes</find>
+      <find>fecha_inicial</find>
+      <find>name</find>
+      <find>consulta</find>
+      <find>pantall</find>
+      <find>{%</find>
+      <find>procedimi</find>
+      <find>odo</find>
+      <find>Dr.</find>
+      <find>rec</find>
+      <find>date</find>
+      <find>Sum</find>
+      <find>bitacora</find>
+      <find>odonto</find>
+      <find>restablecer</find>
+      <find>costo</find>
+      <find>boton_env</find>
+      <find>doc</find>
+      <find>doc.</find>
+      <find>this.prop.pdf</find>
+      <find>addPage</find>
+      <find>&lt;i class=&quot;material-icons&quot;&gt;person&lt;/i&gt;</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>password</replace>
+      <replace>auth</replace>
+      <replace>path</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/sig_clinica/templates/elements</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/templates/resumen_expdientescreados.html" />
+        <option value="$PROJECT_DIR$/static/gerencial/js/pickers.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/templates/base.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/sig_clinica/wsgi.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/static/gerencial/js/obtenerfechas.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/templates/prueba.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/static/gerencial/js/pickers.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/templates/resumen_expcreados2.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/templates/parametros.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/templates/resumen_expcreados.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/authentication/urls.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/sig_clinica/settings.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/models.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/templatetags/gerencial_tags.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/templatetags/__init__.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/auth/add_user.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/auth/users.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/auth/cuenta.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/auth/email_password.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/static/gerencial/js/sidenav.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/static/gerencial/js/pickers.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/pickers.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/static_files/gerencial/css/extra.css" />
+        <option value="$PROJECT_DIR$/sig_clinica/static_files/gerencial/css/materialize.css" />
+        <option value="$PROJECT_DIR$/sig_clinica/static_files/gerencial/css/style.css" />
+        <option value="$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/sidenav.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/authentication/forms.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/authentication/views.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/etl/conf/configuracion.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/etl/service.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/gerencial/bitacora.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/gerencial/etl.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/index.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_costomed.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_expcreados.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_expdeudas.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_ingobtenidos.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_nuevorecurrente.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_tratamientosreq.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_recetamed.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_vencimiento.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/elements/sidebar.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/html2pdf.bundle.min.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/informes/uso_odontograma.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/elements/botones.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/urls.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/gerencial/views.py" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/gerencial/informe_tratamientos_especiales.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/base.html" />
+        <option value="$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/script.js" />
+        <option value="$PROJECT_DIR$/sig_clinica/templates/elements/parametros.html" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="28" />
+    <option name="width" value="646" />
+    <option name="height" value="686" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="gerencial" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="static_files" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="static_files" type="462c0819:PsiDirectoryNode" />
+              <item name="gerencial" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="static_files" type="462c0819:PsiDirectoryNode" />
+              <item name="gerencial" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="elements" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="gerencial" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="informes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SIG-Clinica" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SIG-Clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="sig_clinica" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="resumenes" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/sig_clinica" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/sig_clinica/templates/auth/password_reset.html" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Scripts" />
+      <recent name="C:\Users\cativ\Desktop\SIG-Clinica\sig_clinica\static_files\gerencial\js" />
+      <recent name="C:\Users\cativ\Desktop\SIG-Clinica\sig_clinica\static_files\gerencial\css" />
+      <recent name="$PROJECT_DIR$/sig_clinica" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/sig_clinica/templates/auth" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Python.DjangoServer" factoryName="Django server" nameIsGenerated="true">
+      <module name="SIG-Clinica" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="sig_clinica.settings" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sig_clinica" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8081" />
+      <option name="host" value="0.0.0.0" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="http://127.0.0.1:8080/" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <module name="SIG-Clinica" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/env/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sig_clinica" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8080" />
+      <option name="host" value="0.0.0.0" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="http://127.0.0.1:8080/" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b591d41d-2954-4da9-9d53-3089a3e3425b" name="Default Changelist" comment="" />
+      <created>1559671210380</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1560583698664</updated>
+      <workItem from="1560583699848" duration="1255000" />
+      <workItem from="1560654918625" duration="5295000" />
+      <workItem from="1560733548930" duration="15843000" />
+      <workItem from="1560756602654" duration="740000" />
+      <workItem from="1560789923890" duration="9447000" />
+      <workItem from="1560816326378" duration="5730000" />
+      <workItem from="1560822690735" duration="438000" />
+      <workItem from="1560823152275" duration="73000" />
+      <workItem from="1560823247773" duration="2892000" />
+      <workItem from="1560922347281" duration="1424000" />
+      <workItem from="1560927737224" duration="1223000" />
+      <workItem from="1561089567022" duration="2344000" />
+      <workItem from="1561130324262" duration="27413000" />
+      <workItem from="1561169125174" duration="26136000" />
+      <workItem from="1561234204948" duration="12306000" />
+      <workItem from="1561332957717" duration="11984000" />
+      <workItem from="1561386026750" duration="1792000" />
+      <workItem from="1561395534045" duration="1009000" />
+      <workItem from="1561511736560" duration="1804000" />
+      <workItem from="1562204018124" duration="5284000" />
+      <workItem from="1562290267539" duration="1874000" />
+      <workItem from="1562297965718" duration="787000" />
+      <workItem from="1562300439100" duration="1806000" />
+      <workItem from="1562305630146" duration="5701000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="201642000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="28" width="1920" height="1052" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15314835" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="manage.py@SIG-Clinica" order="0" weight="0.7518878" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.3592233" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.25134844" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.3281493" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32901832" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49932975" weight="0.22114347" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067025" side_tool="true" weight="0.32956153" />
+      <window_info anchor="bottom" id="Python Console" order="11" weight="0.3279396" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="13" weight="0.32901832" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="R Graphics" order="3" weight="0.3297587" />
+      <window_info anchor="right" id="R Packages" order="4" />
+      <window_info anchor="right" id="Database" order="5" />
+      <window_info anchor="right" id="SciView" order="6" weight="0.32977587" />
+      <window_info anchor="right" x="0" y="0" width="434" height="866" id="Documentation" order="7" side_tool="true" weight="0.3296875" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20106667" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="manage.py@SIG-Clinica" order="0" weight="0.32855567" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.3605292" />
+      <window_info anchor="bottom" id="Debug" order="4" visible="true" weight="0.5005513" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.32956153" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32956153" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49932975" weight="0.11315417" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067025" side_tool="true" weight="0.32956153" />
+      <window_info anchor="bottom" id="Python Console" order="11" weight="0.32901832" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="13" weight="0.32941177" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="R Graphics" order="3" weight="0.3297587" />
+      <window_info anchor="right" id="R Packages" order="4" />
+      <window_info anchor="right" id="Database" order="5" />
+      <window_info anchor="right" id="SciView" order="6" weight="0.32977587" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="jinja2-line">
+          <url>file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_vencimiento.html</url>
+          <line>73</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint suspend="NONE" type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/auth/add_user.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-96">
+          <caret line="11" column="23" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/views.py" />
+    <entry file="file://$PROJECT_DIR$/Reportes.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static/gerencial/js/chart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-144" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/css/extra.css" />
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2304">
+          <caret line="96" column="30" selection-start-line="96" selection-start-column="30" selection-end-line="96" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static/gerencial/js/pickers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static/gerencial/js/sidenav.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="55" selection-start-line="13" selection-start-column="55" selection-end-line="13" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/css/materialize.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="9084" column="1" selection-start-line="9084" selection-start-column="1" selection-end-line="9084" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/pickers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="15" column="28" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/material/imgs/background.svg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/material/imgs/sidenav.svg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/material/imgs/user.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/material/imgs/logo.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/material/imgs/favicon.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/img/ocean.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/img/person1.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/img/person2.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/img/person3.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/img/person4.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/authentication/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/sig_clinica/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="845">
+          <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/registration/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="47" selection-start-line="47" selection-end-line="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/etl/conf/configuracion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/etl/service.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="12" column="36" lean-forward="true" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static/material/js/jquery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/authentication/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="156" selection-start-line="156" selection-end-line="156" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/gerencial/bitacora.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="51" selection-start-line="51" selection-end-line="63" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/gerencial/etl.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="845">
+          <caret line="63" column="14" selection-start-line="63" selection-start-column="14" selection-end-line="63" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scripts/backup.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="815">
+          <caret line="102" column="102" selection-start-line="102" selection-start-column="102" selection-end-line="102" selection-end-column="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_expcreados.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="114" column="36" selection-start-line="114" selection-start-column="36" selection-end-line="114" selection-end-column="36" />
+          <folding>
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_expdeudas.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="81" column="42" selection-start-line="81" selection-start-column="42" selection-end-line="81" selection-end-column="42" />
+          <folding>
+            <element signature="e#977#2034#0#HTML" />
+            <element signature="e#2072#3401#0#HTML" />
+            <element signature="e#3439#4489#0#HTML" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_ingobtenidos.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="511">
+          <caret line="95" column="34" selection-start-line="95" selection-start-column="34" selection-end-line="95" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_nuevorecurrente.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="130" column="36" lean-forward="true" selection-start-line="130" selection-start-column="36" selection-end-line="130" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_tratamientosreq.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="95" column="14" selection-start-line="95" selection-start-column="14" selection-end-line="95" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_recetamed.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="86" selection-start-line="23" selection-start-column="86" selection-end-line="23" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/html2pdf.bundle.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="5" column="471573" selection-start-line="5" selection-start-column="471573" selection-end-line="5" selection-end-column="471573" />
+          <folding>
+            <element signature="n#style#0;n#iframe#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#iframe#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/sidenav.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_costomed.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="536">
+          <caret line="73" column="28" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/elements/sidebar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="26" column="82" selection-start-line="26" selection-start-column="82" selection-end-line="26" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/gerencial/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="49" lean-forward="true" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/env/lib/python3.7/site-packages/django/core/handlers/exception.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/resumenes/resumen_vencimiento.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="77" selection-start-line="77" selection-end-line="89" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/gerencial/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-453">
+          <caret line="1090" selection-start-line="1090" selection-end-line="1090" />
+          <folding>
+            <element signature="e#1623#4549#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/elements/botones.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="82" selection-start-line="3" selection-start-column="82" selection-end-line="3" selection-end-column="82" />
+          <folding>
+            <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/informes/uso_odontograma.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="122" />
+          <folding>
+            <element signature="n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/gerencial/informe_tratamientos_especiales.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-298">
+          <caret line="61" column="48" selection-start-line="61" selection-start-column="48" selection-end-line="61" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/static_files/gerencial/js/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="507">
+          <caret line="216" column="66" selection-start-line="216" selection-start-column="66" selection-end-line="216" selection-end-column="66" />
+          <folding>
+            <element signature="e#40#6879#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sig_clinica/templates/elements/parametros.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="472">
+          <caret line="37" column="113" selection-start-line="37" selection-start-column="113" selection-end-line="37" selection-end-column="113" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

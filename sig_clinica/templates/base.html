@@ -1,0 +1,101 @@
+{% load i18n static staticfiles %}
+
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<head>
+    {% block head %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        {% block turbolinks-cache-control %}
+            <meta name="turbolinks-cache-control" content="no-cache">{% endblock %}
+        <title>SIG Clinica Manguito - {% block title %}{% endblock %}</title>
+        {% block favicon %}
+            <link href="{% static 'material/imgs/favicon.png' %}" rel="shortcut icon">{% endblock %}
+
+        <!-- Print.js -->
+        <link rel="stylesheet" type="text/css" href="{% static 'gerencial/css/print.min.css' %}">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'gerencial/css/style.css' %}">
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {% block extrahead %}{% endblock %}
+    {% endblock head %}
+</head>
+
+<body class="grey lighten-4">
+<div class="navbar-fixed">
+    <nav class="blue darken-2">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo right">SIG-Manguito</a>
+                <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large left"><i
+                        class="material-icons">menu</i></a>
+                {% block navbar %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </nav>
+</div>
+{% include 'elements/sidebar.html' %}
+
+{% block content %}
+{% endblock content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script src="{% static 'gerencial/js/sidenav.js' %}"></script>
+<script src="{% static 'gerencial/js/pickers.js' %}"></script>
+<script src="{% static 'gerencial/js/script.js' %}"></script>
+<script src="{% static 'gerencial/js/html2pdf.bundle.min.js' %}"></script>
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.core.min.js"></script>
+<script src="{% static 'gerencial/js/FileSaver.min.js' %}"></script>
+<script src="https://unpkg.com/tableexport@5.2.0/dist/js/tableexport.min.js"></script>
+
+<script src="{% static 'gerencial/js/jquery.mask.js' %}"></script>
+<script>
+    function print1() {
+        var element = document.getElementById('render');
+        var opt = {
+            margin: 1,
+            filename: '{% if reporte%} {{ reporte }} {% endif %}',
+            image: {type: 'jpeg', quality: 1},
+            html2canvas: {scale: 2},
+            jsPDF: {unit: 'in', format: 'letter', orientation: 'portrait'}
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+<script>
+function fnExcelReport() {
+    var tT = new XMLSerializer().serializeToString(document.getElementById('datatable')); //Serialised table
+    tT += new XMLSerializer().serializeToString(document.getElementById('tabla1'))
+var tF = '{% if reporte%} {{ reporte }} {% endif %}.xls'; //Filename
+var tB = new Blob([tT]); //Blub
+
+if(window.navigator.msSaveOrOpenBlob){
+    //Store Blob in IE
+    window.navigator.msSaveOrOpenBlob(tB, tF)
+}
+else{
+    //Store Blob in others
+    var tA = document.body.appendChild(document.createElement('a'));
+    tA.href = URL.createObjectURL(tB);
+    tA.download = tF;
+    tA.style.display = 'none';
+    tA.click();
+    tA.parentNode.removeChild(tA)
+}
+}
+</script>
+{% block messages %}
+{% endblock messages %}
+</body>
+</html>

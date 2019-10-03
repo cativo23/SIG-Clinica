@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %} Expedientes Creados {% endblock %}
+{% block pantalla %} Resumen de Expedientes Creados  {% endblock %}
+{% block descripcion %} {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h3 class="center-align">Ingresos por Consultas</h3>
+
+        {% include "elements/parametros.html" %}
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                     {% if fecha_inicial and fecha_final %}
+                     <div id="render">
+                     Fecha de emisión: {{ hoy|date:'d/m/Y' }}
+                        <span class="card-title"><b>Resumen de Ingresos por Consultas del {{ fecha_inicial|date:'d/m/Y' }}
+                        al {{ fecha_final|date:'d/m/Y' }}</b></span>
+
+                        <div id="tabla2" class="row">
+                            <div class="col s10 push-s1">
+                                <table class="highlight responsive-table centered">
+                                    <thead>
+                                    <tr>
+                                        <th><b>Población</b></th>
+                                        <th>Consultas Realizadas</th>
+                                        <th>Monto ($)</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr>
+                                        <td><b>Menor de 18 años</b></td>
+                                        <td>{{ edad_con_me|default_if_none:"0" }}</td>
+                                        <td>{{ total_consulta_men|default_if_none:"0" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Mayor o igual a 18 años</b></td>
+                                        <td>{{ edad_con_ma|default_if_none:"0" }}</td>
+                                        <td>{{ total_consulta_may|default_if_none:"0" }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><br>
+
+                        <div id="tabla1" class="row">
+                            <div class="col s10 push-s1">
+                                <table class="highlight responsive- centered">
+                                    <thead>
+                                    <tr>
+                                        <th>Sexo</th>
+                                        <th>Consultas Realizadas</th>
+                                        <th>Monto ($)</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr>
+                                        <td><b>Masculino</b></td>
+                                        <td>{{ sexo_con_mas|default_if_none:"0" }}</td>
+                                        <td>{{ total_consulta_mas|default_if_none:"0"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Femenino</b></td>
+                                        <td>{{ sexo_con_fem|default_if_none:"0" }}</td>
+                                        <td>{{ total_consulta_fem|default_if_none:"0" }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><br>
+
+                        <div id="tabla3" class="row">
+                            <div class="col s10 push-s1">
+                                <table class="highlight responsive-table centered">
+                                    <thead>
+                                    <tr>
+                                        <th>Consultas Realizadas</th>
+                                        <th>Ingresos por Consultas Realizadas ($)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{ con_total|default_if_none:"0" }}</td>
+                                        <td>{{ ingresos|default_if_none:"0" }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><br>
+                     </div>
+
+                        {%  include 'elements/botones.html' %}
+                     {% else %}
+                        <div class="row">
+                            <div class="col s12"><br>
+                                <h4 style="text-align: center">¡No se ha seleccionado un período para su resumen!</h4>
+                            </div>
+                        </div>
+                     {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li >
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
+{% endblock %}

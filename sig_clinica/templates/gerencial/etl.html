@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+             <h1>Mantenimiento</h1>
+            <div class="col s6">
+                <div class="card">
+                    <div class="card-content">
+                        <h5>Ejecutar ETL</h5>
+                        <div class="row">
+                            <form class='Product-Form' method='post'>
+                                {% csrf_token %}
+                                <input name="etl" hidden>
+                                <button type="submit" class="btn">Ejecutar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s6">
+                <div class="card">
+                    <div class="card-content">
+                        <h5>Realizar Respaldo BD</h5>
+                        <div class="row">
+                            <form class='Product-Form' method='post'>
+                                {% csrf_token %}
+                                <input name="respaldo" hidden>
+                                <button type="submit" class="btn">Respaldar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block messages %}
+    {% for message in messages %}
+    {% if message %}
+    <script type="text/javascript">
+        (function () { M.toast({html: '{{ message }}', classes: 'rounded {% if message.tags == 'warning' %} yellow {% elif message.tags == 'error' %} red {% elif message.tags == 'success'%} green {% else %} {% endif %}', displayLength: 6000}); })();
+    </script>
+    {% endif %}
+    {% endfor %}
+{% endblock messages %}
+
+{% block navbar %}
+    <ul class="left hide-on-med-and-down">
+        <li>
+            <a href="/">{% trans 'Home' %}</a>
+        </li>
+        <li>
+            <a href="{% url 'cuenta' %}">Personalizar Perfil</a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+        </li>
+    </ul>
+{% endblock %}

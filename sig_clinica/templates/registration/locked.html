@@ -1,0 +1,25 @@
+{% extends "material/frontend/base_lockscreen.html" %}
+{% load material_form %}
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+{% block title %}
+    SIG Clinica Manguito - {% trans 'Log in' %}
+{% endblock %}
+
+{% block page_title %}{% trans 'Oh No!' %}{% endblock %}
+
+{% block content %}
+<p>Su cuenta ha sido bloqueada, comuniquese con su administrador.</p>
+    <a  href="{% url 'login' %}" class="waves-effect waves-light btn-large"><i class="material-icons left">arrow_back</i>{% trans "Regresar" %}</a>
+{% endblock %}
+
+{% block icon %}error{% endblock %}
+{% block messages %}
+    {% if message %}
+    <script type="text/javascript">
+        (function () { M.toast({html: '{{ message }}', classes: 'rounded', displayLength: 6000}); })();
+    </script>
+{% endif %}
+{% endblock messages %}
+
