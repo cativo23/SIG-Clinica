@@ -1,31 +1,31 @@
-# ⚠️ Proyecto Archivado
+# ⚠️ Archived Project
 
-**Proyecto Universitario para Clínica 'El Manguito' - Completado, archivado como referencia**
-
----
-
-## Estado del Proyecto
-
-Este repositorio está **archivado** y ya no recibe mantenimiento activo.
-
-### ¿Por qué se archivó?
-
-- Proyecto universitario para la clínica "El Manguito"
-- Proyecto completado exitosamente
-- Se archiva como referencia académica/profesional
+**University Project for 'El Manguito' Clinic - Completed, Archived as Reference**
 
 ---
 
-## Información Original
+## Project Status
 
-Sistema de Información Geográfica (SIG) desarrollado para la clínica El Manguito.
+This repository is **archived** and is no longer actively maintained.
 
-## Tecnologías
+### Why was this archived?
+
+- University project for "El Manguito" clinic
+- Project completed successfully
+- Archived as academic/professional reference
+
+---
+
+## Original Information
+
+Geographic Information System (GIS) developed for El Manguito clinic.
+
+## Technologies
 
 - Python
 - Django
-- SIG/GIS
+- GIS
 
 ---
 
-**Nota:** Este repositorio se mantiene como referencia de proyectos completados.
+**Note:** This repository is kept as reference of completed projects.
